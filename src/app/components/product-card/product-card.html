@@ -3,11 +3,6 @@
     class="visual"
     [style.background]="'linear-gradient(160deg, ' + dessert().gradient[0] + ', ' + dessert().gradient[1] + ')'"
   >
-    @if (dessert().badge) {
-      <span class="badge" [class.dark]="dessert().badge === 'Limited Edition'">
-        {{ dessert().badge }}
-      </span>
-    }
     <span class="emoji" aria-hidden="true">{{ dessert().emoji }}</span>
   </div>
 

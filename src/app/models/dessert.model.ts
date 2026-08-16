@@ -1,7 +1,5 @@
 export type DessertCategory = 'All' | 'Cakes' | 'Pastries' | 'Tarts' | 'Cookies';
 
-export type DessertBadge = 'Best Seller' | 'Limited Edition';
-
 export interface Dessert {
   id: string;
   name: string;
@@ -10,7 +8,6 @@ export interface Dessert {
   price: number;
   emoji: string;
   gradient: [string, string];
-  badge?: DessertBadge;
 }
 
 export interface CartItem {

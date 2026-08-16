@@ -14,7 +14,6 @@ import { CartService } from './services/cart.service';
   selector: 'app-root',
   imports: [RouterOutlet, Header, Hero, ProductGrid, CartSummary, OrderModal, Footer, Toast],
   templateUrl: './app.html',
-  styleUrl: './app.css',
 })
 export class App {
   private readonly cart = inject(CartService);

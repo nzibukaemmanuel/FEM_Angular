@@ -9,7 +9,6 @@ export const DESSERTS: Dessert[] = [
     price: 8.5,
     emoji: '🍰',
     gradient: ['#FFF8F0', '#F3D9BE'],
-    badge: 'Best Seller',
   },
   {
     id: 'chocolate-souffle-cake',
@@ -28,7 +27,6 @@ export const DESSERTS: Dessert[] = [
     price: 6.75,
     emoji: '🥧',
     gradient: ['#FFF0F0', '#FBDCE0'],
-    badge: 'Limited Edition',
   },
   {
     id: 'classic-lemon-tart',
@@ -47,7 +45,6 @@ export const DESSERTS: Dessert[] = [
     price: 4.25,
     emoji: '🥐',
     gradient: ['#FFF8F0', '#EEDAB8'],
-    badge: 'Best Seller',
   },
   {
     id: 'almond-danish',
@@ -84,6 +81,5 @@ export const DESSERTS: Dessert[] = [
     price: 7.5,
     emoji: '🍬',
     gradient: ['#FFF0F0', '#F8D9E6'],
-    badge: 'Limited Edition',
   },
 ];
