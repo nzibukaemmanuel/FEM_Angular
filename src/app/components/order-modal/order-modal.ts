@@ -1,6 +1,6 @@
 import { CurrencyPipe } from '@angular/common';
-import { Component, inject } from '@angular/core';
-import { CartService } from '../../services/cart.service';
+import { Component, input, output } from '@angular/core';
+import { CartItem } from '../../models/dessert.model';
 
 @Component({
   selector: 'app-order-modal',
@@ -9,9 +9,13 @@ import { CartService } from '../../services/cart.service';
   styleUrl: './order-modal.css',
 })
 export class OrderModal {
-  protected readonly cart = inject(CartService);
+  readonly orderConfirmed = input(false);
+  readonly items = input<CartItem[]>([]);
+  readonly subtotal = input(0);
 
-  protected startNewOrder(): void {
-    this.cart.startNewOrder();
+  readonly startNewOrder = output<void>();
+
+  protected onStartNewOrder(): void {
+    this.startNewOrder.emit();
   }
 }

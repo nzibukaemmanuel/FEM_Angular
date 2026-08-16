@@ -1,6 +1,6 @@
 import { CurrencyPipe } from '@angular/common';
-import { Component, inject } from '@angular/core';
-import { CartService } from '../../services/cart.service';
+import { Component, computed, input, output } from '@angular/core';
+import { CartItem } from '../../models/dessert.model';
 
 @Component({
   selector: 'app-cart-summary',
@@ -9,13 +9,21 @@ import { CartService } from '../../services/cart.service';
   styleUrl: './cart-summary.css',
 })
 export class CartSummary {
-  protected readonly cart = inject(CartService);
+  readonly items = input<CartItem[]>([]);
+  readonly subtotal = input(0);
 
-  protected remove(dessertId: string): void {
-    this.cart.remove(dessertId);
+  readonly remove = output<string>();
+  readonly confirmOrder = output<void>();
+
+  protected readonly totalQuantity = computed(() =>
+    this.items().reduce((sum, item) => sum + item.quantity, 0),
+  );
+
+  protected onRemove(dessertId: string): void {
+    this.remove.emit(dessertId);
   }
 
-  protected confirmOrder(): void {
-    this.cart.confirmOrder();
+  protected onConfirm(): void {
+    this.confirmOrder.emit();
   }
 }

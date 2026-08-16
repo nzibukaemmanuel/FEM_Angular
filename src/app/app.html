@@ -1,9 +1,24 @@
-<app-header />
+<app-header [totalQuantity]="totalQuantity()" />
 <app-hero />
-<app-product-grid />
-<app-cart-summary />
+<app-product-grid
+  [cartItems]="items()"
+  (add)="addToCart($event)"
+  (increment)="incrementItem($event)"
+  (decrement)="decrementItem($event)"
+/>
+<app-cart-summary
+  [items]="items()"
+  [subtotal]="subtotal()"
+  (remove)="removeItem($event)"
+  (confirmOrder)="confirmOrder()"
+/>
 <app-footer />
-<app-order-modal />
-<app-toast />
+<app-order-modal
+  [orderConfirmed]="orderConfirmed()"
+  [items]="items()"
+  [subtotal]="subtotal()"
+  (startNewOrder)="startNewOrder()"
+/>
+<app-toast [message]="toastMessage()" />
 
 <router-outlet />

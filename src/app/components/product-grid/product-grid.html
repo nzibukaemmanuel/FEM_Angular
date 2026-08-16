@@ -21,7 +21,13 @@
 
   <div class="grid">
     @for (dessert of desserts(); track dessert.id) {
-      <app-product-card [dessert]="dessert" />
+      <app-product-card
+        [dessert]="dessert"
+        [quantity]="quantityOf(dessert.id)"
+        (add)="add.emit($event)"
+        (increment)="increment.emit($event)"
+        (decrement)="decrement.emit($event)"
+      />
     } @empty {
       <p class="empty">No desserts available in this category right now — check back soon!</p>
     }

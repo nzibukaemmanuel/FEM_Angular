@@ -26,7 +26,7 @@ A boutique bakery storefront built with Angular as part of the **Angular Fundame
 | `Toast` | Transient "item added" notification |
 | `Footer` | Site footer |
 
-All cart state lives in a single injectable `CartService` (`src/app/services/cart.service.ts`), built on Angular signals. Components never talk to each other directly — they read and mutate the shared service, which is the pattern this lab's "component communication" requirement calls for.
+Cart state lives in an injectable `CartService` (`src/app/services/cart.service.ts`), built on Angular signals — but only the root `App` component injects it. `App` is the single parent that owns the shared data and passes it down to every child via `@Input` (`items`, `subtotal`, `totalQuantity`, `orderConfirmed`, `quantity`, `cartItems`); children never read the service directly. User actions bubble back up the same tree via `@Output` (`add`, `increment`, `decrement`, `remove`, `confirmOrder`, `startNewOrder`), and `App` applies them to the service. So `ProductCard` emits `add` → `ProductGrid` re-emits it → `App` calls `cart.add()` → the update flows back down through `items`/`cartItems` to `CartSummary`, `Header`, and every `ProductCard` at once.
 
 ## Getting started
 

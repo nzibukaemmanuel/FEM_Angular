@@ -1,7 +1,6 @@
 import { CurrencyPipe } from '@angular/common';
-import { Component, computed, inject, input } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { Dessert } from '../../models/dessert.model';
-import { CartService } from '../../services/cart.service';
 
 @Component({
   selector: 'app-product-card',
@@ -10,21 +9,22 @@ import { CartService } from '../../services/cart.service';
   styleUrl: './product-card.css',
 })
 export class ProductCard {
-  private readonly cart = inject(CartService);
-
   readonly dessert = input.required<Dessert>();
+  readonly quantity = input(0);
 
-  protected readonly quantity = computed(() => this.cart.quantityOf(this.dessert().id));
+  readonly add = output<Dessert>();
+  readonly increment = output<string>();
+  readonly decrement = output<string>();
 
-  protected add(): void {
-    this.cart.add(this.dessert());
+  protected onAdd(): void {
+    this.add.emit(this.dessert());
   }
 
-  protected increment(): void {
-    this.cart.increment(this.dessert().id);
+  protected onIncrement(): void {
+    this.increment.emit(this.dessert().id);
   }
 
-  protected decrement(): void {
-    this.cart.decrement(this.dessert().id);
+  protected onDecrement(): void {
+    this.decrement.emit(this.dessert().id);
   }
 }

@@ -1,5 +1,4 @@
-import { Component, inject } from '@angular/core';
-import { CartService } from '../../services/cart.service';
+import { Component, input } from '@angular/core';
 
 @Component({
   selector: 'app-header',
@@ -7,5 +6,5 @@ import { CartService } from '../../services/cart.service';
   styleUrl: './header.css',
 })
 export class Header {
-  protected readonly cart = inject(CartService);
+  readonly totalQuantity = input(0);
 }

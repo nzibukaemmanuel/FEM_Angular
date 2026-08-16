@@ -1,15 +1,15 @@
 <section class="cart-section" id="cart">
   <div class="card">
-    <h2>Your Cart ({{ cart.totalQuantity() }})</h2>
+    <h2>Your Cart ({{ totalQuantity() }})</h2>
 
-    @if (cart.items().length === 0) {
+    @if (items().length === 0) {
       <div class="empty">
         <span class="emoji" aria-hidden="true">🧺</span>
         <p>Your added items will appear here</p>
       </div>
     } @else {
       <ul class="items">
-        @for (item of cart.items(); track item.dessert.id) {
+        @for (item of items(); track item.dessert.id) {
           <li>
             <span class="emoji" aria-hidden="true">{{ item.dessert.emoji }}</span>
             <div class="details">
@@ -23,7 +23,7 @@
             <button
               type="button"
               class="remove"
-              (click)="remove(item.dessert.id)"
+              (click)="onRemove(item.dessert.id)"
               [attr.aria-label]="'Remove ' + item.dessert.name + ' from cart'"
             >
               ×
@@ -34,12 +34,12 @@
 
       <div class="subtotal">
         <span>Order Total</span>
-        <span class="amount">{{ cart.subtotal() | currency }}</span>
+        <span class="amount">{{ subtotal() | currency }}</span>
       </div>
 
       <p class="note">🌱 This is a carbon-neutral order — freshly baked and delivered with care.</p>
 
-      <button type="button" class="confirm-btn" (click)="confirmOrder()">Confirm Order</button>
+      <button type="button" class="confirm-btn" (click)="onConfirm()">Confirm Order</button>
     }
   </div>
 </section>

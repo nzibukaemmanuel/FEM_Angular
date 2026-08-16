@@ -1,5 +1,4 @@
-import { Component, inject } from '@angular/core';
-import { CartService } from '../../services/cart.service';
+import { Component, input } from '@angular/core';
 
 @Component({
   selector: 'app-toast',
@@ -7,5 +6,5 @@ import { CartService } from '../../services/cart.service';
   styleUrl: './toast.css',
 })
 export class Toast {
-  protected readonly cart = inject(CartService);
+  readonly message = input<string | null>(null);
 }

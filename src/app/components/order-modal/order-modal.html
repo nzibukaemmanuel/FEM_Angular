@@ -1,4 +1,4 @@
-@if (cart.orderConfirmed()) {
+@if (orderConfirmed()) {
   <div class="backdrop" role="dialog" aria-modal="true" aria-labelledby="order-confirmed-title">
     <div class="modal">
       <span class="check" aria-hidden="true">✓</span>
@@ -6,7 +6,7 @@
       <p class="subtext">We're firing up the oven — thank you for your order!</p>
 
       <ul class="items">
-        @for (item of cart.items(); track item.dessert.id) {
+        @for (item of items(); track item.dessert.id) {
           <li>
             <span class="emoji" aria-hidden="true">{{ item.dessert.emoji }}</span>
             <div class="details">
@@ -20,10 +20,10 @@
 
       <div class="total">
         <span>Order Total</span>
-        <span class="amount">{{ cart.subtotal() | currency }}</span>
+        <span class="amount">{{ subtotal() | currency }}</span>
       </div>
 
-      <button type="button" class="new-order-btn" (click)="startNewOrder()">
+      <button type="button" class="new-order-btn" (click)="onStartNewOrder()">
         Start New Order
       </button>
     </div>

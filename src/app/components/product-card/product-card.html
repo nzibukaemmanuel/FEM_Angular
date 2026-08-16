@@ -20,14 +20,14 @@
 
   <div class="action">
     @if (quantity() === 0) {
-      <button type="button" class="add-btn" (click)="add()">
+      <button type="button" class="add-btn" (click)="onAdd()">
         <span aria-hidden="true">+</span> Add to Cart
       </button>
     } @else {
       <div class="stepper" role="group" [attr.aria-label]="dessert().name + ' quantity'">
-        <button type="button" (click)="decrement()" aria-label="Remove one">−</button>
+        <button type="button" (click)="onDecrement()" aria-label="Remove one">−</button>
         <span>{{ quantity() }}</span>
-        <button type="button" (click)="increment()" aria-label="Add one more">+</button>
+        <button type="button" (click)="onIncrement()" aria-label="Add one more">+</button>
       </div>
     }
   </div>
