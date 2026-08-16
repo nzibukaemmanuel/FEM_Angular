@@ -1,1 +1,20 @@
 /* You can add global styles to this file, and also import other style files */
+
+:root {
+  /* Foreground/background palette, contrast-checked per WCAG 2.1 */
+  --color-background: #f7f7f2; /* page background (light warm gray) */
+  --color-surface: #ffffff; /* card/panel background */
+  --color-foreground: #14213d; /* primary text (navy) — 14.9:1 on background, 16:1 on surface */
+  --color-foreground-muted: #55636f; /* secondary text — 5.7:1 on background */
+  --color-accent: #b8441b; /* orange accent, safe for text and button fills — 5.0:1 on background, 5.4:1 with white text */
+  --color-accent-bright: #d9531e; /* brand orange for large/decorative use only (3:1+, not for small text) */
+  --color-on-accent: #ffffff;
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Helvetica, Arial, sans-serif;
+}
