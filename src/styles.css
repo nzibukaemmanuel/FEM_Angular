@@ -103,3 +103,53 @@ a {
     --size-h3: 1.25rem;
   }
 }
+
+/* Skip links: off-canvas until focused, so tabbing reveals them one at a time like a dropdown */
+.skip-links {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.skip-link {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+  transform: translateY(-150%);
+  opacity: 0;
+  pointer-events: none;
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--radius-md);
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: var(--size-small);
+  text-decoration: none;
+  white-space: nowrap;
+  box-shadow: var(--shadow-hover);
+  transition: transform var(--transition-base), opacity var(--transition-fast),
+    background-color var(--transition-fast);
+}
+
+.skip-link:focus {
+  position: static;
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+  outline: 2px solid var(--color-dark);
+  outline-offset: 3px;
+}
+
+.skip-link:hover {
+  background-color: var(--color-primary-hover);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skip-link {
+    transition: none;
+  }
+}
