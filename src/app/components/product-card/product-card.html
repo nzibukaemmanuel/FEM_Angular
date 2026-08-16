@@ -1,0 +1,34 @@
+<article class="card" [class.in-cart]="quantity() > 0">
+  <div
+    class="visual"
+    [style.background]="'linear-gradient(160deg, ' + dessert().gradient[0] + ', ' + dessert().gradient[1] + ')'"
+  >
+    @if (dessert().badge) {
+      <span class="badge" [class.dark]="dessert().badge === 'Limited Edition'">
+        {{ dessert().badge }}
+      </span>
+    }
+    <span class="emoji" aria-hidden="true">{{ dessert().emoji }}</span>
+  </div>
+
+  <div class="body">
+    <p class="category">{{ dessert().category }}</p>
+    <h3>{{ dessert().name }}</h3>
+    <p class="description">{{ dessert().description }}</p>
+    <p class="price">{{ dessert().price | currency }}</p>
+  </div>
+
+  <div class="action">
+    @if (quantity() === 0) {
+      <button type="button" class="add-btn" (click)="add()">
+        <span aria-hidden="true">+</span> Add to Cart
+      </button>
+    } @else {
+      <div class="stepper" role="group" [attr.aria-label]="dessert().name + ' quantity'">
+        <button type="button" (click)="decrement()" aria-label="Remove one">−</button>
+        <span>{{ quantity() }}</span>
+        <button type="button" (click)="increment()" aria-label="Add one more">+</button>
+      </div>
+    }
+  </div>
+</article>

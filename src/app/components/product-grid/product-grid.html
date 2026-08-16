@@ -1,0 +1,29 @@
+<section class="menu" id="menu">
+  <div class="heading">
+    <h2>Our Menu</h2>
+    <p>Everything is baked in small batches, so flavours may vary with the seasons.</p>
+  </div>
+
+  <div class="filters" role="tablist" aria-label="Filter desserts by category">
+    @for (category of categories; track category) {
+      <button
+        type="button"
+        role="tab"
+        [attr.aria-selected]="activeCategory() === category"
+        class="filter"
+        [class.active]="activeCategory() === category"
+        (click)="selectCategory(category)"
+      >
+        {{ category }}
+      </button>
+    }
+  </div>
+
+  <div class="grid">
+    @for (dessert of desserts(); track dessert.id) {
+      <app-product-card [dessert]="dessert" />
+    } @empty {
+      <p class="empty">No desserts available in this category right now — check back soon!</p>
+    }
+  </div>
+</section>

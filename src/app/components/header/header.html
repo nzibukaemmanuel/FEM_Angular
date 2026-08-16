@@ -1,0 +1,26 @@
+<header class="site-header">
+  <div class="inner">
+    <a class="logo" href="#top">Maison&nbsp;Sucrée</a>
+
+    <nav class="nav" aria-label="Primary">
+      <a href="#menu">Menu</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </nav>
+
+    <a class="cart-button" href="#cart" aria-label="View cart, {{ cart.totalQuantity() }} items">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path
+          d="M3 4h2l2.4 12.4a2 2 0 0 0 2 1.6h7.2a2 2 0 0 0 2-1.6L20.5 8H6"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+        <circle cx="9.5" cy="20.5" r="1.5" />
+        <circle cx="17.5" cy="20.5" r="1.5" />
+      </svg>
+      @if (cart.totalQuantity() > 0) {
+        <span class="badge">{{ cart.totalQuantity() }}</span>
+      }
+    </a>
+  </div>
+</header>

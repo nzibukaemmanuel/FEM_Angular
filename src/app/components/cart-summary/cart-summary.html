@@ -1,0 +1,45 @@
+<section class="cart-section" id="cart">
+  <div class="card">
+    <h2>Your Cart ({{ cart.totalQuantity() }})</h2>
+
+    @if (cart.items().length === 0) {
+      <div class="empty">
+        <span class="emoji" aria-hidden="true">🧺</span>
+        <p>Your added items will appear here</p>
+      </div>
+    } @else {
+      <ul class="items">
+        @for (item of cart.items(); track item.dessert.id) {
+          <li>
+            <span class="emoji" aria-hidden="true">{{ item.dessert.emoji }}</span>
+            <div class="details">
+              <p class="name">{{ item.dessert.name }}</p>
+              <p class="meta">
+                <span class="qty">{{ item.quantity }} ×</span>
+                {{ item.dessert.price | currency }}
+                <span class="line-total">{{ item.quantity * item.dessert.price | currency }}</span>
+              </p>
+            </div>
+            <button
+              type="button"
+              class="remove"
+              (click)="remove(item.dessert.id)"
+              [attr.aria-label]="'Remove ' + item.dessert.name + ' from cart'"
+            >
+              ×
+            </button>
+          </li>
+        }
+      </ul>
+
+      <div class="subtotal">
+        <span>Order Total</span>
+        <span class="amount">{{ cart.subtotal() | currency }}</span>
+      </div>
+
+      <p class="note">🌱 This is a carbon-neutral order — freshly baked and delivered with care.</p>
+
+      <button type="button" class="confirm-btn" (click)="confirmOrder()">Confirm Order</button>
+    }
+  </div>
+</section>

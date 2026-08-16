@@ -1,59 +1,66 @@
-# DessertShop
+# Maison Sucrée — Dessert Shop App
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.1.4.
+A boutique bakery storefront built with Angular as part of the **Angular Fundamentals: Dessert Shop App** lab. Browse desserts by category, add them to a cart, adjust quantities, and confirm an order — all driven by Angular signals, standalone components, and modern control-flow directives.
 
-## Development server
+## Features
 
-To start a local development server, run:
+- **Product catalogue** — dessert cards with name, description, price, and image rendered from a static data set (`src/app/data/desserts.ts`).
+- **Category filtering** — `@for`/`@if` control flow renders the menu, with an empty-state message when a category has no items.
+- **Cart management** — add, increment/decrement, or remove items; the running subtotal and item count update live everywhere they're shown (header badge, cart panel, order confirmation).
+- **Order confirmation modal** — reviews the order and lets the shopper start a new one, clearing the cart.
+- **"Added to cart" toast** — a brief confirmation appears whenever an item is added.
+- **In-cart highlighting** — product cards outline themselves while they have a quantity in the cart.
+- **Currency formatting** — prices are rendered with Angular's `CurrencyPipe`.
+- **Responsive layout** — the storefront adapts down to mobile widths.
 
-```bash
-ng serve
-```
+## Architecture
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+| Component | Responsibility |
+|---|---|
+| `Header` | Site nav and cart-quantity badge |
+| `Hero` | Landing banner |
+| `ProductGrid` | Category filters + dessert list (`@for` / `@empty`) |
+| `ProductCard` | Single dessert: details, add/stepper controls |
+| `CartSummary` | Live cart contents, subtotal, remove/confirm actions |
+| `OrderModal` | Post-confirmation summary + "start new order" |
+| `Toast` | Transient "item added" notification |
+| `Footer` | Site footer |
 
-## Code scaffolding
+All cart state lives in a single injectable `CartService` (`src/app/services/cart.service.ts`), built on Angular signals. Components never talk to each other directly — they read and mutate the shared service, which is the pattern this lab's "component communication" requirement calls for.
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+## Getting started
 
 ```bash
-ng test
+npm install
+npm start
 ```
 
-## Running end-to-end tests
+Then open `http://localhost:4200/`. The app reloads automatically on source changes.
 
-For end-to-end (e2e) testing, run:
+## Testing
 
 ```bash
-ng e2e
+npm test
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+Runs the unit test suite with Vitest.
 
-## Additional Resources
+## Building for production
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+```bash
+npm run build
+```
+
+Outputs a static production build to `dist/Dessert_Shop/browser`.
+
+## Deployment
+
+This is a plain client-rendered Angular app (no server-side rendering), so it deploys as a static site.
+
+**Netlify** — `netlify.toml` is already configured (build command `npm run build`, publish directory `dist/Dessert_Shop/browser`, with an SPA fallback redirect). Connect the repo in Netlify and it picks this up automatically.
+
+Live app: _add your deployed URL here once published_
+
+## Tech stack
+
+Angular 22 (standalone components, signals, `@for`/`@if` control flow), TypeScript, Vitest.
