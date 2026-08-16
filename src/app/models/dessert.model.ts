@@ -6,8 +6,9 @@ export interface Dessert {
   category: Exclude<DessertCategory, 'All'>;
   description: string;
   price: number;
-  emoji: string;
   gradient: [string, string];
+  image?: string;
+  imagePosition?: string;
 }
 
 export interface CartItem {

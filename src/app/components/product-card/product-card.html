@@ -3,7 +3,15 @@
     class="visual"
     [style.background]="'linear-gradient(160deg, ' + dessert().gradient[0] + ', ' + dessert().gradient[1] + ')'"
   >
-    <span class="emoji" aria-hidden="true">{{ dessert().emoji }}</span>
+    @if (dessert().image) {
+      <img
+        class="photo"
+        [src]="dessert().image"
+        [alt]="dessert().name"
+        [style.object-position]="dessert().imagePosition ?? 'center'"
+        loading="lazy"
+      />
+    }
   </div>
 
   <div class="body">

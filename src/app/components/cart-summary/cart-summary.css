@@ -45,8 +45,12 @@
   gap: 12px;
 }
 
-.items .emoji {
-  font-size: 1.75rem;
+.items .thumb {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-md);
+  object-fit: cover;
+  flex-shrink: 0;
 }
 
 .details {

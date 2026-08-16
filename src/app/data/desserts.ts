@@ -7,8 +7,8 @@ export const DESSERTS: Dessert[] = [
     category: 'Cakes',
     description: 'Layered espresso sponge with salted caramel buttercream and a coffee glaze.',
     price: 8.5,
-    emoji: '🍰',
     gradient: ['#FFF8F0', '#F3D9BE'],
+    image: '/desserts/caramel-macchiato-cake.jpg',
   },
   {
     id: 'chocolate-souffle-cake',
@@ -16,8 +16,8 @@ export const DESSERTS: Dessert[] = [
     category: 'Cakes',
     description: 'Dark chocolate sponge, whipped ganache, and a dusting of cocoa.',
     price: 9.0,
-    emoji: '🎂',
     gradient: ['#FDF1EC', '#E8C7B0'],
+    image: '/desserts/chocolate-souffle-cake.jpg',
   },
   {
     id: 'raspberry-rose-tart',
@@ -25,8 +25,8 @@ export const DESSERTS: Dessert[] = [
     category: 'Tarts',
     description: 'Buttery shortcrust with vanilla custard and fresh raspberries.',
     price: 6.75,
-    emoji: '🥧',
     gradient: ['#FFF0F0', '#FBDCE0'],
+    image: '/desserts/raspberry-rose-tart.jpg',
   },
   {
     id: 'classic-lemon-tart',
@@ -34,8 +34,8 @@ export const DESSERTS: Dessert[] = [
     category: 'Tarts',
     description: 'Silky lemon curd in a crisp pastry shell, finished with torched meringue.',
     price: 6.25,
-    emoji: '🍋',
     gradient: ['#FFFBEA', '#F6E6B8'],
+    image: '/desserts/classic-lemon-tart.jpg',
   },
   {
     id: 'butter-croissant',
@@ -43,8 +43,9 @@ export const DESSERTS: Dessert[] = [
     category: 'Pastries',
     description: 'Flaky, all-butter layers baked until golden every morning.',
     price: 4.25,
-    emoji: '🥐',
     gradient: ['#FFF8F0', '#EEDAB8'],
+    image: '/desserts/butter-croissant.jpg',
+    imagePosition: '15% center',
   },
   {
     id: 'almond-danish',
@@ -52,8 +53,8 @@ export const DESSERTS: Dessert[] = [
     category: 'Pastries',
     description: 'Flaky pastry filled with almond cream and toasted flaked almonds.',
     price: 4.75,
-    emoji: '🧁',
     gradient: ['#FBF0E6', '#E9CDA4'],
+    image: '/desserts/almond-danish.jpg',
   },
   {
     id: 'chocolate-chip-cookie',
@@ -61,8 +62,8 @@ export const DESSERTS: Dessert[] = [
     category: 'Cookies',
     description: 'A crisp edge, a chewy centre, and generous pools of dark chocolate.',
     price: 3.25,
-    emoji: '🍪',
     gradient: ['#FDF3E7', '#E7CBAA'],
+    image: '/desserts/chocolate-chip-cookie.jpg',
   },
   {
     id: 'pistachio-shortbread',
@@ -70,8 +71,8 @@ export const DESSERTS: Dessert[] = [
     category: 'Cookies',
     description: 'Buttery shortbread studded with roasted pistachio and a citrus glaze.',
     price: 3.75,
-    emoji: '🍘',
     gradient: ['#FFF0F0', '#F6DCC9'],
+    image: '/desserts/pistachio-shortbread.jpg',
   },
   {
     id: 'french-macarons',
@@ -79,7 +80,7 @@ export const DESSERTS: Dessert[] = [
     category: 'Cookies',
     description: 'Delicate almond shells with rotating seasonal fillings.',
     price: 7.5,
-    emoji: '🍬',
     gradient: ['#FFF0F0', '#F8D9E6'],
+    image: '/desserts/french-macarons.jpg',
   },
 ];

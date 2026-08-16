@@ -11,7 +11,7 @@
       <ul class="items">
         @for (item of items(); track item.dessert.id) {
           <li>
-            <span class="emoji" aria-hidden="true">{{ item.dessert.emoji }}</span>
+            <img class="thumb" [src]="item.dessert.image" [alt]="item.dessert.name" />
             <div class="details">
               <p class="name">{{ item.dessert.name }}</p>
               <p class="meta">
