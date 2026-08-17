@@ -116,11 +116,21 @@
   color: var(--color-white);
   font-size: 1.1rem;
   line-height: 1;
-  transition: background var(--transition-fast);
+  transition: background var(--transition-fast), transform var(--transition-fast);
 }
 
 .stepper button:hover {
   background: color-mix(in srgb, var(--color-white) 20%, transparent);
+}
+
+.stepper button:focus-visible {
+  outline: 2px solid var(--color-white);
+  outline-offset: 2px;
+}
+
+.stepper button:active {
+  background: color-mix(in srgb, var(--color-white) 35%, transparent);
+  transform: scale(0.88);
 }
 
 .stepper span {
