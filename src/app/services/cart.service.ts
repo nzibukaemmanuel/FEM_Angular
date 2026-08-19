@@ -1,7 +1,7 @@
 import { Injectable, computed, signal } from '@angular/core';
 import { CartItem, Dessert } from '../models/dessert.model';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({ providedIn: 'root' })//create exactly one instance of this service for the whole app and inject it into any component that needs it.
 export class CartService {
   private readonly _items = signal<CartItem[]>([]);
   private readonly _orderConfirmed = signal(false);
