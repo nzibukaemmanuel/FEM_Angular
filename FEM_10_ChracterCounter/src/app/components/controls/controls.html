@@ -1,0 +1,49 @@
+<div class="controls-row">
+  <div class="checkbox-group" role="group" aria-label="Analysis options">
+    <label class="checkbox-label" for="exclude-spaces" (keydown)="onLabelKeydown($event, excludeSpacesInput)">
+      <input
+        #excludeSpacesInput
+        type="checkbox"
+        id="exclude-spaces"
+        [checked]="excludeSpaces()"
+        (change)="onExcludeSpacesChange($event)"
+      >
+      <span class="custom-checkbox" aria-hidden="true"></span>
+      Exclude Spaces
+    </label>
+    <label
+      class="checkbox-label"
+      for="enable-char-limit"
+      (keydown)="onLabelKeydown($event, enableLimitInput)"
+    >
+      <input
+        #enableLimitInput
+        type="checkbox"
+        id="enable-char-limit"
+        aria-controls="char-limit-input"
+        [attr.aria-expanded]="limitEnabled()"
+        [checked]="limitEnabled()"
+        (change)="onLimitEnabledChange($event)"
+      >
+      <span class="custom-checkbox" aria-hidden="true"></span>
+      Set Character Limit
+    </label>
+    <label class="sr-only" for="char-limit-input">Character limit</label>
+    @if (limitEnabled()) {
+      <input
+        type="number"
+        id="char-limit-input"
+        class="char-limit-input"
+        min="1"
+        placeholder="e.g. 200"
+        aria-describedby="limit-hint"
+        [value]="limitValue()"
+        (input)="onLimitValueChange($event)"
+      >
+    }
+    <span id="limit-hint" class="sr-only">Only appears when the character limit option is selected.</span>
+  </div>
+  <p class="reading-time" aria-live="polite">
+    Approx. reading time: <span id="reading-time">{{ readingTime() }}</span>
+  </p>
+</div>

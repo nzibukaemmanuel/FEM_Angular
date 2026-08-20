@@ -1,0 +1,139 @@
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.card {
+  position: relative;
+  border-radius: 14px;
+  padding: 16px;
+  height: 120px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  transition: box-shadow 0.2s ease;
+}
+
+.card-content {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.card-number {
+  font-size: 48px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -2px;
+}
+
+.card-label {
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: -0.3px;
+}
+
+.card-purple {
+  background-color: var(--purple);
+  color: #12131a;
+}
+
+.card-orange {
+  background-color: var(--orange);
+  color: #12131a;
+}
+
+.card-coral {
+  background-color: var(--coral);
+  color: #12131a;
+}
+
+.card-purple.over-limit {
+  box-shadow: 0 0 0 4px #ff4d4f inset;
+}
+
+.pattern1 {
+  position: absolute;
+  top: 0%;
+  left: 85%;
+  transform: translateX(-50%);
+  height: 100%;
+  aspect-ratio: 1;
+  overflow: hidden;
+  background: var(--text-primary);
+  opacity: var(--bg-opacity);
+}
+
+.circle-grid {
+  position: absolute;
+  width: 125%;
+  height: 125%;
+  left: -12.5%;
+  top: -12.5%;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  gap: 4px;
+}
+
+.circle-grid span {
+  background: var(--purple);
+  border-radius: 50%;
+}
+
+.pattern2 {
+  position: absolute;
+  top: 0;
+  left: 85%;
+  transform: translateX(-50%);
+  height: 100%;
+  aspect-ratio: 1;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+}
+
+.pattern2 span {
+  background: transparent;
+}
+
+.pattern2 span:nth-child(1),
+.pattern2 span:nth-child(3),
+.pattern2 span:nth-child(5),
+.pattern2 span:nth-child(7),
+.pattern2 span:nth-child(9) {
+  background: var(--text-primary);
+  opacity: var(--bg-opacity);
+}
+
+.pattern3 {
+  position: absolute;
+  top: -12.5%;
+  left: 85%;
+  transform: translateX(-40%);
+  height: 125%;
+  aspect-ratio: 1;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  overflow: hidden;
+  background: var(--text-primary);
+  opacity: var(--bg-opacity);
+}
+
+.pattern3 .cell {
+  background: var(--coral);
+  border-radius: 15%;
+}
+
+@media (max-width: 768px) {
+  .metrics-grid {
+    grid-template-columns: 1fr;
+  }
+}

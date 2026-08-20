@@ -1,0 +1,30 @@
+<header class="header">
+  <div class="logo-area">
+    <button class="brand-logo-button" type="button" aria-label="Character Counter home" title="Character Counter">
+      <div class="brand-logo" aria-hidden="true">
+        <div class="brand-logo-left"></div>
+        <div class="brand-logo-right"></div>
+      </div>
+    </button>
+    <span class="brand-name">Character Counter</span>
+  </div>
+  <button
+    class="theme-toggle"
+    type="button"
+    [attr.aria-pressed]="isLightTheme()"
+    [attr.aria-label]="isLightTheme() ? 'Switch to dark theme' : 'Switch to light theme'"
+    (click)="onThemeToggle()"
+  >
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="4"></circle>
+      <path d="M12 2v2"></path>
+      <path d="M12 20v2"></path>
+      <path d="M4.93 4.93l1.41 1.41"></path>
+      <path d="M17.66 17.66l1.41 1.41"></path>
+      <path d="M2 12h2"></path>
+      <path d="M20 12h2"></path>
+      <path d="M6.34 17.66l-1.41 1.41"></path>
+      <path d="M19.07 4.93l-1.41 1.41"></path>
+    </svg>
+  </button>
+</header>

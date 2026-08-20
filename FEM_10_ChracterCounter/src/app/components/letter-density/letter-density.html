@@ -1,0 +1,25 @@
+<section class="density-section" aria-labelledby="density-heading">
+  <h2 id="density-heading">Letter Density</h2>
+  <div class="density-list">
+    @for (row of rows(); track row.letter) {
+      <div class="density-row">
+        <span class="letter">{{ row.letter }}</span>
+        <div class="progress-container">
+          <div class="progress-bar" [style.width.%]="row.barPercent"></div>
+        </div>
+        <span class="stats">{{ row.count }} ({{ row.percent.toFixed(2) }}%)</span>
+      </div>
+    }
+  </div>
+  <div class="density-footer">
+    <button
+      class="toggle-density"
+      type="button"
+      [disabled]="!canExpand()"
+      [attr.aria-expanded]="expanded()"
+      (click)="onToggle()"
+    >
+      {{ expanded() ? 'Show less' : 'Show more' }}
+    </button>
+  </div>
+</section>

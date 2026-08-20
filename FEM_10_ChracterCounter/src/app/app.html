@@ -1,0 +1,38 @@
+<div class="container">
+  <app-header [isLightTheme]="isLightTheme()" (themeToggle)="onThemeToggle()" />
+
+  <main id="main-content">
+    <h1 class="title">Analyze your text<br>in real-time.</h1>
+
+    <app-text-editor
+      [text]="text()"
+      [overLimit]="overLimit()"
+      [limitValue]="limitValue()"
+      (textChange)="onTextChange($event)"
+    />
+
+    <app-controls
+      [excludeSpaces]="excludeSpaces()"
+      [limitEnabled]="limitEnabled()"
+      [limitValue]="limitValue()"
+      [readingTime]="readingTime()"
+      (excludeSpacesChange)="onExcludeSpacesChange($event)"
+      (limitEnabledChange)="onLimitEnabledChange($event)"
+      (limitValueChange)="onLimitValueChange($event)"
+    />
+
+    <app-stats-cards
+      [totalCharacters]="totalCharacters()"
+      [wordCount]="wordCount()"
+      [lineCount]="lineCount()"
+      [overLimit]="overLimit()"
+    />
+
+    <app-letter-density
+      [rows]="visibleDensity()"
+      [expanded]="densityExpanded()"
+      [canExpand]="canExpandDensity()"
+      (toggle)="onToggleDensity()" 
+    />
+  </main>
+</div>
