@@ -1,0 +1,9 @@
+<div class="textarea-container">
+  <label class="sr-only" for="text-input">Text to analyze</label>
+  <textarea
+    id="text-input"
+    placeholder="Start typing or paste your text here..."
+    [value]="text()"
+    (input)="onInput($event)"
+  ></textarea>
+</div>
