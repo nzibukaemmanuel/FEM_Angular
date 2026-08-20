@@ -4,7 +4,12 @@
   <main id="main-content">
     <h1 class="title">Analyze your text<br>in real-time.</h1>
 
-    <app-text-editor [text]="text()" (textChange)="onTextChange($event)" />
+    <app-text-editor
+      [text]="text()"
+      [overLimit]="overLimit()"
+      [limitValue]="limitValue()"
+      (textChange)="onTextChange($event)"
+    />
 
     <app-controls
       [excludeSpaces]="excludeSpaces()"
@@ -27,7 +32,7 @@
       [rows]="visibleDensity()"
       [expanded]="densityExpanded()"
       [canExpand]="canExpandDensity()"
-      (toggle)="onToggleDensity()"
+      (toggle)="onToggleDensity()" 
     />
   </main>
 </div>

@@ -1,9 +1,17 @@
-<div class="textarea-container">
+<div class="textarea-container" [class.over-limit]="overLimit" [class.shake]="isShaking()">
   <label class="sr-only" for="text-input">Text to analyze</label>
   <textarea
+    #textInput
     id="text-input"
     placeholder="Start typing or paste your text here..."
+    [attr.aria-invalid]="overLimit"
+    aria-describedby="limit-warning"
     [value]="text()"
     (input)="onInput($event)"
   ></textarea>
 </div>
+@if (overLimit) {
+  <p id="limit-warning" class="warning-message" role="alert">
+    Character limit of {{ limitValue }} exceeded. Please shorten your text.
+  </p>
+}

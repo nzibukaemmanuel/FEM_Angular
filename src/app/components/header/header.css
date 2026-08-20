@@ -93,3 +93,8 @@
 body.light-theme .theme-toggle {
   color: var(--text-main);
 }
+
+.theme-toggle:hover {
+  border-color: var(--purple);
+  color: var(--purple);
+}

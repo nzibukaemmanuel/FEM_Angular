@@ -5,6 +5,29 @@
   border-radius: 12px;
   padding: 16px;
   margin-bottom: 12px;
+  transition: border-color 0.2s ease;
+}
+
+.textarea-container.over-limit {
+  border-color: #ff4d4f;
+}
+
+.textarea-container.shake {
+  animation: shake 0.4s ease;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-6px); }
+  40%, 80% { transform: translateX(6px); }
+}
+
+.warning-message {
+  color: #ff4d4f;
+  font-size: 13px;
+  font-weight: 600;
+  margin-top: -4px;
+  margin-bottom: 12px;
 }
 
 textarea {
