@@ -1,0 +1,10 @@
+import { Component, input } from '@angular/core';
+
+@Component({
+  selector: 'app-toast',
+  templateUrl: './toast.html',
+  styleUrl: './toast.css',
+})
+export class Toast {
+  readonly message = input<string | null>(null);
+}
