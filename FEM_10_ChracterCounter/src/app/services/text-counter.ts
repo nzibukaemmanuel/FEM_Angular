@@ -1,4 +1,4 @@
-import { Service, computed, signal } from '@angular/core';
+import { Injectable, computed, signal } from '@angular/core';
 import { LetterStat } from '../models/letter-stat.model';
 
 const AVG_READING_WPM = 200;
@@ -10,7 +10,7 @@ const DEFAULT_TEXT =
   'functionality seamlessly.';
 const COLLAPSED_ROW_COUNT = 6;
 
-@Service()
+@Injectable({ providedIn: 'root' })
 export class TextCounter {
   private readonly _text = signal(DEFAULT_TEXT);
   private readonly _excludeSpaces = signal(false);
@@ -94,8 +94,12 @@ export class TextCounter {
   });
 
   setText(text: string): void {
+    this._text.set(this.enforceLimit(text));
+  }
+
+  enforceLimit(text: string): string {
     const limit = this.activeLimit();
-    this._text.set(limit !== null ? this.truncateToLimit(text, limit) : text);
+    return limit !== null ? this.truncateToLimit(text, limit) : text;
   }
 
   setExcludeSpaces(exclude: boolean): void {

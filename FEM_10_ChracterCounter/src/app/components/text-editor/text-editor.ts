@@ -7,10 +7,12 @@ import {
   OnInit,
   SimpleChanges,
   ViewChild,
+  inject,
   input,
   output,
   signal,
 } from '@angular/core';
+import { TextCounter } from '../../services/text-counter';
 
 const SHAKE_DURATION_MS = 400;
 
@@ -27,6 +29,8 @@ export class TextEditor implements OnInit, OnChanges, OnDestroy {
   @Input() limitValue: number | null = null;
 
   @ViewChild('textInput', { static: true }) private readonly textInputRef!: ElementRef<HTMLTextAreaElement>;
+
+  private readonly counter = inject(TextCounter);
 
   protected readonly isShaking = signal(false);
   private shakeTimeoutId: ReturnType<typeof setTimeout> | null = null;
@@ -53,7 +57,15 @@ export class TextEditor implements OnInit, OnChanges, OnDestroy {
 
   protected onInput(event: Event): void {
     const target = event.target as HTMLTextAreaElement;
-    this.textChange.emit(target.value);
+    const enforced = this.counter.enforceLimit(target.value);
+
+    if (enforced !== target.value) {
+      const cursor = Math.min(target.selectionStart ?? enforced.length, enforced.length);
+      target.value = enforced;
+      target.setSelectionRange(cursor, cursor);
+    }
+
+    this.textChange.emit(enforced);
   }
 
   private triggerShake(): void {
