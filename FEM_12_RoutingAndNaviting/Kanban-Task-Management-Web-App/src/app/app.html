@@ -1,6 +1,11 @@
-<nav>
-  <a routerLink="/boards">Boards</a>
-  <a routerLink="/settings">Settings</a>
-</nav>
+<header class="app-header">
+  <span class="app-title">Kanban</span>
+  <nav class="app-nav">
+    <a routerLink="/boards">Boards</a>
+    <a routerLink="/settings">Settings</a>
+  </nav>
+</header>
 
-<router-outlet />
+<main class="app-main">
+  <router-outlet />
+</main>
