@@ -1,0 +1,8 @@
+<h1>Boards</h1>
+<p>Select a board to view its details.</p>
+
+<ul>
+  @for (boardId of boardIds; track boardId) {
+    <li><a [routerLink]="['/boards', boardId]">Board {{ boardId }}</a></li>
+  }
+</ul>
