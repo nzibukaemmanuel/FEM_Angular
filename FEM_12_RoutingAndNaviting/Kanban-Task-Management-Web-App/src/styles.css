@@ -1,6 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
 
 :root {
+  /* This app only ships a light theme — without this, browsers render native
+     controls (the <select> popup, scrollbars) in the OS's dark scheme when the
+     user has one set, clashing with the cream/orange palette below. */
+  color-scheme: light;
+
   /* Palette — carried over from the FEM_09 Dessert Shop app's design system */
   --color-bg: #f9f9f9;
   --color-card: #fff8f0;
@@ -165,7 +170,7 @@ button:disabled,
 :focus-visible {
   outline: 2px solid var(--color-primary);
   outline-offset: 2px;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
 }
 
 /* Form controls */
@@ -179,24 +184,21 @@ label {
   max-width: 320px;
 }
 
-select,
 input[type='text'] {
   font: inherit;
   font-size: var(--size-small);
   color: var(--color-text);
   background: var(--color-white);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
   padding: var(--space-3) var(--space-4);
   transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
 }
 
-select:hover,
 input[type='text']:hover {
   border-color: var(--color-muted-decorative);
 }
 
-select:disabled,
 input[type='text']:disabled {
   opacity: 0.5;
   cursor: not-allowed;

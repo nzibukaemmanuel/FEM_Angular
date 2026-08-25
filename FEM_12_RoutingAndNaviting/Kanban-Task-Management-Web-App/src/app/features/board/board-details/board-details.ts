@@ -1,9 +1,10 @@
 import { Component, computed, inject, input } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink, RouterOutlet } from '@angular/router';
+import { SelectField, SelectFieldOption } from '../../../shared/select-field/select-field';
 import { BOARD_TASKS } from '../board-data';
 
 @Component({
-  imports: [RouterLink, RouterOutlet],
+  imports: [RouterLink, RouterOutlet, SelectField],
   selector: 'app-board-details',
   styleUrl: './board-details.css',
   templateUrl: './board-details.html',
@@ -15,6 +16,18 @@ export class BoardDetails {
   readonly boardId = input('');
   readonly status = input('all');
   readonly sort = input<'title' | 'status'>('title');
+
+  readonly statusOptions: SelectFieldOption[] = [
+    { value: 'all', label: 'All' },
+    { value: 'todo', label: 'To do' },
+    { value: 'doing', label: 'In progress' },
+    { value: 'done', label: 'Done' },
+  ];
+
+  readonly sortOptions: SelectFieldOption[] = [
+    { value: 'title', label: 'Title' },
+    { value: 'status', label: 'Status' },
+  ];
 
   // Router input binding sets these to `undefined` (not the declared default) once their
   // query param is no longer present in the URL — e.g. after a relative nav to a child route

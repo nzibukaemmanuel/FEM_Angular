@@ -6,20 +6,22 @@
 <div class="controls">
   <label>
     Status:
-    <select #statusSelect [value]="effectiveStatus()" (change)="updateQueryParams({ status: statusSelect.value })">
-      <option value="all">All</option>
-      <option value="todo">To do</option>
-      <option value="doing">In progress</option>
-      <option value="done">Done</option>
-    </select>
+    <app-select-field
+      [options]="statusOptions"
+      [value]="effectiveStatus()"
+      ariaLabel="Filter by status"
+      (valueChange)="updateQueryParams({ status: $event })"
+    />
   </label>
 
   <label>
     Sort by:
-    <select #sortSelect [value]="effectiveSort()" (change)="updateQueryParams({ sort: sortSelect.value })">
-      <option value="title">Title</option>
-      <option value="status">Status</option>
-    </select>
+    <app-select-field
+      [options]="sortOptions"
+      [value]="effectiveSort()"
+      ariaLabel="Sort by"
+      (valueChange)="updateQueryParams({ sort: $event })"
+    />
   </label>
 </div>
 

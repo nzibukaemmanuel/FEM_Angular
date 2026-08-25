@@ -5,12 +5,12 @@
 
 <label class="quick-jump">
   Quick jump:
-  <select #boardSelect (change)="jumpToBoard(boardSelect.value)">
-    <option value="">Choose a board…</option>
-    @for (boardId of boardIds; track boardId) {
-      <option [value]="boardId">{{ boardId }}</option>
-    }
-  </select>
+  <app-select-field
+    [options]="boardOptions"
+    value=""
+    ariaLabel="Quick jump to a board"
+    (valueChange)="jumpToBoard($event)"
+  />
 </label>
 
 <ul class="board-list">
