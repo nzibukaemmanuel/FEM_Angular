@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Component, inject } from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   imports: [RouterLink],
@@ -8,5 +8,14 @@ import { RouterLink } from '@angular/router';
   templateUrl: './boards.html',
 })
 export class Boards {
+  private readonly router = inject(Router);
+
   readonly boardIds = ['platform-launch', 'marketing-plan', 'roadmap'];
+
+  jumpToBoard(boardId: string): void {
+    if (!boardId) {
+      return;
+    }
+    this.router.navigate(['/boards', boardId]);
+  }
 }

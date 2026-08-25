@@ -1,10 +1,21 @@
 <header class="app-header">
   <span class="app-title">Kanban</span>
   <nav class="app-nav">
-    <a routerLink="/boards">Boards</a>
-    <a routerLink="/settings">Settings</a>
+    <a routerLink="/boards" routerLinkActive="active">Boards</a>
+    <a routerLink="/settings" routerLinkActive="active">Settings</a>
   </nav>
 </header>
+
+@if (isNavigating()) {
+  <div class="nav-progress" role="status" aria-label="Loading page"></div>
+}
+
+@if (navigationError()) {
+  <div class="nav-error" role="alert">
+    <span>{{ navigationError() }}</span>
+    <button type="button" (click)="dismissError()">Dismiss</button>
+  </div>
+}
 
 <main class="app-main">
   <router-outlet />

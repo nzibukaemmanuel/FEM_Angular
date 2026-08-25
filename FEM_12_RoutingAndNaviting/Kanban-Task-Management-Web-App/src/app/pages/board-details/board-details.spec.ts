@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideRouter } from '@angular/router';
+import { provideRouter, Router } from '@angular/router';
 import { BoardDetails } from './board-details';
 
 describe('BoardDetails', () => {
@@ -19,5 +19,14 @@ describe('BoardDetails', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('navigates back to /boards', () => {
+    const router = TestBed.inject(Router);
+    const navigateSpy = vi.spyOn(router, 'navigate');
+
+    component.goBack();
+
+    expect(navigateSpy).toHaveBeenCalledWith(['/boards']);
   });
 });

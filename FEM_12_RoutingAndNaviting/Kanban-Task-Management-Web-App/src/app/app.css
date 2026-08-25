@@ -25,6 +25,45 @@
   text-decoration: underline;
 }
 
+.app-nav a.active {
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+.nav-progress {
+  height: 3px;
+  background: linear-gradient(90deg, #4f46e5, #818cf8);
+  animation: nav-progress-pulse 1s ease-in-out infinite;
+}
+
+@keyframes nav-progress-pulse {
+  0%,
+  100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.nav-error {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem 1.5rem;
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.nav-error button {
+  border: none;
+  background: transparent;
+  color: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
 .app-main {
   padding: 1.5rem;
 }

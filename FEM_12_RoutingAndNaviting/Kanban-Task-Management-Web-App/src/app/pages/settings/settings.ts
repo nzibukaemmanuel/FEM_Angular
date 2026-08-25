@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   imports: [],
@@ -6,4 +7,10 @@ import { Component } from '@angular/core';
   styleUrl: './settings.css',
   templateUrl: './settings.html',
 })
-export class Settings {}
+export class Settings {
+  private readonly router = inject(Router);
+
+  save(): void {
+    this.router.navigate(['/boards']);
+  }
+}

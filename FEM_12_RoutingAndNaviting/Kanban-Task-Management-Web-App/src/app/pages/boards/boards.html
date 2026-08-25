@@ -1,6 +1,16 @@
 <h1>Boards</h1>
 <p>Select a board to view its details.</p>
 
+<label>
+  Quick jump:
+  <select #boardSelect (change)="jumpToBoard(boardSelect.value)">
+    <option value="">Choose a board…</option>
+    @for (boardId of boardIds; track boardId) {
+      <option [value]="boardId">{{ boardId }}</option>
+    }
+  </select>
+</label>
+
 <ul>
   @for (boardId of boardIds; track boardId) {
     <li><a [routerLink]="['/boards', boardId]">Board {{ boardId }}</a></li>
