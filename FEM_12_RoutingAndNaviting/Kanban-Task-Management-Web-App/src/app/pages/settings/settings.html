@@ -1,17 +1,21 @@
-<h1>Settings</h1>
-<p>Application settings will appear here.</p>
+<div class="page-header">
+  <h1>Settings</h1>
+  <p>Application settings will appear here.</p>
+</div>
 
-<label>
-  Display name:
-  <input
-    type="text"
-    [value]="displayName()"
-    (input)="onDisplayNameInput($any($event.target).value)"
-  />
-</label>
+<form class="settings-form" (submit)="$event.preventDefault()">
+  <label>
+    Display name:
+    <input
+      type="text"
+      [value]="displayName()"
+      (input)="onDisplayNameInput($any($event.target).value)"
+    />
+  </label>
 
-@if (hasUnsavedChanges()) {
-  <p class="unsaved-hint">You have unsaved changes.</p>
-}
+  @if (hasUnsavedChanges()) {
+    <p class="unsaved-hint" role="status">You have unsaved changes.</p>
+  }
 
-<button type="button" (click)="save()">Save &amp; return to boards</button>
+  <button type="button" (click)="save()">Save &amp; return to boards</button>
+</form>

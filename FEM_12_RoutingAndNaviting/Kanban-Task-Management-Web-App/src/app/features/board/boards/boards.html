@@ -1,7 +1,9 @@
-<h1>Boards</h1>
-<p>Select a board to view its details.</p>
+<div class="page-header">
+  <h1>Boards</h1>
+  <p>Select a board to view its details.</p>
+</div>
 
-<label>
+<label class="quick-jump">
   Quick jump:
   <select #boardSelect (change)="jumpToBoard(boardSelect.value)">
     <option value="">Choose a board…</option>
@@ -11,8 +13,13 @@
   </select>
 </label>
 
-<ul>
+<ul class="board-list">
   @for (boardId of boardIds; track boardId) {
-    <li><a [routerLink]="['/boards', boardId]">Board {{ boardId }}</a></li>
+    <li>
+      <a class="board-card" [routerLink]="['/boards', boardId]">
+        <span class="board-card__name">{{ boardId }}</span>
+        <span class="board-card__arrow" aria-hidden="true">&rarr;</span>
+      </a>
+    </li>
   }
 </ul>

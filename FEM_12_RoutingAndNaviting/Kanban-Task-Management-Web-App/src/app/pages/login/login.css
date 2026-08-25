@@ -1,0 +1,22 @@
+.auth-card {
+  max-width: 400px;
+  margin: var(--space-8) auto 0;
+  padding: var(--space-8);
+  text-align: center;
+  background: var(--color-card);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-resting);
+}
+
+.auth-card button {
+  width: 100%;
+}
+
+.auth-hint {
+  padding: var(--space-3) var(--space-4);
+  margin-bottom: var(--space-6);
+  background: var(--color-accent-section);
+  color: var(--color-dark);
+  border-radius: var(--radius-sm);
+  font-size: var(--size-small);
+}

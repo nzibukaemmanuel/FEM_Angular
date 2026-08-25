@@ -1,8 +1,10 @@
 @if (task(); as t) {
-  <h2>Task: {{ t.title }}</h2>
-  <p>Status: {{ t.status }}</p>
+  <div class="task-detail-card">
+    <h2>{{ t.title }}</h2>
+    <span class="status-badge" [attr.data-status]="t.status">{{ t.status }}</span>
+  </div>
 } @else {
-  <p>Task not found.</p>
+  <p class="empty-state">Task not found.</p>
 }
 
-<button type="button" (click)="goToBoard()">&larr; Back to board</button>
+<button type="button" class="btn-secondary" (click)="goToBoard()">&larr; Back to board</button>

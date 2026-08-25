@@ -1,3 +1,25 @@
+.page-header {
+  margin-bottom: var(--space-8);
+}
+
+.settings-form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-6);
+  max-width: 400px;
+  padding: var(--space-8);
+  background: var(--color-card);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-resting);
+}
+
 .unsaved-hint {
-  color: #b45309;
+  margin: 0;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-sm);
+  background: #fdecd1;
+  color: #92400e;
+  font-size: var(--size-small);
+  font-weight: 600;
 }

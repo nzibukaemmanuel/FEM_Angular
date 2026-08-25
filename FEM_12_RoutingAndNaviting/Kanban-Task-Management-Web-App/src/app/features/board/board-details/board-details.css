@@ -1,5 +1,50 @@
+.page-header {
+  margin-bottom: var(--space-8);
+}
+
 .controls {
   display: flex;
-  gap: 1.5rem;
-  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  gap: var(--space-8);
+  margin-bottom: var(--space-8);
+}
+
+.task-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  margin-bottom: var(--space-8);
+}
+
+.task-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-6);
+  padding: var(--space-6) var(--space-8);
+  background: var(--color-card);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-resting);
+  transition: box-shadow var(--transition-base);
+}
+
+.task-card:hover {
+  box-shadow: var(--shadow-hover);
+}
+
+.task-card__title {
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+.task-card__title:hover {
+  color: var(--color-primary);
+}
+
+@media (max-width: 480px) {
+  .task-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-3);
+  }
 }

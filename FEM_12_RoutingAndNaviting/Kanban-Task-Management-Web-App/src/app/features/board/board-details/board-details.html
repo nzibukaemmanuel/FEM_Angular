@@ -1,5 +1,7 @@
-<h1>Board: {{ boardId() }}</h1>
-<p>Details for board "{{ boardId() }}" will appear here.</p>
+<div class="page-header">
+  <h1>Board: {{ boardId() }}</h1>
+  <p>Details for board "{{ boardId() }}" will appear here.</p>
+</div>
 
 <div class="controls">
   <label>
@@ -21,14 +23,17 @@
   </label>
 </div>
 
-<ul>
+<ul class="task-list">
   @for (task of tasks(); track task.id) {
-    <li><a [routerLink]="['tasks', task.id]">{{ task.title }}</a> — <em>{{ task.status }}</em></li>
+    <li class="task-card">
+      <a class="task-card__title" [routerLink]="['tasks', task.id]">{{ task.title }}</a>
+      <span class="status-badge" [attr.data-status]="task.status">{{ task.status }}</span>
+    </li>
   } @empty {
-    <li>No tasks match the current filter.</li>
+    <li class="empty-state">No tasks match the current filter.</li>
   }
 </ul>
 
 <router-outlet />
 
-<button type="button" (click)="goBack()">&larr; Back to boards</button>
+<button type="button" class="btn-secondary" (click)="goBack()">&larr; Back to boards</button>

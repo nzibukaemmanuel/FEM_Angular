@@ -1,4 +1,13 @@
-<h1>Log in</h1>
-<p>Settings is a protected page — log in to continue.</p>
+<div class="auth-card">
+  <h1>Log in</h1>
 
-<button type="button" (click)="login()">Log in</button>
+  @if (returnUrl(); as url) {
+    <p class="auth-hint" role="status">
+      <strong>{{ url }}</strong> requires an account — log in to continue there.
+    </p>
+  } @else {
+    <p>Settings is a protected page — log in to continue.</p>
+  }
+
+  <button type="button" (click)="login()">Log in</button>
+</div>

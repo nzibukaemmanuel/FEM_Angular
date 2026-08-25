@@ -2,13 +2,23 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
-  padding: 0.75rem 1.5rem;
-  background: #eef2ff;
-  color: #312e81;
+  gap: var(--space-6);
+  padding: var(--space-4) var(--space-8);
+  background: var(--color-accent-section);
+  color: var(--color-dark);
+}
+
+.tips-panel p {
+  margin: 0;
 }
 
 .tips-panel a {
-  color: inherit;
-  font-weight: 600;
+  font-weight: 700;
+  color: var(--color-primary);
+  text-decoration: underline;
+  flex-shrink: 0;
+}
+
+.tips-panel a:hover {
+  color: var(--color-primary-hover);
 }
