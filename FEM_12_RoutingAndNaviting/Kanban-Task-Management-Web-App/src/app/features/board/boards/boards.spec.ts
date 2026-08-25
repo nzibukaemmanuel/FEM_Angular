@@ -23,7 +23,7 @@ describe('Boards', () => {
 
   it('navigates to the selected board when jumping via the quick-jump select', () => {
     const router = TestBed.inject(Router);
-    const navigateSpy = vi.spyOn(router, 'navigate');
+    const navigateSpy = vi.spyOn(router, 'navigate').mockResolvedValue(true);
 
     component.jumpToBoard('roadmap');
 
@@ -32,7 +32,7 @@ describe('Boards', () => {
 
   it('does not navigate when no board is selected', () => {
     const router = TestBed.inject(Router);
-    const navigateSpy = vi.spyOn(router, 'navigate');
+    const navigateSpy = vi.spyOn(router, 'navigate').mockResolvedValue(true);
 
     component.jumpToBoard('');
 

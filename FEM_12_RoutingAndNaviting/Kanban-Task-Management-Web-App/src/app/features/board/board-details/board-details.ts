@@ -1,0 +1,44 @@
+import { Component, computed, inject, input } from '@angular/core';
+import { ActivatedRoute, Router, RouterLink, RouterOutlet } from '@angular/router';
+import { BOARD_TASKS } from '../board-data';
+
+@Component({
+  imports: [RouterLink, RouterOutlet],
+  selector: 'app-board-details',
+  styleUrl: './board-details.css',
+  templateUrl: './board-details.html',
+})
+export class BoardDetails {
+  private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
+
+  readonly boardId = input('');
+  readonly status = input('all');
+  readonly sort = input<'title' | 'status'>('title');
+
+  // Router input binding sets these to `undefined` (not the declared default) once their
+  // query param is no longer present in the URL — e.g. after a relative nav to a child route
+  // that doesn't carry the params forward. Fall back to the defaults ourselves.
+  readonly effectiveStatus = computed(() => this.status() ?? 'all');
+  readonly effectiveSort = computed(() => this.sort() ?? 'title');
+
+  readonly tasks = computed(() => {
+    const boardTasks = BOARD_TASKS[this.boardId()] ?? [];
+    const status = this.effectiveStatus();
+    const sort = this.effectiveSort();
+    const filtered = status === 'all' ? boardTasks : boardTasks.filter((task) => task.status === status);
+    return [...filtered].sort((a, b) => a[sort].localeCompare(b[sort]));
+  });
+
+  updateQueryParams(partial: Record<string, string>): void {
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: partial,
+      queryParamsHandling: 'merge',
+    });
+  }
+
+  goBack(): void {
+    this.router.navigate(['/boards']);
+  }
+}

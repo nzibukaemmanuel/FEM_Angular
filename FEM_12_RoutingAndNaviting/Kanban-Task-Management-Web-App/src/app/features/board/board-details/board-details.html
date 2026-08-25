@@ -1,0 +1,34 @@
+<h1>Board: {{ boardId() }}</h1>
+<p>Details for board "{{ boardId() }}" will appear here.</p>
+
+<div class="controls">
+  <label>
+    Status:
+    <select #statusSelect [value]="effectiveStatus()" (change)="updateQueryParams({ status: statusSelect.value })">
+      <option value="all">All</option>
+      <option value="todo">To do</option>
+      <option value="doing">In progress</option>
+      <option value="done">Done</option>
+    </select>
+  </label>
+
+  <label>
+    Sort by:
+    <select #sortSelect [value]="effectiveSort()" (change)="updateQueryParams({ sort: sortSelect.value })">
+      <option value="title">Title</option>
+      <option value="status">Status</option>
+    </select>
+  </label>
+</div>
+
+<ul>
+  @for (task of tasks(); track task.id) {
+    <li><a [routerLink]="['tasks', task.id]">{{ task.title }}</a> — <em>{{ task.status }}</em></li>
+  } @empty {
+    <li>No tasks match the current filter.</li>
+  }
+</ul>
+
+<router-outlet />
+
+<button type="button" (click)="goBack()">&larr; Back to boards</button>

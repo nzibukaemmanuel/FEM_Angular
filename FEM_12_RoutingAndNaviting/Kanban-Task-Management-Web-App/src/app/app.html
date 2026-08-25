@@ -3,6 +3,12 @@
   <nav class="app-nav">
     <a routerLink="/boards" routerLinkActive="active">Boards</a>
     <a routerLink="/settings" routerLinkActive="active">Settings</a>
+    <a [routerLink]="[{ outlets: { aux: ['tips'] } }]">Tips</a>
+    @if (auth.isAuthenticated()) {
+      <button type="button" class="link-button" (click)="logout()">Log out</button>
+    } @else {
+      <a routerLink="/login">Log in</a>
+    }
   </nav>
 </header>
 
@@ -16,6 +22,8 @@
     <button type="button" (click)="dismissError()">Dismiss</button>
   </div>
 }
+
+<router-outlet name="aux" />
 
 <main class="app-main">
   <router-outlet />

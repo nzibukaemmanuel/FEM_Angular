@@ -30,6 +30,19 @@
   text-decoration: underline;
 }
 
+.app-nav .link-button {
+  border: none;
+  background: transparent;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+.app-nav .link-button:hover {
+  text-decoration: underline;
+}
+
 .nav-progress {
   height: 3px;
   background: linear-gradient(90deg, #4f46e5, #818cf8);

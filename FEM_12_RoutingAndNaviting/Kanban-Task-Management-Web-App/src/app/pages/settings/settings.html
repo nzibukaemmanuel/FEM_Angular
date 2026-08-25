@@ -1,4 +1,17 @@
 <h1>Settings</h1>
 <p>Application settings will appear here.</p>
 
+<label>
+  Display name:
+  <input
+    type="text"
+    [value]="displayName()"
+    (input)="onDisplayNameInput($any($event.target).value)"
+  />
+</label>
+
+@if (hasUnsavedChanges()) {
+  <p class="unsaved-hint">You have unsaved changes.</p>
+}
+
 <button type="button" (click)="save()">Save &amp; return to boards</button>

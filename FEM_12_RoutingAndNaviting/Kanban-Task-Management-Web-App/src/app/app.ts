@@ -10,6 +10,7 @@ import {
   RouterLinkActive,
   RouterOutlet,
 } from '@angular/router';
+import { AuthService } from './core/auth.service';
 
 @Component({
   imports: [RouterLink, RouterLinkActive, RouterOutlet],
@@ -19,6 +20,7 @@ import {
 })
 export class App {
   private readonly router = inject(Router);
+  protected readonly auth = inject(AuthService);
 
   protected readonly isNavigating = signal(false);
   protected readonly navigationError = signal<string | null>(null);
@@ -44,5 +46,10 @@ export class App {
 
   protected dismissError(): void {
     this.navigationError.set(null);
+  }
+
+  protected logout(): void {
+    this.auth.logout();
+    this.router.navigate(['/boards']);
   }
 }

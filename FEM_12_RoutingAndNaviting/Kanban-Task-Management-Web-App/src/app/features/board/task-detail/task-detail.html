@@ -1,0 +1,8 @@
+@if (task(); as t) {
+  <h2>Task: {{ t.title }}</h2>
+  <p>Status: {{ t.status }}</p>
+} @else {
+  <p>Task not found.</p>
+}
+
+<button type="button" (click)="goToBoard()">&larr; Back to board</button>

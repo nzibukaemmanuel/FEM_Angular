@@ -1,0 +1,14 @@
+.tips-panel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem 1.5rem;
+  background: #eef2ff;
+  color: #312e81;
+}
+
+.tips-panel a {
+  color: inherit;
+  font-weight: 600;
+}
