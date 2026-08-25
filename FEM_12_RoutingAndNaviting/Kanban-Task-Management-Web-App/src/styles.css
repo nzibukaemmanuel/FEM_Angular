@@ -184,7 +184,8 @@ label {
   max-width: 320px;
 }
 
-input[type='text'] {
+input[type='text'],
+input[type='password'] {
   font: inherit;
   font-size: var(--size-small);
   color: var(--color-text);
@@ -195,11 +196,13 @@ input[type='text'] {
   transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
 }
 
-input[type='text']:hover {
+input[type='text']:hover,
+input[type='password']:hover {
   border-color: var(--color-muted-decorative);
 }
 
-input[type='text']:disabled {
+input[type='text']:disabled,
+input[type='password']:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }

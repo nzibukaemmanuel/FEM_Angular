@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { map } from 'rxjs';
@@ -22,8 +22,18 @@ export class Login {
     { initialValue: this.route.snapshot.queryParamMap.get('returnUrl') },
   );
 
-  login(): void {
-    this.auth.login();
+  readonly username = signal('');
+  readonly password = signal('');
+  readonly error = signal<string | null>(null);
+  readonly showPassword = signal(false);
+
+  submit(): void {
+    const success = this.auth.login(this.username(), this.password());
+    if (!success) {
+      this.error.set('Incorrect username or password.');
+      return;
+    }
+    this.error.set(null);
     this.router.navigateByUrl(this.returnUrl() ?? '/settings');
   }
 }

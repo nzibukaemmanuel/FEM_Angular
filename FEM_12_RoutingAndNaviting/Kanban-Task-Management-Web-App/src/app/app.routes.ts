@@ -19,6 +19,8 @@ export const routes: Routes = [
     canActivate: [authGuard],
     canDeactivate: [unsavedChangesGuard],
   },
-  { path: 'tips', component: TipsPanel, outlet: 'aux' },
+  { path: 'tips', component: TipsPanel, outlet: 'aux', canActivate: [authGuard] },
+  // Deliberately left open: an unauthenticated visitor hitting a broken/mistyped link should
+  // see a real "not found," not get bounced to login as if the page were merely restricted.
   { path: '**', component: NotFound },
 ];
