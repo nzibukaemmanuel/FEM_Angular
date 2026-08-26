@@ -11,7 +11,7 @@ import { ComponentWithUnsavedChanges } from '../../core/unsaved-changes.guard';
 export class Settings implements ComponentWithUnsavedChanges {
   private readonly router = inject(Router);
 
-  readonly displayName = signal('Ada');
+  readonly displayName = signal('NZIBUKA');
   private readonly dirty = signal(false);
 
   onDisplayNameInput(value: string): void {

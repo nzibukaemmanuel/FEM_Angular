@@ -14,14 +14,14 @@ describe('AuthService', () => {
   });
 
   it('authenticates and returns true for the correct demo credentials', () => {
-    const result = service.login('admin', 'admin123');
+    const result = service.login('MANANZ', 'NZIBUKA123');
 
     expect(result).toBe(true);
     expect(service.isAuthenticated()).toBe(true);
   });
 
   it('rejects incorrect credentials and stays unauthenticated', () => {
-    const result = service.login('admin', 'wrong-password');
+    const result = service.login('MANANZ', 'wrong-password');
 
     expect(result).toBe(false);
     expect(service.isAuthenticated()).toBe(false);

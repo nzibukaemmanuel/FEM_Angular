@@ -2,8 +2,8 @@ import { Injectable, signal } from '@angular/core';
 
 // No backend exists for this lab, so "restricted access" is enforced against a fixed demo
 // credential instead of a real user store — wrong credentials genuinely fail to authenticate.
-const DEMO_USERNAME = 'admin';
-const DEMO_PASSWORD = 'admin123';
+const DEMO_USERNAME = 'MANANZ';
+const DEMO_PASSWORD = 'NZIBUKA123';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {

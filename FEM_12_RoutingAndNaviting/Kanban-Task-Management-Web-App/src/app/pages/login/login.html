@@ -1,13 +1,6 @@
 <div class="auth-card">
   <h1>Log in</h1>
 
-  @if (returnUrl(); as url) {
-    <p class="auth-hint" role="status">
-      <strong>{{ url }}</strong> requires an account — log in to continue there.
-    </p>
-  } @else {
-    <p>Settings is a protected page — log in to continue.</p>
-  }
 
   <form class="login-form" (submit)="$event.preventDefault(); submit()">
     <label>
