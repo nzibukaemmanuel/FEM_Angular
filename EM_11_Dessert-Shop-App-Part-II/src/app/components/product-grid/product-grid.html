@@ -4,19 +4,47 @@
     <p>Everything is baked in small batches, so flavours may vary with the seasons.</p>
   </div>
 
-  <div class="filters" role="tablist" aria-label="Filter desserts by category">
-    @for (category of categories; track category) {
-      <button
-        type="button"
-        role="tab"
-        [attr.aria-selected]="activeCategory() === category"
-        class="filter"
-        [class.active]="activeCategory() === category"
-        (click)="selectCategory(category)"
+  <div class="search">
+    <label for="search-input" class="visually-hidden">Search desserts by name</label>
+    <input
+      id="search-input"
+      type="search"
+      class="search-input"
+      placeholder="Search desserts..."
+      [value]="searchQuery()"
+      (input)="onSearchChange($any($event.target).value)"
+    />
+  </div>
+
+  <div class="toolbar">
+    <div class="filters" role="tablist" aria-label="Filter desserts by category">
+      @for (category of categories; track category) {
+        <button
+          type="button"
+          role="tab"
+          [attr.aria-selected]="activeCategory() === category"
+          class="filter"
+          [class.active]="activeCategory() === category"
+          (click)="selectCategory(category)"
+        >
+          {{ category }}
+        </button>
+      }
+    </div>
+
+    <div class="sort">
+      <label for="sort-select">Sort by price</label>
+      <select
+        id="sort-select"
+        class="sort-select"
+        [value]="sortDirection() ?? ''"
+        (change)="onSortChange($any($event.target).value)"
       >
-        {{ category }}
-      </button>
-    }
+        <option value="">Default</option>
+        <option value="asc">Low to High</option>
+        <option value="desc">High to Low</option>
+      </select>
+    </div>
   </div>
 
   <div class="grid">
@@ -29,7 +57,7 @@
         (decrement)="decrement.emit($event)"
       />
     } @empty {
-      <p class="empty">No desserts available in this category right now — check back soon!</p>
+      <p class="empty">No desserts match your search — try a different name or category.</p>
     }
   </div>
 </section>

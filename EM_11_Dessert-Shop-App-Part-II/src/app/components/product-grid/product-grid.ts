@@ -20,10 +20,15 @@ export class ProductGrid {
 
   protected readonly categories = this.productService.categories;
   protected readonly activeCategory = signal<DessertCategory>('All');
+  protected readonly sortDirection = signal<'asc' | 'desc' | null>(null);
+  protected readonly searchQuery = signal('');
 
-  protected readonly desserts = computed(() =>
-    this.productService.filterByCategory(this.activeCategory()),
-  );
+  protected readonly desserts = computed(() => {
+    const byCategory = this.productService.filterByCategory(this.activeCategory());
+    const bySearch = this.productService.searchByName(byCategory, this.searchQuery());
+    const direction = this.sortDirection();
+    return direction ? this.productService.sortByPrice(bySearch, direction) : bySearch;
+  });
 
   private readonly quantities = computed(() => {
     const map = new Map<string, number>();
@@ -39,5 +44,13 @@ export class ProductGrid {
 
   protected selectCategory(category: DessertCategory): void {
     this.activeCategory.set(category);
+  }
+
+  protected onSortChange(value: string): void {
+    this.sortDirection.set(value === 'asc' || value === 'desc' ? value : null);
+  }
+
+  protected onSearchChange(value: string): void {
+    this.searchQuery.set(value);
   }
 }

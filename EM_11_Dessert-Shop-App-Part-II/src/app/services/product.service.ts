@@ -21,6 +21,11 @@ export class ProductService {
     return category === 'All' ? DESSERTS : DESSERTS.filter((dessert) => dessert.category === category);
   }
 
+  searchByName(desserts: Dessert[], query: string): Dessert[] {
+    const term = query.trim().toLowerCase();
+    return term ? desserts.filter((dessert) => dessert.name.toLowerCase().includes(term)) : desserts;
+  }
+
   sortByPrice(desserts: Dessert[], direction: 'asc' | 'desc' = 'asc'): Dessert[] {
     const sign = direction === 'asc' ? 1 : -1;
     return [...desserts].sort((a, b) => sign * (a.price - b.price));
