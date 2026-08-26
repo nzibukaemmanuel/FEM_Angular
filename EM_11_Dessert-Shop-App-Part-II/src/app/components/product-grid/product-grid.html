@@ -33,17 +33,37 @@
     </div>
 
     <div class="sort">
-      <label for="sort-select">Sort by price</label>
-      <select
-        id="sort-select"
-        class="sort-select"
-        [value]="sortDirection() ?? ''"
-        (change)="onSortChange($any($event.target).value)"
-      >
-        <option value="">Default</option>
-        <option value="asc">Low to High</option>
-        <option value="desc">High to Low</option>
-      </select>
+      <span id="sort-label" class="sort-label">Sort by price</span>
+      <div class="sort-dropdown">
+        <button
+          type="button"
+          class="sort-trigger"
+          aria-haspopup="listbox"
+          aria-labelledby="sort-label"
+          [attr.aria-expanded]="sortOpen()"
+          (click)="toggleSort()"
+        >
+          {{ sortLabel() }}
+          <svg class="chevron" [class.open]="sortOpen()" width="10" height="6" viewBox="0 0 10 6" fill="none">
+            <path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </button>
+        @if (sortOpen()) {
+          <ul class="sort-listbox" role="listbox" aria-labelledby="sort-label">
+            @for (option of sortOptions; track option.value) {
+              <li
+                role="option"
+                class="sort-option"
+                [class.active]="(sortDirection() ?? '') === option.value"
+                [attr.aria-selected]="(sortDirection() ?? '') === option.value"
+                (click)="selectSort(option.value)"
+              >
+                {{ option.label }}
+              </li>
+            }
+          </ul>
+        }
+      </div>
     </div>
   </div>
 
