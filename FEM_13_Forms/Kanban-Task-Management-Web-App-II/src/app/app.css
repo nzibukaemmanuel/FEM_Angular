@@ -1,0 +1,120 @@
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  max-width: var(--content-max-width);
+  margin: 0 auto;
+  padding: var(--space-6) var(--space-8);
+  background: var(--color-card);
+  box-shadow: var(--shadow-resting);
+}
+
+.app-title {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  font-size: 1.5rem;
+  color: var(--color-text);
+  margin-right: auto;
+}
+
+.app-nav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+}
+
+.app-nav a,
+.app-nav .link-button {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-2) 0;
+  font-size: var(--size-small);
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  border-bottom: 2px solid transparent;
+  transition: color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.app-nav a:hover,
+.app-nav .link-button:hover {
+  color: var(--color-primary);
+}
+
+.app-nav a.active {
+  color: var(--color-primary);
+  font-weight: 600;
+  border-bottom-color: var(--color-primary);
+}
+
+.app-nav .link-button {
+  border: none;
+  background: transparent;
+  font: inherit;
+  font-weight: 500;
+  padding: var(--space-2) 0;
+  border-radius: 0;
+  cursor: pointer;
+}
+
+.nav-progress {
+  height: 3px;
+  background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
+  animation: nav-progress-pulse 1s ease-in-out infinite;
+}
+
+@keyframes nav-progress-pulse {
+  0%,
+  100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.nav-error {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-6);
+  padding: var(--space-4) var(--space-8);
+  background: var(--color-status-error-bg);
+  color: var(--color-status-error-text);
+}
+
+.nav-error button {
+  border: none;
+  background: transparent;
+  color: inherit;
+  font-weight: 700;
+  padding: var(--space-1) var(--space-3);
+  box-shadow: none;
+}
+
+.nav-error button:hover {
+  background: rgba(153, 27, 27, 0.1);
+  transform: none;
+  box-shadow: none;
+}
+
+.app-main {
+  max-width: var(--content-max-width);
+  margin: 0 auto;
+  padding: var(--space-8);
+}
+
+@media (max-width: 700px) {
+  .app-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-4);
+    position: static;
+  }
+
+  .app-nav {
+    flex-wrap: wrap;
+  }
+}

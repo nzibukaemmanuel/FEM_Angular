@@ -1,0 +1,88 @@
+.select-field {
+  position: relative;
+  display: block;
+  width: 100%;
+}
+
+.select-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  width: 100%;
+  font: inherit;
+  font-size: var(--size-small);
+  font-weight: 400;
+  color: var(--color-text);
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+  cursor: pointer;
+  transition: border-color var(--transition-fast), transform var(--transition-fast),
+    box-shadow var(--transition-fast);
+}
+
+.select-trigger:hover {
+  background: var(--color-white);
+  color: var(--color-text);
+  border-color: var(--color-muted-decorative);
+  transform: none;
+  box-shadow: none;
+}
+
+.select-trigger:active {
+  background: var(--color-white);
+  transform: none;
+  box-shadow: none;
+}
+
+.select-field.open .select-trigger {
+  border-color: var(--color-primary);
+}
+
+.select-trigger__chevron {
+  flex-shrink: 0;
+  color: var(--color-muted-text);
+  transition: transform var(--transition-fast);
+}
+
+.select-field.open .select-trigger__chevron {
+  transform: rotate(180deg);
+}
+
+.select-listbox {
+  position: absolute;
+  z-index: 30;
+  top: calc(100% + var(--space-2));
+  left: 0;
+  right: 0;
+  max-height: 240px;
+  overflow-y: auto;
+  margin: 0;
+  padding: var(--space-2);
+  list-style: none;
+  background: var(--color-white);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-hover);
+}
+
+.select-option {
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-sm);
+  font-size: var(--size-small);
+  color: var(--color-text);
+  cursor: pointer;
+  transition: background-color var(--transition-fast), color var(--transition-fast);
+}
+
+.select-option.selected:not(.active) {
+  background: var(--color-card-hover);
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+.select-option.active {
+  background: var(--color-primary);
+  color: var(--color-white);
+}

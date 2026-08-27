@@ -1,0 +1,15 @@
+.task-detail-card {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-6);
+  padding: var(--space-8);
+  margin-bottom: var(--space-8);
+  background: var(--color-card);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-resting);
+}
+
+.task-detail-card h2 {
+  margin: 0;
+}

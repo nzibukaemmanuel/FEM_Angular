@@ -1,0 +1,88 @@
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ActivatedRoute, provideRouter, Router } from '@angular/router';
+import { BoardDetails } from './board-details';
+
+describe('BoardDetails', () => {
+  let component: BoardDetails;
+  let fixture: ComponentFixture<BoardDetails>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [BoardDetails],
+      providers: [provideRouter([])],
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(BoardDetails);
+    component = fixture.componentInstance;
+    await fixture.whenStable();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+
+  it('navigates back to /boards', () => {
+    const router = TestBed.inject(Router);
+    const navigateSpy = vi.spyOn(router, 'navigate').mockResolvedValue(true);
+
+    component.goBack();
+
+    expect(navigateSpy).toHaveBeenCalledWith(['/boards']);
+  });
+
+  it('lists all of a board\'s tasks sorted by title by default', () => {
+    fixture.componentRef.setInput('boardId', 'platform-launch');
+
+    expect(component.tasks().map((t) => t.title)).toEqual([
+      'Define MVP scope',
+      'Design review',
+      'Write launch docs',
+    ]);
+  });
+
+  it('filters tasks by the status query param', () => {
+    fixture.componentRef.setInput('boardId', 'platform-launch');
+    fixture.componentRef.setInput('status', 'todo');
+
+    expect(component.tasks().map((t) => t.id)).toEqual(['write-docs']);
+  });
+
+  it('sorts tasks by status when the sort query param is "status"', () => {
+    fixture.componentRef.setInput('boardId', 'platform-launch');
+    fixture.componentRef.setInput('sort', 'status');
+
+    expect(component.tasks().map((t) => t.status)).toEqual(['doing', 'done', 'todo']);
+  });
+
+  it('falls back to defaults when the router clears status/sort inputs to undefined (e.g. after a child-route nav that drops query params)', () => {
+    fixture.componentRef.setInput('boardId', 'platform-launch');
+    fixture.componentRef.setInput('status', undefined);
+    fixture.componentRef.setInput('sort', undefined);
+
+    expect(component.tasks().map((t) => t.title)).toEqual([
+      'Define MVP scope',
+      'Design review',
+      'Write launch docs',
+    ]);
+  });
+
+  it('returns no tasks for an unknown board', () => {
+    fixture.componentRef.setInput('boardId', 'does-not-exist');
+
+    expect(component.tasks()).toEqual([]);
+  });
+
+  it('merges new query params onto the current route when filtering/sorting', () => {
+    const router = TestBed.inject(Router);
+    const navigateSpy = vi.spyOn(router, 'navigate').mockResolvedValue(true);
+    const route = TestBed.inject(ActivatedRoute);
+
+    component.updateQueryParams({ status: 'done' });
+
+    expect(navigateSpy).toHaveBeenCalledWith([], {
+      relativeTo: route,
+      queryParams: { status: 'done' },
+      queryParamsHandling: 'merge',
+    });
+  });
+});
