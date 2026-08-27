@@ -239,6 +239,27 @@ ul {
   background: var(--color-status-done);
 }
 
+/* Shared form feedback — used by any routed form (Settings, task forms, ...) */
+.unsaved-hint {
+  margin: 0;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-sm);
+  background: #fdecd1;
+  color: #92400e;
+  font-size: var(--size-small);
+  font-weight: 600;
+}
+
+.field-error {
+  margin: 0;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-sm);
+  background: var(--color-status-error-bg);
+  color: var(--color-status-error-text);
+  font-size: var(--size-small);
+  font-weight: 600;
+}
+
 .empty-state {
   padding: var(--space-8);
   text-align: center;

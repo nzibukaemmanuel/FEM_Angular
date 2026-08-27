@@ -3,6 +3,7 @@
     <h2>{{ t.title }}</h2>
     <span class="status-badge" [attr.data-status]="t.status">{{ t.status }}</span>
   </div>
+  <a class="btn" [routerLink]="['edit']">Edit task</a>
 } @else {
   <p class="empty-state">Task not found.</p>
 }

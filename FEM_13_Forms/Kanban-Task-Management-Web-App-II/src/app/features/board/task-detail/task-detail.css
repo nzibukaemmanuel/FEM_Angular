@@ -13,3 +13,7 @@
 .task-detail-card h2 {
   margin: 0;
 }
+
+.task-detail-card + .btn {
+  margin-right: var(--space-4);
+}
