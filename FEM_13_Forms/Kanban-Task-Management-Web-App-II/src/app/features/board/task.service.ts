@@ -18,6 +18,14 @@ export class TaskService {
     return this.getTasks(boardId).find((task) => task.id === taskId);
   }
 
+  // For the "no duplicate titles on a board" form validator — excludes the task itself so
+  // saving an edit without changing its title doesn't flag against its own old value.
+  otherTitles(boardId: string, excludeTaskId: string | null): string[] {
+    return this.getTasks(boardId)
+      .filter((task) => task.id !== excludeTaskId)
+      .map((task) => task.title);
+  }
+
   addTask(boardId: string, task: Omit<Task, 'id'>): Task {
     const newTask: Task = { ...task, id: `${slugify(task.title)}-${nextTaskSuffix++}` };
     this.boardTasks.update((all) => ({

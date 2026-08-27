@@ -10,6 +10,8 @@
         Title is required.
       } @else if (form.controls.title.hasError('minlength')) {
         Title must be at least 3 characters.
+      } @else if (form.controls.title.hasError('duplicateTitle')) {
+        A task with this title already exists on this board.
       }
     </p>
   }
@@ -39,6 +41,10 @@
       <input type="date" formControlName="dueDate" />
     </label>
   </div>
+
+  @if (form.controls.status.invalid && form.controls.status.touched) {
+    <p class="field-error" role="alert">Status is required.</p>
+  }
 
   @if (isDirty()) {
     <p class="unsaved-hint" role="status">You have unsaved changes.</p>

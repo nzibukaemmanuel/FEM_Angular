@@ -3,7 +3,13 @@
     <h2>Edit task</h2>
   </div>
 
-  <app-task-form [initialTask]="t" submitLabel="Save changes" (save)="onSave($event)" (cancel)="onCancel()" />
+  <app-task-form
+    [initialTask]="t"
+    [existingTitles]="existingTitles()"
+    submitLabel="Save changes"
+    (save)="onSave($event)"
+    (cancel)="onCancel()"
+  />
 } @else {
   <p class="empty-state">Task not found.</p>
 }

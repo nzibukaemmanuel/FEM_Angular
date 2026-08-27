@@ -18,6 +18,7 @@ export class EditTask implements ComponentWithUnsavedChanges {
   readonly taskId = input('');
 
   readonly task = computed(() => this.taskService.getTask(this.boardId(), this.taskId()));
+  readonly existingTitles = computed(() => this.taskService.otherTitles(this.boardId(), this.taskId()));
 
   private readonly taskForm = viewChild(TaskForm);
 

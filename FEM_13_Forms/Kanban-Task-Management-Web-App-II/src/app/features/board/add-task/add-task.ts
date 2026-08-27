@@ -1,4 +1,4 @@
-import { Component, inject, input, viewChild } from '@angular/core';
+import { Component, computed, inject, input, viewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { ComponentWithUnsavedChanges } from '../../../core/unsaved-changes.guard';
 import { TaskForm, TaskFormValue } from '../task-form/task-form';
@@ -15,6 +15,8 @@ export class AddTask implements ComponentWithUnsavedChanges {
   private readonly taskService = inject(TaskService);
 
   readonly boardId = input('');
+
+  readonly existingTitles = computed(() => this.taskService.otherTitles(this.boardId(), null));
 
   private readonly taskForm = viewChild(TaskForm);
 

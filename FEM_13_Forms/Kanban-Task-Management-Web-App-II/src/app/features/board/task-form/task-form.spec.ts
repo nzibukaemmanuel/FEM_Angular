@@ -27,6 +27,30 @@ describe('TaskForm', () => {
     return fixture.nativeElement.querySelector('input[type="date"]');
   }
 
+  function statusTrigger(): HTMLButtonElement {
+    return fixture.nativeElement.querySelector('.select-trigger');
+  }
+
+  function setTitle(value: string): void {
+    titleInput().value = value;
+    titleInput().dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+  }
+
+  function touchTitle(): void {
+    titleInput().dispatchEvent(new Event('blur'));
+    fixture.detectChanges();
+  }
+
+  // Options render in STATUS_OPTIONS order: 0 = placeholder, 1 = todo, 2 = doing, 3 = done.
+  function pickStatus(optionIndex: number): void {
+    statusTrigger().click();
+    fixture.detectChanges();
+    const option = fixture.nativeElement.querySelectorAll('.select-option')[optionIndex] as HTMLLIElement;
+    option.click();
+    fixture.detectChanges();
+  }
+
   function submitForm(): void {
     fixture.nativeElement.querySelector('form').dispatchEvent(new Event('submit'));
     fixture.detectChanges();
@@ -36,14 +60,15 @@ describe('TaskForm', () => {
     expect(component).toBeTruthy();
   });
 
-  it('starts blank and pristine when no initial task is given', () => {
+  it('starts blank and pristine, with status unselected, when no initial task is given', () => {
     expect(titleInput().value).toBe('');
     expect(descriptionInput().value).toBe('');
     expect(dueDateInput().value).toBe('');
+    expect(statusTrigger().textContent).toContain('Choose a status');
     expect(component.isDirty()).toBe(false);
   });
 
-  it('prefills every field from the initial task and stays pristine', () => {
+  it('prefills every field, including status, from the initial task and stays pristine', () => {
     fixture.componentRef.setInput('initialTask', {
       id: 't1',
       title: 'Write docs',
@@ -56,25 +81,39 @@ describe('TaskForm', () => {
     expect(titleInput().value).toBe('Write docs');
     expect(descriptionInput().value).toBe('Cover the API changes.');
     expect(dueDateInput().value).toBe('2026-09-05');
+    expect(statusTrigger().textContent).toContain('In progress');
     expect(component.isDirty()).toBe(false);
   });
 
   it('becomes dirty once the title is edited', () => {
-    titleInput().value = 'New title';
-    titleInput().dispatchEvent(new Event('input'));
-    fixture.detectChanges();
-
+    setTitle('New title');
     expect(component.isDirty()).toBe(true);
   });
 
-  it('rejects an empty title and shows a validation message instead of emitting save', () => {
+  it('becomes dirty once a status is picked', () => {
+    pickStatus(1); // todo
+    expect(component.isDirty()).toBe(true);
+  });
+
+  it('rejects submission with an empty title and an unselected status', () => {
     const emitted: unknown[] = [];
     component.save.subscribe((value) => emitted.push(value));
 
     submitForm();
 
     expect(emitted).toEqual([]);
-    expect(fixture.nativeElement.querySelector('.field-error')?.textContent).toContain('required');
+    const errors = Array.from(fixture.nativeElement.querySelectorAll('.field-error')).map(
+      (el) => (el as HTMLElement).textContent,
+    );
+    expect(errors.some((text) => text?.includes('Title is required'))).toBe(true);
+    expect(errors.some((text) => text?.includes('Status is required'))).toBe(true);
+  });
+
+  it('rejects a title shorter than 3 characters', () => {
+    setTitle('ab');
+    touchTitle();
+
+    expect(fixture.nativeElement.querySelector('.field-error')?.textContent).toContain('3 characters');
   });
 
   it('rejects a description over 500 characters', () => {
@@ -86,16 +125,38 @@ describe('TaskForm', () => {
     expect(fixture.nativeElement.querySelector('.field-error')?.textContent).toContain('500 characters');
   });
 
+  it('flags a title that already exists on the board, then clears the error once it is changed', () => {
+    fixture.componentRef.setInput('existingTitles', ['Design review', 'Write launch docs']);
+    fixture.detectChanges();
+
+    setTitle('Design review');
+    touchTitle();
+    expect(fixture.nativeElement.querySelector('.field-error')?.textContent).toContain('already exists');
+
+    setTitle('Design review v2');
+    expect(fixture.nativeElement.querySelector('.field-error')).toBeNull();
+  });
+
+  it('is case-insensitive and trims whitespace when checking for a duplicate title', () => {
+    fixture.componentRef.setInput('existingTitles', ['Design review']);
+    fixture.detectChanges();
+
+    setTitle('  design REVIEW  ');
+    touchTitle();
+
+    expect(fixture.nativeElement.querySelector('.field-error')?.textContent).toContain('already exists');
+  });
+
   it('emits the trimmed title, description, status and due date on valid submit', () => {
     const emitted: unknown[] = [];
     component.save.subscribe((value) => emitted.push(value));
 
-    titleInput().value = '  Ship it  ';
-    titleInput().dispatchEvent(new Event('input'));
+    setTitle('  Ship it  ');
     descriptionInput().value = '  Finish and deploy.  ';
     descriptionInput().dispatchEvent(new Event('input'));
     dueDateInput().value = '2026-09-01';
     dueDateInput().dispatchEvent(new Event('input'));
+    pickStatus(1); // todo
     fixture.detectChanges();
 
     submitForm();
