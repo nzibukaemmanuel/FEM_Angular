@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter, Router } from '@angular/router';
 import { AddTask } from './add-task';
+import { NotificationService } from '../../../core/notification.service';
 import { TaskService } from '../task.service';
 
 describe('AddTask', () => {
@@ -36,6 +37,15 @@ describe('AddTask', () => {
 
     expect(taskService.getTasks('roadmap').some((task) => task.title === 'New task')).toBe(true);
     expect(navigateSpy).toHaveBeenCalledWith(['/boards', 'roadmap']);
+  });
+
+  it('shows a success notice after saving', () => {
+    vi.spyOn(TestBed.inject(Router), 'navigate').mockResolvedValue(true);
+    const notificationService = TestBed.inject(NotificationService);
+
+    component.onSave({ title: 'New task', description: 'Some details.', status: 'todo', dueDate: '2026-09-01' });
+
+    expect(notificationService.notice()).toEqual({ message: '"New task" was added.', kind: 'success' });
   });
 
   it('navigates back to the board on cancel', () => {

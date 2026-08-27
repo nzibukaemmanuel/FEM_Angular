@@ -75,31 +75,6 @@
   }
 }
 
-.nav-error {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-6);
-  padding: var(--space-4) var(--space-8);
-  background: var(--color-status-error-bg);
-  color: var(--color-status-error-text);
-}
-
-.nav-error button {
-  border: none;
-  background: transparent;
-  color: inherit;
-  font-weight: 700;
-  padding: var(--space-1) var(--space-3);
-  box-shadow: none;
-}
-
-.nav-error button:hover {
-  background: rgba(153, 27, 27, 0.1);
-  transform: none;
-  box-shadow: none;
-}
-
 .app-main {
   max-width: var(--content-max-width);
   margin: 0 auto;

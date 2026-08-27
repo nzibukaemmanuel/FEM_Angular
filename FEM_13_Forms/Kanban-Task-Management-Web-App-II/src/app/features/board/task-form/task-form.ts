@@ -1,5 +1,6 @@
 import { Component, effect, inject, input, output, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { NotificationService } from '../../../core/notification.service';
 import { SelectField, SelectFieldOption } from '../../../shared/select-field/select-field';
 import { Task } from '../board-data';
 import { duplicateTitleValidator } from './duplicate-title.validator';
@@ -29,6 +30,7 @@ const STATUS_OPTIONS: SelectFieldOption[] = [
 })
 export class TaskForm {
   private readonly fb = inject(FormBuilder);
+  private readonly notificationService = inject(NotificationService);
 
   readonly initialTask = input<Task | null>(null);
   readonly submitLabel = input('Save task');
@@ -93,6 +95,7 @@ export class TaskForm {
   protected submit(): void {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
+      this.notificationService.error('Please fix the highlighted fields before saving.');
       return;
     }
     const { title, description, status, dueDate } = this.form.getRawValue();

@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { NotificationService } from '../../../core/notification.service';
 import { TaskForm } from './task-form';
 
 describe('TaskForm', () => {
@@ -107,6 +108,14 @@ describe('TaskForm', () => {
     );
     expect(errors.some((text) => text?.includes('Title is required'))).toBe(true);
     expect(errors.some((text) => text?.includes('Status is required'))).toBe(true);
+  });
+
+  it('shows an error notice when submitting an invalid form', () => {
+    const notificationService = TestBed.inject(NotificationService);
+
+    submitForm();
+
+    expect(notificationService.notice()?.kind).toBe('error');
   });
 
   it('rejects a title shorter than 3 characters', () => {

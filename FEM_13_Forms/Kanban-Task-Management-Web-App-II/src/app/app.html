@@ -17,11 +17,13 @@
 }
 
 @if (navigationError()) {
-  <div class="nav-error" role="alert">
+  <div class="banner" data-kind="error" role="alert">
     <span>{{ navigationError() }}</span>
     <button type="button" (click)="dismissError()">Dismiss</button>
   </div>
 }
+
+<app-notice />
 
 <router-outlet name="aux" />
 

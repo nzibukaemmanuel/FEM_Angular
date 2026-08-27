@@ -11,9 +11,10 @@ import {
   RouterOutlet,
 } from '@angular/router';
 import { AuthService } from './core/auth.service';
+import { Notice } from './shared/notice/notice';
 
 @Component({
-  imports: [RouterLink, RouterLinkActive, RouterOutlet],
+  imports: [RouterLink, RouterLinkActive, RouterOutlet, Notice],
   selector: 'app-root',
   styleUrl: './app.css',
   templateUrl: './app.html',
