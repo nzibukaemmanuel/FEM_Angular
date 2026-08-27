@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter, Router } from '@angular/router';
 import { TaskDetail } from './task-detail';
+import { TaskService } from '../task.service';
 
 describe('TaskDetail', () => {
   let component: TaskDetail;
@@ -33,6 +34,16 @@ describe('TaskDetail', () => {
     fixture.componentRef.setInput('taskId', 'not-a-real-task');
 
     expect(component.task()).toBeUndefined();
+  });
+
+  it('reflects an edit made through TaskService without needing a reload', () => {
+    fixture.componentRef.setInput('boardId', 'roadmap');
+    fixture.componentRef.setInput('taskId', 'q1-goals');
+    const taskService = TestBed.inject(TaskService);
+
+    taskService.updateTask('roadmap', 'q1-goals', { status: 'done' });
+
+    expect(component.task()?.status).toBe('done');
   });
 
   it('navigates back to the parent board', () => {

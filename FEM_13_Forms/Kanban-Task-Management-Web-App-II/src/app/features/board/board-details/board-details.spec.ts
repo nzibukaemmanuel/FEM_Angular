@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, provideRouter, Router } from '@angular/router';
 import { BoardDetails } from './board-details';
+import { TaskService } from '../task.service';
 
 describe('BoardDetails', () => {
   let component: BoardDetails;
@@ -70,6 +71,25 @@ describe('BoardDetails', () => {
     fixture.componentRef.setInput('boardId', 'does-not-exist');
 
     expect(component.tasks()).toEqual([]);
+  });
+
+  it('reflects an edit made through TaskService without needing a reload', () => {
+    fixture.componentRef.setInput('boardId', 'platform-launch');
+    const taskService = TestBed.inject(TaskService);
+
+    taskService.updateTask('platform-launch', 'write-docs', { title: 'Write launch docs (v2)' });
+
+    expect(component.tasks().map((t) => t.title)).toContain('Write launch docs (v2)');
+  });
+
+  it('is unaffected by an edit made to a task on a different board', () => {
+    fixture.componentRef.setInput('boardId', 'platform-launch');
+    const taskService = TestBed.inject(TaskService);
+    const before = component.tasks();
+
+    taskService.updateTask('roadmap', 'q1-goals', { title: 'Renamed elsewhere' });
+
+    expect(component.tasks()).toEqual(before);
   });
 
   it('merges new query params onto the current route when filtering/sorting', () => {

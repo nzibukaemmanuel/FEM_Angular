@@ -86,6 +86,35 @@ describe('TaskForm', () => {
     expect(component.isDirty()).toBe(false);
   });
 
+  it('re-syncs to a different task when initialTask changes on the same (reused) instance', () => {
+    // The router reuses this component across param changes — e.g. navigating straight from
+    // editing task A to editing task B on the same board — so a stale read here would leak
+    // task A's data into task B's form instead of loading task B's own details.
+    fixture.componentRef.setInput('initialTask', {
+      id: 'a',
+      title: 'Task A',
+      description: 'Description A',
+      status: 'todo',
+      dueDate: '2026-09-01',
+    });
+    fixture.detectChanges();
+
+    fixture.componentRef.setInput('initialTask', {
+      id: 'b',
+      title: 'Task B',
+      description: 'Description B',
+      status: 'done',
+      dueDate: '2026-09-20',
+    });
+    fixture.detectChanges();
+
+    expect(titleInput().value).toBe('Task B');
+    expect(descriptionInput().value).toBe('Description B');
+    expect(dueDateInput().value).toBe('2026-09-20');
+    expect(statusTrigger().textContent).toContain('Done');
+    expect(component.isDirty()).toBe(false);
+  });
+
   it('becomes dirty once the title is edited', () => {
     setTitle('New title');
     expect(component.isDirty()).toBe(true);
