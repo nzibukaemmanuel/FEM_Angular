@@ -14,7 +14,7 @@
   font-size: var(--size-small);
   font-weight: 400;
   color: var(--color-text);
-  background: var(--color-white);
+  background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   padding: var(--space-3) var(--space-4);
@@ -24,7 +24,7 @@
 }
 
 .select-trigger:hover {
-  background: var(--color-white);
+  background: var(--color-surface);
   color: var(--color-text);
   border-color: var(--color-muted-decorative);
   transform: none;
@@ -32,7 +32,7 @@
 }
 
 .select-trigger:active {
-  background: var(--color-white);
+  background: var(--color-surface);
   transform: none;
   box-shadow: none;
 }
@@ -62,7 +62,7 @@
   margin: 0;
   padding: var(--space-2);
   list-style: none;
-  background: var(--color-white);
+  background: var(--color-surface);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-hover);
 }

@@ -9,6 +9,14 @@
     } @else {
       <a routerLink="/login">Log in</a>
     }
+    <button
+      type="button"
+      class="theme-toggle"
+      (click)="themeService.toggle()"
+      [attr.aria-label]="themeService.theme() === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'"
+    >
+      {{ themeService.theme() === 'dark' ? '☀️ Light' : '🌙 Dark' }}
+    </button>
   </nav>
 </header>
 

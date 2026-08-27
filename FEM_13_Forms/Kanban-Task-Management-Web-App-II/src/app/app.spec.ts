@@ -23,6 +23,15 @@ describe('App', () => {
     expect(app).toBeTruthy();
   });
 
+  it('exposes ThemeService so the template can render/toggle the current theme', () => {
+    const app = TestBed.createComponent(App).componentInstance as any;
+
+    const before = app.themeService.theme();
+    app.themeService.toggle();
+
+    expect(app.themeService.theme()).not.toBe(before);
+  });
+
   it('shows a loading state on NavigationStart and clears it on NavigationEnd', () => {
     const app = TestBed.createComponent(App).componentInstance as any;
 

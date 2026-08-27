@@ -11,6 +11,7 @@ import {
   RouterOutlet,
 } from '@angular/router';
 import { AuthService } from './core/auth.service';
+import { ThemeService } from './core/theme.service';
 import { Notice } from './shared/notice/notice';
 
 @Component({
@@ -22,6 +23,10 @@ import { Notice } from './shared/notice/notice';
 export class App {
   private readonly router = inject(Router);
   protected readonly auth = inject(AuthService);
+  // Injected eagerly here (rather than only where a component happens to need it) so the
+  // theme is applied to <html> as early in bootstrap as possible, minimizing any flash of
+  // the wrong theme on load.
+  protected readonly themeService = inject(ThemeService);
 
   protected readonly isNavigating = signal(false);
   protected readonly navigationError = signal<string | null>(null);
