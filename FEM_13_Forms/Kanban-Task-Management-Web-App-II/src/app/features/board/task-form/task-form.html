@@ -67,6 +67,48 @@
     <p class="field-error" role="alert" [id]="statusErrorId">Status is required.</p>
   }
 
+  <fieldset class="subtasks" formArrayName="subtasks">
+    <legend>Subtasks</legend>
+
+    <div class="subtasks__list">
+      @for (subtask of form.controls.subtasks.controls; track subtask.value.id; let i = $index) {
+        <div class="subtask-row" [formGroupName]="i">
+          <input
+            type="checkbox"
+            formControlName="completed"
+            [attr.aria-label]="'Mark subtask ' + (i + 1) + ' complete'"
+          />
+          <input
+            #subtaskTitleInput
+            type="text"
+            formControlName="title"
+            placeholder="Subtask name"
+            [attr.aria-label]="'Subtask ' + (i + 1) + ' name'"
+            [attr.aria-invalid]="subtask.controls.title.invalid && subtask.controls.title.touched ? true : null"
+            [attr.aria-describedby]="
+              subtask.controls.title.invalid && subtask.controls.title.touched ? subtaskErrorId(i) : null
+            "
+          />
+          <button
+            type="button"
+            class="btn-secondary"
+            (click)="removeSubtask(i)"
+            [attr.aria-label]="'Remove subtask ' + (i + 1)"
+          >
+            Remove
+          </button>
+        </div>
+        @if (subtask.controls.title.invalid && subtask.controls.title.touched) {
+          <p class="field-error" role="alert" [id]="subtaskErrorId(i)">Subtask name is required.</p>
+        }
+      } @empty {
+        <p class="empty-state">No subtasks yet.</p>
+      }
+    </div>
+
+    <button #addSubtaskButton type="button" class="btn-secondary" (click)="addSubtask()">+ Add subtask</button>
+  </fieldset>
+
   @if (isDirty()) {
     <p class="unsaved-hint" role="status">You have unsaved changes.</p>
   }

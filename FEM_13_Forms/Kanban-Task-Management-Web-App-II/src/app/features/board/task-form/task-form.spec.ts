@@ -57,6 +57,32 @@ describe('TaskForm', () => {
     fixture.detectChanges();
   }
 
+  function subtaskRows(): HTMLElement[] {
+    return Array.from(fixture.nativeElement.querySelectorAll('.subtask-row'));
+  }
+
+  function subtaskTitleInputs(): HTMLInputElement[] {
+    return Array.from(fixture.nativeElement.querySelectorAll('.subtask-row input[type="text"]'));
+  }
+
+  function subtaskCheckboxes(): HTMLInputElement[] {
+    return Array.from(fixture.nativeElement.querySelectorAll('.subtask-row input[type="checkbox"]'));
+  }
+
+  function addSubtaskButton(): HTMLButtonElement {
+    return fixture.nativeElement.querySelector('.subtasks > button');
+  }
+
+  function removeSubtaskButton(index: number): HTMLButtonElement {
+    return subtaskRows()[index].querySelector('button') as HTMLButtonElement;
+  }
+
+  async function clickAddSubtask(): Promise<void> {
+    addSubtaskButton().click();
+    fixture.detectChanges();
+    await fixture.whenStable(); // flushes the afterNextRender() that focuses the new row
+  }
+
   it('should create', () => {
     expect(component).toBeTruthy();
   });
@@ -245,7 +271,7 @@ describe('TaskForm', () => {
     submitForm();
 
     expect(emitted).toEqual([
-      { title: 'Ship it', description: 'Finish and deploy.', status: 'todo', dueDate: '2026-09-01' },
+      { title: 'Ship it', description: 'Finish and deploy.', status: 'todo', dueDate: '2026-09-01', subtasks: [] },
     ]);
   });
 
@@ -256,6 +282,124 @@ describe('TaskForm', () => {
     (fixture.nativeElement.querySelector('.task-form__actions button[type="button"]') as HTMLButtonElement).click();
 
     expect(emitted).toEqual([true]);
+  });
+
+  describe('subtasks', () => {
+    it('starts with no subtasks, shown as an empty state', () => {
+      expect(subtaskRows().length).toBe(0);
+      expect(fixture.nativeElement.querySelector('.subtasks .empty-state')).toBeTruthy();
+    });
+
+    it('adds a blank subtask row, focuses its name field, and marks the form dirty', async () => {
+      await clickAddSubtask();
+
+      expect(subtaskRows().length).toBe(1);
+      expect(document.activeElement).toBe(subtaskTitleInputs()[0]);
+      expect(component.isDirty()).toBe(true);
+    });
+
+    it('removes a subtask row and returns focus to the add-subtask button', async () => {
+      await clickAddSubtask();
+      await clickAddSubtask();
+      expect(subtaskRows().length).toBe(2);
+
+      removeSubtaskButton(0).click();
+      fixture.detectChanges();
+
+      expect(subtaskRows().length).toBe(1);
+      expect(document.activeElement).toBe(addSubtaskButton());
+    });
+
+    it('rejects a blank subtask name', async () => {
+      await clickAddSubtask();
+
+      submitForm();
+
+      const errors = Array.from(fixture.nativeElement.querySelectorAll('.field-error')).map(
+        (el) => (el as HTMLElement).textContent,
+      );
+      expect(errors.some((text) => text?.includes('Subtask name is required'))).toBe(true);
+    });
+
+    it('moves focus to the invalid subtask when every other field is valid', async () => {
+      setTitle('Valid title');
+      pickStatus(1); // todo
+      await clickAddSubtask();
+
+      submitForm();
+
+      expect(document.activeElement).toBe(subtaskTitleInputs()[0]);
+    });
+
+    it('emits subtasks, with trimmed names, alongside the rest of the form on valid submit', async () => {
+      setTitle('Valid title');
+      pickStatus(1); // todo
+      await clickAddSubtask();
+      subtaskTitleInputs()[0].value = '  Write tests  ';
+      subtaskTitleInputs()[0].dispatchEvent(new Event('input'));
+      subtaskCheckboxes()[0].click();
+      fixture.detectChanges();
+
+      const emitted: unknown[] = [];
+      component.save.subscribe((value) => emitted.push(value));
+
+      submitForm();
+
+      expect(emitted).toEqual([
+        {
+          title: 'Valid title',
+          description: '',
+          status: 'todo',
+          dueDate: '',
+          subtasks: [{ id: expect.any(String), title: 'Write tests', completed: true }],
+        },
+      ]);
+    });
+
+    it('prefills existing subtasks from the initial task and stays pristine', () => {
+      fixture.componentRef.setInput('initialTask', {
+        id: 't1',
+        title: 'Write docs',
+        description: '',
+        status: 'doing',
+        dueDate: '',
+        subtasks: [
+          { id: 's1', title: 'Draft outline', completed: true },
+          { id: 's2', title: 'Get review', completed: false },
+        ],
+      });
+      fixture.detectChanges();
+
+      expect(subtaskTitleInputs().map((el) => el.value)).toEqual(['Draft outline', 'Get review']);
+      expect(subtaskCheckboxes().map((el) => el.checked)).toEqual([true, false]);
+      expect(component.isDirty()).toBe(false);
+    });
+
+    it('re-syncs subtasks too when initialTask switches to a different task', () => {
+      fixture.componentRef.setInput('initialTask', {
+        id: 'a',
+        title: 'Task A',
+        description: '',
+        status: 'todo',
+        dueDate: '',
+        subtasks: [{ id: 'a1', title: 'A subtask', completed: false }],
+      });
+      fixture.detectChanges();
+      expect(subtaskRows().length).toBe(1);
+
+      fixture.componentRef.setInput('initialTask', {
+        id: 'b',
+        title: 'Task B',
+        description: '',
+        status: 'done',
+        dueDate: '',
+        subtasks: [],
+      });
+      fixture.detectChanges();
+
+      expect(subtaskRows().length).toBe(0);
+      expect(component.isDirty()).toBe(false);
+    });
   });
 
   describe('beforeunload — the browser-level backstop for canDeactivate', () => {

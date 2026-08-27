@@ -35,3 +35,36 @@
 .task-detail-card + .btn {
   margin-right: var(--space-4);
 }
+
+.task-detail-card__subtasks-summary {
+  margin: 0 0 var(--space-2);
+  font-size: var(--size-small);
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.task-detail-card__subtask-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.task-detail-card__subtask-list li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: var(--size-small);
+  color: var(--color-text-secondary);
+}
+
+.task-detail-card__subtask-list input[type='checkbox'] {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  accent-color: var(--color-primary);
+}
+
+.task-detail-card__subtask-list .done {
+  color: var(--color-muted-text);
+  text-decoration: line-through;
+}

@@ -16,6 +16,9 @@ export class TaskDetail {
   readonly taskId = input('');
 
   readonly task = computed(() => this.taskService.getTask(this.boardId(), this.taskId()));
+  readonly completedSubtaskCount = computed(
+    () => this.task()?.subtasks.filter((subtask) => subtask.completed).length ?? 0,
+  );
 
   goToBoard(): void {
     this.router.navigate(['/boards', this.boardId()]);

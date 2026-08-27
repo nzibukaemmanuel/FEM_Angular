@@ -33,7 +33,7 @@ describe('AddTask', () => {
     const navigateSpy = vi.spyOn(router, 'navigate').mockResolvedValue(true);
     const taskService = TestBed.inject(TaskService);
 
-    component.onSave({ title: 'New task', description: 'Some details.', status: 'todo', dueDate: '2026-09-01' });
+    component.onSave({ title: 'New task', description: 'Some details.', status: 'todo', dueDate: '2026-09-01', subtasks: [] });
 
     expect(taskService.getTasks('roadmap').some((task) => task.title === 'New task')).toBe(true);
     expect(navigateSpy).toHaveBeenCalledWith(['/boards', 'roadmap']);
@@ -43,7 +43,7 @@ describe('AddTask', () => {
     vi.spyOn(TestBed.inject(Router), 'navigate').mockResolvedValue(true);
     const notificationService = TestBed.inject(NotificationService);
 
-    component.onSave({ title: 'New task', description: 'Some details.', status: 'todo', dueDate: '2026-09-01' });
+    component.onSave({ title: 'New task', description: 'Some details.', status: 'todo', dueDate: '2026-09-01', subtasks: [] });
 
     expect(notificationService.notice()).toEqual({ message: '"New task" was added.', kind: 'success' });
   });

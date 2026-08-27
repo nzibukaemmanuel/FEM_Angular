@@ -39,6 +39,7 @@ describe('EditTask', () => {
       description: 'Revised scope after planning.',
       status: 'done',
       dueDate: '2026-09-20',
+      subtasks: [],
     });
 
     expect(taskService.getTask('roadmap', 'q1-goals')?.title).toBe('Set Q1 goals (revised)');
@@ -54,6 +55,7 @@ describe('EditTask', () => {
       description: 'Revised scope after planning.',
       status: 'done',
       dueDate: '2026-09-20',
+      subtasks: [],
     });
 
     expect(notificationService.notice()).toEqual({ message: '"Set Q1 goals (revised)" was updated.', kind: 'success' });

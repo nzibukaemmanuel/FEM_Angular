@@ -1,8 +1,21 @@
-import { Component, ElementRef, HostListener, effect, inject, input, output, signal, viewChild } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  Component,
+  ElementRef,
+  HostListener,
+  Injector,
+  afterNextRender,
+  effect,
+  inject,
+  input,
+  output,
+  signal,
+  viewChild,
+  viewChildren,
+} from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NotificationService } from '../../../core/notification.service';
 import { SelectField, SelectFieldOption } from '../../../shared/select-field/select-field';
-import { Task } from '../board-data';
+import { Subtask, Task } from '../board-data';
 import { duplicateTitleValidator } from './duplicate-title.validator';
 
 export interface TaskFormValue {
@@ -10,6 +23,7 @@ export interface TaskFormValue {
   description: string;
   status: Task['status'];
   dueDate: string;
+  subtasks: Subtask[];
 }
 
 const STATUS_OPTIONS: SelectFieldOption[] = [
@@ -20,6 +34,13 @@ const STATUS_OPTIONS: SelectFieldOption[] = [
 ];
 
 let nextFormInstanceId = 0;
+let nextSubtaskSuffix = 0;
+
+type SubtaskGroup = FormGroup<{
+  id: FormControl<string>;
+  title: FormControl<string>;
+  completed: FormControl<boolean>;
+}>;
 
 // Presentational and reused by both the Add Task and Edit Task routes: it only knows how to
 // render/validate a task's fields and emit the result — persistence and navigation stay with
@@ -33,6 +54,7 @@ let nextFormInstanceId = 0;
 export class TaskForm {
   private readonly fb = inject(FormBuilder);
   private readonly notificationService = inject(NotificationService);
+  private readonly injector = inject(Injector);
   private readonly instanceId = `task-form-${nextFormInstanceId++}`;
 
   readonly initialTask = input<Task | null>(null);
@@ -61,12 +83,15 @@ export class TaskForm {
   private readonly descriptionInputRef = viewChild<ElementRef<HTMLTextAreaElement>>('descriptionInput');
   private readonly dueDateInputRef = viewChild<ElementRef<HTMLInputElement>>('dueDateInput');
   private readonly statusField = viewChild(SelectField);
+  private readonly addSubtaskButtonRef = viewChild<ElementRef<HTMLButtonElement>>('addSubtaskButton');
+  private readonly subtaskTitleInputs = viewChildren<ElementRef<HTMLInputElement>>('subtaskTitleInput');
 
   protected readonly form = this.fb.nonNullable.group({
     title: ['', [Validators.required, Validators.minLength(3), duplicateTitleValidator(() => this.existingTitles())]],
     description: ['', [Validators.maxLength(500)]],
     status: ['', [Validators.required]],
     dueDate: [''],
+    subtasks: this.fb.array<SubtaskGroup>([]),
   });
 
   constructor() {
@@ -75,12 +100,13 @@ export class TaskForm {
     // editing task B on the same board), so a one-time read would leave stale form values.
     effect(() => {
       const task = this.initialTask();
-      this.form.setValue({
+      this.form.patchValue({
         title: task?.title ?? '',
         description: task?.description ?? '',
         status: task?.status ?? '',
         dueDate: task?.dueDate ?? '',
       });
+      this.resetSubtasks(task?.subtasks ?? []);
       this.form.markAsPristine();
       this.status.set(task?.status ?? '');
     });
@@ -118,6 +144,35 @@ export class TaskForm {
     this.form.controls.status.markAsTouched();
   }
 
+  protected subtaskErrorId(index: number): string {
+    return `${this.instanceId}-subtask-${index}-error`;
+  }
+
+  protected addSubtask(): void {
+    this.form.controls.subtasks.push(this.createSubtaskGroup());
+    // push() only updates the array's value — like setStatus() above, a programmatic structural
+    // change doesn't go through the UI-driven path that marks a control dirty automatically.
+    this.form.controls.subtasks.markAsDirty();
+
+    // The new row doesn't exist in the DOM yet at this point in the click handler; focus it once
+    // the next render has actually created it, so the user can start typing immediately.
+    afterNextRender(
+      () => {
+        const inputs = this.subtaskTitleInputs();
+        inputs[inputs.length - 1]?.nativeElement.focus();
+      },
+      { injector: this.injector },
+    );
+  }
+
+  protected removeSubtask(index: number): void {
+    this.form.controls.subtasks.removeAt(index);
+    this.form.controls.subtasks.markAsDirty();
+    // The removed row's own "Remove" button — wherever focus was — no longer exists; without
+    // this, focus would silently drop to <body>, disorienting keyboard/screen-reader users.
+    this.addSubtaskButtonRef()?.nativeElement.focus();
+  }
+
   protected submit(): void {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
@@ -125,9 +180,31 @@ export class TaskForm {
       this.focusFirstInvalidField();
       return;
     }
-    const { title, description, status, dueDate } = this.form.getRawValue();
-    this.save.emit({ title: title.trim(), description: description.trim(), status: status as Task['status'], dueDate });
+    const { title, description, status, dueDate, subtasks } = this.form.getRawValue();
+    this.save.emit({
+      title: title.trim(),
+      description: description.trim(),
+      status: status as Task['status'],
+      dueDate,
+      subtasks: subtasks.map((subtask) => ({ ...subtask, title: subtask.title.trim() })),
+    });
     this.form.markAsPristine();
+  }
+
+  private createSubtaskGroup(subtask?: Subtask): SubtaskGroup {
+    return this.fb.nonNullable.group({
+      id: this.fb.nonNullable.control(subtask?.id ?? `subtask-${nextSubtaskSuffix++}`),
+      title: this.fb.nonNullable.control(subtask?.title ?? '', [Validators.required]),
+      completed: this.fb.nonNullable.control(subtask?.completed ?? false),
+    });
+  }
+
+  private resetSubtasks(subtasks: Subtask[]): void {
+    const array = this.form.controls.subtasks;
+    array.clear({ emitEvent: false });
+    for (const subtask of subtasks) {
+      array.push(this.createSubtaskGroup(subtask), { emitEvent: false });
+    }
   }
 
   // Moves focus to the first invalid field, in visual top-to-bottom order, so keyboard and
@@ -135,12 +212,23 @@ export class TaskForm {
   private focusFirstInvalidField(): void {
     if (this.form.controls.title.invalid) {
       this.titleInputRef()?.nativeElement.focus();
-    } else if (this.form.controls.status.invalid) {
+      return;
+    }
+    if (this.form.controls.status.invalid) {
       this.statusField()?.focus();
-    } else if (this.form.controls.description.invalid) {
+      return;
+    }
+    if (this.form.controls.description.invalid) {
       this.descriptionInputRef()?.nativeElement.focus();
-    } else if (this.form.controls.dueDate.invalid) {
+      return;
+    }
+    if (this.form.controls.dueDate.invalid) {
       this.dueDateInputRef()?.nativeElement.focus();
+      return;
+    }
+    const invalidIndex = this.form.controls.subtasks.controls.findIndex((group) => group.invalid);
+    if (invalidIndex !== -1) {
+      this.subtaskTitleInputs()[invalidIndex]?.nativeElement.focus();
     }
   }
 }

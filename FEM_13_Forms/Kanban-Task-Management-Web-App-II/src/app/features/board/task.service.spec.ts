@@ -37,7 +37,7 @@ describe('TaskService', () => {
 
   describe('addTask', () => {
     it('appends a new task to the board with a generated id', () => {
-      const added = service.addTask('roadmap', { title: 'New task', description: '', status: 'todo', dueDate: '' });
+      const added = service.addTask('roadmap', { title: 'New task', description: '', status: 'todo', dueDate: '', subtasks: [] });
 
       expect(added.id).toBeTruthy();
       expect(service.getTasks('roadmap').map((task) => task.id)).toContain(added.id);
@@ -46,14 +46,14 @@ describe('TaskService', () => {
     it('does not affect tasks on other boards', () => {
       const before = service.getTasks('platform-launch');
 
-      service.addTask('roadmap', { title: 'New task', description: '', status: 'todo', dueDate: '' });
+      service.addTask('roadmap', { title: 'New task', description: '', status: 'todo', dueDate: '', subtasks: [] });
 
       expect(service.getTasks('platform-launch')).toEqual(before);
     });
 
     it('generates distinct ids for two tasks with the same title', () => {
-      const first = service.addTask('roadmap', { title: 'Duplicate', description: '', status: 'todo', dueDate: '' });
-      const second = service.addTask('roadmap', { title: 'Duplicate', description: '', status: 'todo', dueDate: '' });
+      const first = service.addTask('roadmap', { title: 'Duplicate', description: '', status: 'todo', dueDate: '', subtasks: [] });
+      const second = service.addTask('roadmap', { title: 'Duplicate', description: '', status: 'todo', dueDate: '', subtasks: [] });
 
       expect(first.id).not.toBe(second.id);
     });

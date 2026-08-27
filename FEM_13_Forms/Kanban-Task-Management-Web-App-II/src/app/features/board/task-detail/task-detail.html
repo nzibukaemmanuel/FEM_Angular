@@ -10,6 +10,21 @@
     @if (t.dueDate) {
       <p class="task-detail-card__due-date">Due {{ t.dueDate }}</p>
     }
+    @if (t.subtasks.length > 0) {
+      <div class="task-detail-card__subtasks">
+        <p class="task-detail-card__subtasks-summary">
+          Subtasks ({{ completedSubtaskCount() }}/{{ t.subtasks.length }})
+        </p>
+        <ul class="task-detail-card__subtask-list">
+          @for (subtask of t.subtasks; track subtask.id) {
+            <li>
+              <input type="checkbox" [checked]="subtask.completed" disabled [attr.aria-label]="subtask.title" />
+              <span [class.done]="subtask.completed">{{ subtask.title }}</span>
+            </li>
+          }
+        </ul>
+      </div>
+    }
   </div>
   <a class="btn" [routerLink]="['edit']">Edit task</a>
 } @else {
