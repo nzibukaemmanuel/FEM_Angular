@@ -37,6 +37,32 @@ describe('SelectField', () => {
     expect(fixture.nativeElement.querySelector('.select-listbox')).toBeNull();
   });
 
+  it('has no labelledby/required/invalid/describedby attributes by default', () => {
+    expect(trigger().hasAttribute('aria-labelledby')).toBe(false);
+    expect(trigger().hasAttribute('aria-required')).toBe(false);
+    expect(trigger().hasAttribute('aria-invalid')).toBe(false);
+    expect(trigger().hasAttribute('aria-describedby')).toBe(false);
+  });
+
+  it('forwards ariaLabelledby/ariaRequired/ariaInvalid/ariaDescribedby to the trigger button', () => {
+    fixture.componentRef.setInput('ariaLabelledby', 'ext-label');
+    fixture.componentRef.setInput('ariaRequired', true);
+    fixture.componentRef.setInput('ariaInvalid', true);
+    fixture.componentRef.setInput('ariaDescribedby', 'ext-error');
+    fixture.detectChanges();
+
+    expect(trigger().getAttribute('aria-labelledby')).toBe('ext-label');
+    expect(trigger().getAttribute('aria-required')).toBe('true');
+    expect(trigger().getAttribute('aria-invalid')).toBe('true');
+    expect(trigger().getAttribute('aria-describedby')).toBe('ext-error');
+  });
+
+  it('focus() moves focus to the trigger button', () => {
+    fixture.componentInstance.focus();
+
+    expect(document.activeElement).toBe(trigger());
+  });
+
   it('opens the listbox when the trigger is clicked', () => {
     trigger().click();
     fixture.detectChanges();

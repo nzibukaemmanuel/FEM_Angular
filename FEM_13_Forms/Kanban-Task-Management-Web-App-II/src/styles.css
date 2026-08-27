@@ -220,6 +220,23 @@ textarea:disabled {
   cursor: not-allowed;
 }
 
+/* Paired with the field's own error text + aria-invalid, never the only signal something's wrong. */
+input[type='text'][aria-invalid='true'],
+input[type='password'][aria-invalid='true'],
+input[type='date'][aria-invalid='true'],
+textarea[aria-invalid='true'],
+.select-trigger[aria-invalid='true'] {
+  border-color: var(--color-status-error-text);
+}
+
+input[type='text'][aria-invalid='true']:focus-visible,
+input[type='password'][aria-invalid='true']:focus-visible,
+input[type='date'][aria-invalid='true']:focus-visible,
+textarea[aria-invalid='true']:focus-visible,
+.select-trigger[aria-invalid='true']:focus-visible {
+  outline-color: var(--color-status-error-text);
+}
+
 /* Lists reset — component styles opt back into markers where needed */
 ul {
   list-style: none;

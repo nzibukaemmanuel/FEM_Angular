@@ -25,6 +25,12 @@ export class SelectField {
   readonly options = input.required<SelectFieldOption[]>();
   readonly value = input.required<string>();
   readonly ariaLabel = input<string | null>(null);
+  // Prefer this over ariaLabel when there's already a visible label element on the page —
+  // it points assistive tech at that real text instead of duplicating it in a hidden string.
+  readonly ariaLabelledby = input<string | null>(null);
+  readonly ariaRequired = input<boolean | null>(null);
+  readonly ariaInvalid = input<boolean | null>(null);
+  readonly ariaDescribedby = input<string | null>(null);
 
   readonly valueChange = output<string>();
 
@@ -43,6 +49,10 @@ export class SelectField {
 
   protected optionId(value: string): string {
     return `${this.instanceId}-option-${value}`;
+  }
+
+  focus(): void {
+    (this.host.nativeElement.querySelector('.select-trigger') as HTMLButtonElement | null)?.focus();
   }
 
   protected toggle(): void {

@@ -61,6 +61,11 @@ describe('TaskForm', () => {
     expect(component).toBeTruthy();
   });
 
+  it('visibly marks the required fields and explains what the marker means', () => {
+    expect(fixture.nativeElement.textContent).toContain('are required');
+    expect(fixture.nativeElement.querySelectorAll('.required-indicator').length).toBe(2); // title + status
+  });
+
   it('starts blank and pristine, with status unselected, when no initial task is given', () => {
     expect(titleInput().value).toBe('');
     expect(descriptionInput().value).toBe('');
@@ -154,6 +159,46 @@ describe('TaskForm', () => {
     expect(fixture.nativeElement.querySelector('.field-error')?.textContent).toContain('3 characters');
   });
 
+  it('has no aria-invalid/aria-describedby on the title until it is touched and invalid', () => {
+    expect(titleInput().hasAttribute('aria-invalid')).toBe(false);
+    expect(titleInput().hasAttribute('aria-describedby')).toBe(false);
+  });
+
+  it('marks the title aria-invalid and points aria-describedby at its error message once touched', () => {
+    touchTitle(); // empty title, touched -> invalid
+
+    const errorId = fixture.nativeElement.querySelector('.field-error')?.id;
+    expect(titleInput().getAttribute('aria-invalid')).toBe('true');
+    expect(titleInput().getAttribute('aria-describedby')).toBe(errorId);
+    expect(errorId).toBeTruthy();
+  });
+
+  it('marks the status trigger aria-invalid and points aria-describedby at its error message once touched', () => {
+    submitForm(); // markAllAsTouched() touches every control, including status
+
+    const statusError = Array.from(fixture.nativeElement.querySelectorAll('.field-error')).find((el) =>
+      (el as HTMLElement).textContent?.includes('Status is required'),
+    ) as HTMLElement;
+    expect(statusTrigger().getAttribute('aria-invalid')).toBe('true');
+    expect(statusTrigger().getAttribute('aria-describedby')).toBe(statusError.id);
+  });
+
+  it('moves focus to the title input when only the title is invalid', () => {
+    pickStatus(1); // valid status, so title is the only problem
+
+    submitForm();
+
+    expect(document.activeElement).toBe(titleInput());
+  });
+
+  it('moves focus to the status field when only the status is invalid', () => {
+    setTitle('Valid title');
+
+    submitForm();
+
+    expect(document.activeElement).toBe(statusTrigger());
+  });
+
   it('rejects a description over 500 characters', () => {
     descriptionInput().value = 'x'.repeat(501);
     descriptionInput().dispatchEvent(new Event('input'));
@@ -211,5 +256,27 @@ describe('TaskForm', () => {
     (fixture.nativeElement.querySelector('.task-form__actions button[type="button"]') as HTMLButtonElement).click();
 
     expect(emitted).toEqual([true]);
+  });
+
+  describe('beforeunload — the browser-level backstop for canDeactivate', () => {
+    function fireBeforeUnload(): Event {
+      const event = new Event('beforeunload', { cancelable: true });
+      window.dispatchEvent(event);
+      return event;
+    }
+
+    it('does not warn on tab close/refresh when the form is pristine', () => {
+      const event = fireBeforeUnload();
+
+      expect(event.defaultPrevented).toBe(false);
+    });
+
+    it('warns on tab close/refresh when the form has unsaved changes', () => {
+      setTitle('New title');
+
+      const event = fireBeforeUnload();
+
+      expect(event.defaultPrevented).toBe(true);
+    });
   });
 });

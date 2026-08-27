@@ -1,11 +1,20 @@
 <form [formGroup]="form" (ngSubmit)="submit()" class="task-form">
+  <p class="task-form__required-note">Fields marked <span aria-hidden="true">*</span> are required.</p>
+
   <label>
-    Title
-    <input type="text" formControlName="title" />
+    Title <span class="required-indicator" aria-hidden="true">*</span>
+    <input
+      #titleInput
+      type="text"
+      formControlName="title"
+      aria-required="true"
+      [attr.aria-invalid]="form.controls.title.invalid && form.controls.title.touched ? true : null"
+      [attr.aria-describedby]="form.controls.title.invalid && form.controls.title.touched ? titleErrorId : null"
+    />
   </label>
 
   @if (form.controls.title.invalid && form.controls.title.touched) {
-    <p class="field-error" role="alert">
+    <p class="field-error" role="alert" [id]="titleErrorId">
       @if (form.controls.title.hasError('required')) {
         Title is required.
       } @else if (form.controls.title.hasError('minlength')) {
@@ -18,32 +27,44 @@
 
   <label>
     Description
-    <textarea formControlName="description" rows="4"></textarea>
+    <textarea
+      #descriptionInput
+      formControlName="description"
+      rows="4"
+      maxlength="500"
+      [attr.aria-invalid]="form.controls.description.invalid && form.controls.description.touched ? true : null"
+      [attr.aria-describedby]="
+        form.controls.description.invalid && form.controls.description.touched ? descriptionErrorId : null
+      "
+    ></textarea>
   </label>
 
   @if (form.controls.description.invalid && form.controls.description.touched) {
-    <p class="field-error" role="alert">Description must be 500 characters or fewer.</p>
+    <p class="field-error" role="alert" [id]="descriptionErrorId">Description must be 500 characters or fewer.</p>
   }
 
   <div class="task-form__row">
     <label>
-      Status
+      <span [id]="statusLabelId">Status <span class="required-indicator" aria-hidden="true">*</span></span>
       <app-select-field
         [options]="statusOptions"
         [value]="status()"
-        ariaLabel="Task status"
+        [ariaLabelledby]="statusLabelId"
+        [ariaRequired]="true"
+        [ariaInvalid]="form.controls.status.invalid && form.controls.status.touched ? true : null"
+        [ariaDescribedby]="form.controls.status.invalid && form.controls.status.touched ? statusErrorId : null"
         (valueChange)="setStatus($event)"
       />
     </label>
 
     <label>
       Due date
-      <input type="date" formControlName="dueDate" />
+      <input #dueDateInput type="date" formControlName="dueDate" />
     </label>
   </div>
 
   @if (form.controls.status.invalid && form.controls.status.touched) {
-    <p class="field-error" role="alert">Status is required.</p>
+    <p class="field-error" role="alert" [id]="statusErrorId">Status is required.</p>
   }
 
   @if (isDirty()) {

@@ -14,6 +14,17 @@
   max-width: none;
 }
 
+.task-form__required-note {
+  margin: 0;
+  font-size: var(--size-small);
+  color: var(--color-muted-text);
+}
+
+.required-indicator {
+  margin-left: 2px;
+  color: var(--color-primary);
+}
+
 .task-form__row {
   display: flex;
   flex-wrap: wrap;

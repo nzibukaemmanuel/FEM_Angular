@@ -8,6 +8,10 @@
     [attr.aria-controls]="listboxId"
     [attr.aria-activedescendant]="isOpen() ? activeOptionId() : null"
     [attr.aria-label]="ariaLabel()"
+    [attr.aria-labelledby]="ariaLabelledby()"
+    [attr.aria-required]="ariaRequired()"
+    [attr.aria-invalid]="ariaInvalid()"
+    [attr.aria-describedby]="ariaDescribedby()"
     (click)="toggle()"
     (keydown)="onTriggerKeydown($event)"
   >
