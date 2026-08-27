@@ -38,6 +38,12 @@ export class EditTask implements ComponentWithUnsavedChanges {
     this.goToTask();
   }
 
+  // Used by the "task not found" fallback (e.g. a stale edit link): goes straight to the board
+  // rather than to the task detail route, which would 404 on the same missing id.
+  goToBoard(): void {
+    this.router.navigate(['/boards', this.boardId()]);
+  }
+
   private goToTask(): void {
     this.router.navigate(['/boards', this.boardId(), 'tasks', this.taskId()]);
   }

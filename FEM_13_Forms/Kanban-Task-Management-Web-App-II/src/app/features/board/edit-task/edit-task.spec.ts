@@ -67,4 +67,25 @@ describe('EditTask', () => {
 
     expect(navigateSpy).toHaveBeenCalledWith(['/boards', 'roadmap', 'tasks', 'q1-goals']);
   });
+
+  describe('when the task id does not exist on the board', () => {
+    beforeEach(() => {
+      fixture.componentRef.setInput('taskId', 'not-a-real-task');
+      fixture.detectChanges();
+    });
+
+    it('shows a "not found" message with no task form', () => {
+      expect(fixture.nativeElement.querySelector('.empty-state')?.textContent).toContain('not found');
+      expect(fixture.nativeElement.querySelector('app-task-form')).toBeNull();
+    });
+
+    it('offers a way back to the board, straight there rather than via the (also missing) task detail page', () => {
+      const router = TestBed.inject(Router);
+      const navigateSpy = vi.spyOn(router, 'navigate').mockResolvedValue(true);
+
+      (fixture.nativeElement.querySelector('button') as HTMLButtonElement).click();
+
+      expect(navigateSpy).toHaveBeenCalledWith(['/boards', 'roadmap']);
+    });
+  });
 });
