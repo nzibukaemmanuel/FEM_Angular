@@ -185,7 +185,9 @@ label {
 }
 
 input[type='text'],
-input[type='password'] {
+input[type='password'],
+input[type='date'],
+textarea {
   font: inherit;
   font-size: var(--size-small);
   color: var(--color-text);
@@ -196,13 +198,22 @@ input[type='password'] {
   transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
 }
 
+textarea {
+  resize: vertical;
+  min-height: 5em;
+}
+
 input[type='text']:hover,
-input[type='password']:hover {
+input[type='password']:hover,
+input[type='date']:hover,
+textarea:hover {
   border-color: var(--color-muted-decorative);
 }
 
 input[type='text']:disabled,
-input[type='password']:disabled {
+input[type='password']:disabled,
+input[type='date']:disabled,
+textarea:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }

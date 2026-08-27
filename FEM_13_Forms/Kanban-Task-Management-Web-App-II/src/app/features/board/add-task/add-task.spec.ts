@@ -32,7 +32,7 @@ describe('AddTask', () => {
     const navigateSpy = vi.spyOn(router, 'navigate').mockResolvedValue(true);
     const taskService = TestBed.inject(TaskService);
 
-    component.onSave({ title: 'New task', status: 'todo' });
+    component.onSave({ title: 'New task', description: 'Some details.', status: 'todo', dueDate: '2026-09-01' });
 
     expect(taskService.getTasks('roadmap').some((task) => task.title === 'New task')).toBe(true);
     expect(navigateSpy).toHaveBeenCalledWith(['/boards', 'roadmap']);

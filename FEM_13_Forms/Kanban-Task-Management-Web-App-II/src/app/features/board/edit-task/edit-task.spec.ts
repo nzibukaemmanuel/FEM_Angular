@@ -33,7 +33,12 @@ describe('EditTask', () => {
     const navigateSpy = vi.spyOn(router, 'navigate').mockResolvedValue(true);
     const taskService = TestBed.inject(TaskService);
 
-    component.onSave({ title: 'Set Q1 goals (revised)', status: 'done' });
+    component.onSave({
+      title: 'Set Q1 goals (revised)',
+      description: 'Revised scope after planning.',
+      status: 'done',
+      dueDate: '2026-09-20',
+    });
 
     expect(taskService.getTask('roadmap', 'q1-goals')?.title).toBe('Set Q1 goals (revised)');
     expect(navigateSpy).toHaveBeenCalledWith(['/boards', 'roadmap', 'tasks', 'q1-goals']);

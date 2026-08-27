@@ -15,14 +15,30 @@
   }
 
   <label>
-    Status
-    <app-select-field
-      [options]="statusOptions"
-      [value]="status()"
-      ariaLabel="Task status"
-      (valueChange)="setStatus($event)"
-    />
+    Description
+    <textarea formControlName="description" rows="4"></textarea>
   </label>
+
+  @if (form.controls.description.invalid && form.controls.description.touched) {
+    <p class="field-error" role="alert">Description must be 500 characters or fewer.</p>
+  }
+
+  <div class="task-form__row">
+    <label>
+      Status
+      <app-select-field
+        [options]="statusOptions"
+        [value]="status()"
+        ariaLabel="Task status"
+        (valueChange)="setStatus($event)"
+      />
+    </label>
+
+    <label>
+      Due date
+      <input type="date" formControlName="dueDate" />
+    </label>
+  </div>
 
   @if (isDirty()) {
     <p class="unsaved-hint" role="status">You have unsaved changes.</p>

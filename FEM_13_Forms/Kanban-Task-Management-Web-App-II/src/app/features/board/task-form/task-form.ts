@@ -5,7 +5,9 @@ import { Task } from '../board-data';
 
 export interface TaskFormValue {
   title: string;
+  description: string;
   status: Task['status'];
+  dueDate: string;
 }
 
 const STATUS_OPTIONS: SelectFieldOption[] = [
@@ -38,6 +40,8 @@ export class TaskForm {
 
   protected readonly form = this.fb.nonNullable.group({
     title: ['', [Validators.required, Validators.minLength(3)]],
+    description: ['', [Validators.maxLength(500)]],
+    dueDate: [''],
   });
 
   constructor() {
@@ -46,7 +50,11 @@ export class TaskForm {
     // editing task B on the same board), so a one-time read would leave stale form values.
     effect(() => {
       const task = this.initialTask();
-      this.form.setValue({ title: task?.title ?? '' });
+      this.form.setValue({
+        title: task?.title ?? '',
+        description: task?.description ?? '',
+        dueDate: task?.dueDate ?? '',
+      });
       this.form.markAsPristine();
       this.status.set(task?.status ?? 'todo');
       this.lastSavedStatus = task?.status ?? 'todo';
@@ -66,8 +74,8 @@ export class TaskForm {
       this.form.markAllAsTouched();
       return;
     }
-    const { title } = this.form.getRawValue();
-    this.save.emit({ title: title.trim(), status: this.status() });
+    const { title, description, dueDate } = this.form.getRawValue();
+    this.save.emit({ title: title.trim(), description: description.trim(), status: this.status(), dueDate });
     this.form.markAsPristine();
     this.lastSavedStatus = this.status();
   }

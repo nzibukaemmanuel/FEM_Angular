@@ -1,8 +1,7 @@
 .task-detail-card {
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--space-6);
+  flex-direction: column;
+  gap: var(--space-4);
   padding: var(--space-8);
   margin-bottom: var(--space-8);
   background: var(--color-card);
@@ -10,8 +9,27 @@
   box-shadow: var(--shadow-resting);
 }
 
+.task-detail-card__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-6);
+}
+
 .task-detail-card h2 {
   margin: 0;
+}
+
+.task-detail-card__description {
+  margin: 0;
+  color: var(--color-text-secondary);
+}
+
+.task-detail-card__due-date {
+  margin: 0;
+  font-size: var(--size-small);
+  font-weight: 600;
+  color: var(--color-muted-text);
 }
 
 .task-detail-card + .btn {

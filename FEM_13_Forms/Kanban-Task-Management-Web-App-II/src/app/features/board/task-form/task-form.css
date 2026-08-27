@@ -1,13 +1,27 @@
 .task-form {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: stretch;
   gap: var(--space-6);
-  max-width: 400px;
+  max-width: 480px;
   padding: var(--space-8);
   background: var(--color-card);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-resting);
+}
+
+.task-form label {
+  max-width: none;
+}
+
+.task-form__row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-6);
+}
+
+.task-form__row label {
+  flex: 1 1 160px;
 }
 
 .task-form__actions {
