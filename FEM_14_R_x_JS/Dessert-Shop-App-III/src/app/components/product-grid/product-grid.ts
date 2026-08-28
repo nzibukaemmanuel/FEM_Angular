@@ -1,8 +1,19 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, ElementRef, HostListener, computed, inject, input, output, signal } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  HostListener,
+  OnDestroy,
+  computed,
+  inject,
+  input,
+  output,
+  signal,
+} from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
-import { Observable, combineLatest, map } from 'rxjs';
+import { Observable, Subject, combineLatest, filter, map, switchMap, take, takeUntil, tap } from 'rxjs';
 import { CartItem, Dessert, DessertCategory } from '../../models/dessert.model';
+import { LoggingService } from '../../services/logging.service';
 import { ProductService } from '../../services/product.service';
 import { ProductCard } from '../product-card/product-card';
 
@@ -20,9 +31,13 @@ const SORT_OPTIONS: SortOption[] = [
   templateUrl: './product-grid.html',
   styleUrl: './product-grid.css',
 })
-export class ProductGrid {
+export class ProductGrid implements OnDestroy {
   private readonly productService = inject(ProductService);
+  private readonly logger = inject(LoggingService);
   private readonly elementRef = inject(ElementRef<HTMLElement>);
+
+  // Completed in ngOnDestroy to unsubscribe the manual (non-async-pipe) subscriptions below via takeUntil.
+  private readonly destroy$ = new Subject<void>();
 
   readonly cartItems = input<CartItem[]>([]);
 
@@ -34,6 +49,8 @@ export class ProductGrid {
   protected readonly activeCategory = signal<DessertCategory>('All');
   protected readonly sortDirection = signal<'asc' | 'desc' | null>(null);
   protected readonly searchQuery = signal('');
+  protected readonly minPrice = signal(0);
+  protected readonly maxPrice = signal(15);
 
   protected readonly sortOptions = SORT_OPTIONS;
   protected readonly sortOpen = signal(false);
@@ -41,20 +58,58 @@ export class ProductGrid {
     () => this.sortOptions.find((option) => option.value === (this.sortDirection() ?? ''))?.label ?? 'Default',
   );
 
-  // Combines the (Observable) product catalogue with the (signal-backed) filter controls into one stream;
-  // any change to any of the four sources re-runs the pipeline and pushes a new list to the template.
+  // Re-fetches (simulated) whenever the category changes; switchMap cancels a still-in-flight fetch for a
+  // stale category the moment a newer one is selected, so an old response can never overwrite a new one.
+  private readonly categoryProducts$: Observable<Dessert[]> = toObservable(this.activeCategory).pipe(
+    switchMap((category) => this.productService.fetchByCategory$(category)),
+  );
+
+  // Combines the category-scoped fetch with the remaining (signal-backed) filter controls; any change to
+  // any source re-runs the pipeline and pushes a new list to the template via the async pipe.
   protected readonly desserts$: Observable<Dessert[]> = combineLatest([
-    this.productService.products$,
-    toObservable(this.activeCategory),
+    this.categoryProducts$,
     toObservable(this.searchQuery),
     toObservable(this.sortDirection),
+    toObservable(this.minPrice),
+    toObservable(this.maxPrice),
   ]).pipe(
-    map(([products, category, query, direction]) => {
-      const byCategory = this.productService.filterByCategory(products, category);
-      const bySearch = this.productService.searchByName(byCategory, query);
+    filter(([, , , min, max]) => min <= max), // ignore a momentarily-inverted range instead of showing an empty grid
+    map(([byCategory, query, direction, min, max]) => {
+      const byPrice = this.productService.filterByPriceRange(byCategory, min, max);
+      const bySearch = this.productService.searchByName(byPrice, query);
       return direction ? this.productService.sortByPrice(bySearch, direction) : bySearch;
     }),
   );
+
+  constructor() {
+    // take(1): log the catalogue exactly once on load, even though products$ is a long-lived BehaviorSubject
+    // that could keep emitting — the subscription completes itself after the first value.
+    this.productService.products$.pipe(take(1)).subscribe((products) =>
+      this.logger.info('Catalogue loaded', { count: products.length }),
+    );
+
+    // A manual subscription (not an async pipe) for a pure side effect — takeUntil(destroy$) is what stops
+    // it from outliving the component.
+    toObservable(this.activeCategory)
+      .pipe(
+        tap((category) => this.logger.info('Category selected', { category })),
+        takeUntil(this.destroy$),
+      )
+      .subscribe();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  protected onMinPriceChange(value: number): void {
+    this.minPrice.set(Number.isFinite(value) ? value : 0);
+  }
+
+  protected onMaxPriceChange(value: number): void {
+    this.maxPrice.set(Number.isFinite(value) ? value : 0);
+  }
 
   private readonly quantities = computed(() => {
     const quantityMap = new Map<string, number>();

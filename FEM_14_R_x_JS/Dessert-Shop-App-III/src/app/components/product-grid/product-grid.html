@@ -32,6 +32,31 @@
       }
     </div>
 
+    <div class="price-filter">
+      <span id="price-filter-label" class="sort-label">Price range</span>
+      <label for="min-price" class="visually-hidden">Minimum price</label>
+      <input
+        id="min-price"
+        type="number"
+        class="price-input"
+        min="0"
+        step="0.25"
+        [value]="minPrice()"
+        (input)="onMinPriceChange($any($event.target).valueAsNumber)"
+      />
+      <span class="price-sep" aria-hidden="true">–</span>
+      <label for="max-price" class="visually-hidden">Maximum price</label>
+      <input
+        id="max-price"
+        type="number"
+        class="price-input"
+        min="0"
+        step="0.25"
+        [value]="maxPrice()"
+        (input)="onMaxPriceChange($any($event.target).valueAsNumber)"
+      />
+    </div>
+
     <div class="sort">
       <span id="sort-label" class="sort-label">Sort by price</span>
       <div class="sort-dropdown">

@@ -73,6 +73,33 @@
   color: var(--color-text-secondary);
 }
 
+.price-filter {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--size-small);
+  color: var(--color-text-secondary);
+}
+
+.price-input {
+  width: 64px;
+  padding: 7px 10px;
+  border-radius: 8px;
+  border: 1px solid color-mix(in srgb, var(--color-secondary) 40%, transparent);
+  background: var(--color-white);
+  color: var(--color-text);
+  font-size: var(--size-small);
+}
+
+.price-input:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.price-sep {
+  color: var(--color-text-secondary);
+}
+
 .sort-dropdown {
   position: relative;
 }
