@@ -11,7 +11,19 @@ import {
   signal,
 } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
-import { Observable, Subject, combineLatest, filter, map, switchMap, take, takeUntil, tap } from 'rxjs';
+import {
+  Observable,
+  Subject,
+  combineLatest,
+  debounceTime,
+  distinctUntilChanged,
+  filter,
+  map,
+  switchMap,
+  take,
+  takeUntil,
+  tap,
+} from 'rxjs';
 import { CartItem, Dessert, DessertCategory } from '../../models/dessert.model';
 import { LoggingService } from '../../services/logging.service';
 import { ProductService } from '../../services/product.service';
@@ -64,11 +76,18 @@ export class ProductGrid implements OnDestroy {
     switchMap((category) => this.productService.fetchByCategory$(category)),
   );
 
+  // Waits for a pause in typing before filtering, and skips re-filtering when the value hasn't actually
+  // changed (e.g. a keystroke that resolves to the same trimmed text, or focus/blur re-emitting the signal).
+  private readonly debouncedSearch$: Observable<string> = toObservable(this.searchQuery).pipe(
+    debounceTime(300),
+    distinctUntilChanged(),
+  );
+
   // Combines the category-scoped fetch with the remaining (signal-backed) filter controls; any change to
   // any source re-runs the pipeline and pushes a new list to the template via the async pipe.
   protected readonly desserts$: Observable<Dessert[]> = combineLatest([
     this.categoryProducts$,
-    toObservable(this.searchQuery),
+    this.debouncedSearch$,
     toObservable(this.sortDirection),
     toObservable(this.minPrice),
     toObservable(this.maxPrice),
