@@ -14,6 +14,7 @@ import { toObservable } from '@angular/core/rxjs-interop';
 import {
   Observable,
   Subject,
+  Subscription,
   combineLatest,
   debounceTime,
   distinctUntilChanged,
@@ -51,6 +52,10 @@ export class ProductGrid implements OnDestroy {
 
   // Completed in ngOnDestroy to unsubscribe the manual (non-async-pipe) subscriptions below via takeUntil.
   private readonly destroy$ = new Subject<void>();
+
+  // A Subscription object, torn down explicitly in ngOnDestroy — the third cleanup style, alongside
+  // takeUntil(destroy$) and the template's async pipe used elsewhere in this component.
+  private readonly catalogueLoadedSubscription: Subscription;
 
   readonly cartItems = input<CartItem[]>([]);
 
@@ -116,8 +121,9 @@ export class ProductGrid implements OnDestroy {
 
   constructor() {
     // take(1): log the catalogue exactly once on load, even though products$ is a long-lived BehaviorSubject
-    // that could keep emitting — the subscription completes itself after the first value.
-    this.productService.products$.pipe(take(1)).subscribe((products) =>
+    // that could keep emitting — the subscription completes itself after the first value. Still stored and
+    // unsubscribed explicitly in ngOnDestroy, so cleanup never depends on the source completing on its own.
+    this.catalogueLoadedSubscription = this.productService.products$.pipe(take(1)).subscribe((products) =>
       this.logger.info('Catalogue loaded', { count: products.length }),
     );
 
@@ -132,6 +138,7 @@ export class ProductGrid implements OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.catalogueLoadedSubscription.unsubscribe();
     this.destroy$.next();
     this.destroy$.complete();
   }
