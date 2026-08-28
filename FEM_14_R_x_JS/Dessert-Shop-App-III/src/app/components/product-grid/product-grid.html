@@ -93,10 +93,10 @@
   </div>
 
   <div class="grid">
-    @for (dessert of (desserts$ | async) ?? []; track dessert.id) {
+    @for (entry of (dessertsWithQuantity$ | async) ?? []; track entry.dessert.id) {
       <app-product-card
-        [dessert]="dessert"
-        [quantity]="quantityOf(dessert.id)"
+        [dessert]="entry.dessert"
+        [quantity]="entry.quantity"
         (add)="add.emit($event)"
         (increment)="increment.emit($event)"
         (decrement)="decrement.emit($event)"

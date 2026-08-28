@@ -30,6 +30,7 @@ import { ProductService } from '../../services/product.service';
 import { ProductCard } from '../product-card/product-card';
 
 type SortOption = { value: 'asc' | 'desc' | ''; label: string };
+type DessertWithQuantity = { dessert: Dessert; quantity: number };
 
 const SORT_OPTIONS: SortOption[] = [
   { value: '', label: 'Default' },
@@ -100,6 +101,19 @@ export class ProductGrid implements OnDestroy {
     }),
   );
 
+  // Synchronizes two independent sources — the filtered product list and the cart — into one view model,
+  // so adding/removing/adjusting an item in the cart re-emits here and the grid's quantity badges update
+  // automatically, with no manual change-detection call.
+  protected readonly dessertsWithQuantity$: Observable<DessertWithQuantity[]> = combineLatest([
+    this.desserts$,
+    toObservable(this.cartItems),
+  ]).pipe(
+    map(([desserts, cartItems]) => {
+      const quantityById = new Map(cartItems.map((item) => [item.dessert.id, item.quantity]));
+      return desserts.map((dessert) => ({ dessert, quantity: quantityById.get(dessert.id) ?? 0 }));
+    }),
+  );
+
   constructor() {
     // take(1): log the catalogue exactly once on load, even though products$ is a long-lived BehaviorSubject
     // that could keep emitting — the subscription completes itself after the first value.
@@ -128,18 +142,6 @@ export class ProductGrid implements OnDestroy {
 
   protected onMaxPriceChange(value: number): void {
     this.maxPrice.set(Number.isFinite(value) ? value : 0);
-  }
-
-  private readonly quantities = computed(() => {
-    const quantityMap = new Map<string, number>();
-    for (const item of this.cartItems()) {
-      quantityMap.set(item.dessert.id, item.quantity);
-    }
-    return quantityMap;
-  });
-
-  protected quantityOf(dessertId: string): number {
-    return this.quantities().get(dessertId) ?? 0;
   }
 
   protected selectCategory(category: DessertCategory): void {
