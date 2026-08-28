@@ -4,18 +4,18 @@
   <a class="skip-link" href="#contact">Skip to Contact</a>
 </nav>
 
-<app-header [totalQuantity]="totalQuantity()" />
+<app-header [totalQuantity]="(totalQuantity$ | async) ?? 0" />
 <main>
   <app-hero />
   <app-product-grid
-    [cartItems]="items()"
+    [cartItems]="(items$ | async) ?? []"
     (add)="addToCart($event)"
     (increment)="incrementItem($event)"
     (decrement)="decrementItem($event)"
   />
   <app-cart-summary
-    [items]="items()"
-    [subtotal]="subtotal()"
+    [items]="(items$ | async) ?? []"
+    [subtotal]="(subtotal$ | async) ?? 0"
     (remove)="removeItem($event)"
     (confirmOrder)="confirmOrder()"
   />
@@ -23,8 +23,8 @@
 <app-footer />
 <app-order-modal
   [orderConfirmed]="orderConfirmed()"
-  [items]="items()"
-  [subtotal]="subtotal()"
+  [items]="(items$ | async) ?? []"
+  [subtotal]="(subtotal$ | async) ?? 0"
   (startNewOrder)="startNewOrder()"
 />
 <app-toast [message]="toastMessage()" />

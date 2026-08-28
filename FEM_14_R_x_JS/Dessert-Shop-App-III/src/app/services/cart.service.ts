@@ -1,4 +1,6 @@
 import { Injectable, computed, effect, inject, signal } from '@angular/core';
+import { toObservable } from '@angular/core/rxjs-interop';
+import { Observable } from 'rxjs';
 import { CartItem, Dessert } from '../models/dessert.model';
 import { LoggingService } from './logging.service';
 import { StorageService } from './storage.service';
@@ -24,6 +26,11 @@ export class CartService {
   readonly totalQuantity = computed(() => this.utility.totalQuantity(this._items()));
 
   readonly subtotal = computed(() => this.utility.subtotal(this._items()));
+
+  // Observable views of the same state, for components that consume streams (async pipe) rather than signals.
+  readonly items$: Observable<CartItem[]> = toObservable(this.items);
+  readonly totalQuantity$: Observable<number> = toObservable(this.totalQuantity);
+  readonly subtotal$: Observable<number> = toObservable(this.subtotal);
 
   constructor() {
     // Keep the cart in localStorage in sync with every change, so a refresh doesn't lose it.

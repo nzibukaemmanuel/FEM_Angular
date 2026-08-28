@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable, map } from 'rxjs';
 import { DESSERTS } from '../data/desserts';
 import { Dessert, DessertCategory } from '../models/dessert.model';
 
@@ -9,16 +10,17 @@ const CATEGORIES: DessertCategory[] = ['All', 'Cakes', 'Pastries', 'Tarts', 'Coo
 export class ProductService {
   readonly categories = CATEGORIES;
 
-  getAll(): Dessert[] {
-    return DESSERTS;
+  // BehaviorSubject seeds subscribers with the current catalogue immediately, then replays future updates —
+  // stands in for a real backend stream (e.g. an HTTP-polled or websocket-fed catalogue) without changing callers.
+  private readonly _products$ = new BehaviorSubject<Dessert[]>(DESSERTS);
+  readonly products$: Observable<Dessert[]> = this._products$.asObservable();
+
+  findById$(dessertId: string): Observable<Dessert | undefined> {
+    return this.products$.pipe(map((products) => products.find((dessert) => dessert.id === dessertId)));
   }
 
-  findById(dessertId: string): Dessert | undefined {
-    return DESSERTS.find((dessert) => dessert.id === dessertId);
-  }
-
-  filterByCategory(category: DessertCategory): Dessert[] {
-    return category === 'All' ? DESSERTS : DESSERTS.filter((dessert) => dessert.category === category);
+  filterByCategory(desserts: Dessert[], category: DessertCategory): Dessert[] {
+    return category === 'All' ? desserts : desserts.filter((dessert) => dessert.category === category);
   }
 
   searchByName(desserts: Dessert[], query: string): Dessert[] {

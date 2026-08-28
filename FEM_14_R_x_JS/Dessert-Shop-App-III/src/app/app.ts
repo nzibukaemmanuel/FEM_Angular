@@ -1,3 +1,4 @@
+import { AsyncPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { CartSummary } from './components/cart-summary/cart-summary';
@@ -12,15 +13,17 @@ import { CartService } from './services/cart.service';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, Header, Hero, ProductGrid, CartSummary, OrderModal, Footer, Toast],
+  imports: [RouterOutlet, Header, Hero, ProductGrid, CartSummary, OrderModal, Footer, Toast, AsyncPipe],
   templateUrl: './app.html',
 })
 export class App {
   private readonly cart = inject(CartService);
 
-  protected readonly items = this.cart.items;
-  protected readonly totalQuantity = this.cart.totalQuantity;
-  protected readonly subtotal = this.cart.subtotal;
+  // Consumed via the async pipe in the template, rather than read as signals, to demonstrate
+  // components reacting to Observable streams exposed by CartService.
+  protected readonly items$ = this.cart.items$;
+  protected readonly totalQuantity$ = this.cart.totalQuantity$;
+  protected readonly subtotal$ = this.cart.subtotal$;
   protected readonly orderConfirmed = this.cart.orderConfirmed;
   protected readonly toastMessage = this.cart.toast;
 
