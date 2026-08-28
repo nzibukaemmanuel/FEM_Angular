@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, map, timer } from 'rxjs';
+import { BehaviorSubject, Observable, catchError, delay, map, of, retry, tap, timer } from 'rxjs';
 import { DESSERTS } from '../data/desserts';
 import { Dessert, DessertCategory } from '../models/dessert.model';
 
 const CATEGORIES: DessertCategory[] = ['All', 'Cakes', 'Pastries', 'Tarts', 'Cookies'];
 const SIMULATED_FETCH_DELAY_MS = 200;
+const SIMULATED_API_DELAY_MS = 500;
 
 // Registered with providedIn: 'root', so Angular creates one shared instance for the whole app.
 @Injectable({ providedIn: 'root' })
@@ -41,6 +42,25 @@ export class ProductService {
         }
         return this.filterByCategory(this._products$.value, category);
       }),
+    );
+  }
+
+  // Bonus: models fetching the catalogue from a remote API — of() stands in for the response payload and
+  // delay() for network latency. Shares the same simulateFailure flag as fetchByCategory$ above, so "the
+  // network is down" consistently affects every simulated call; retry(1) gives it one automatic second
+  // attempt before catchError falls back to whatever the app already has, rather than losing the catalogue.
+  refreshFromApi$(): Observable<Dessert[]> {
+    return of(DESSERTS).pipe(
+      delay(SIMULATED_API_DELAY_MS),
+      map((products) => {
+        if (this._simulateFailure$.value) {
+          throw new Error('Failed to refresh the menu from the server.');
+        }
+        return products;
+      }),
+      retry(1),
+      catchError(() => of(this._products$.value)),
+      tap((products) => this._products$.next(products)),
     );
   }
 

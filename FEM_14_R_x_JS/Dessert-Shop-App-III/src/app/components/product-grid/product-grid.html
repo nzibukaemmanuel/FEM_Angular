@@ -95,6 +95,10 @@
       <input type="checkbox" (change)="onSimulateFailureChange($any($event.target).checked)" />
       Simulate a failed load
     </label>
+
+    <button type="button" class="refresh-button" [disabled]="refreshing()" (click)="refreshCatalogue()">
+      {{ refreshing() ? 'Refreshing…' : 'Refresh menu' }}
+    </button>
   </div>
 
   @if (loadError(); as message) {

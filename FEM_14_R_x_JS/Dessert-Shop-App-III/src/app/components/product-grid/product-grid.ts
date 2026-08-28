@@ -81,6 +81,9 @@ export class ProductGrid implements OnDestroy {
   // Surfaced in the template as a dismissible-by-retry banner; cleared on the next successful fetch.
   protected readonly loadError = signal<string | null>(null);
 
+  // Bonus: tracks the in-flight state of the simulated "refresh from API" call below, for a loading indicator.
+  protected readonly refreshing = signal(false);
+
   // The most recent successfully loaded category list, used as the fallback when a fetch fails — so a
   // transient error degrades the grid to "possibly stale" rather than to "empty."
   private lastGoodCategoryProducts: Dessert[] = [];
@@ -168,6 +171,14 @@ export class ProductGrid implements OnDestroy {
 
   protected onSimulateFailureChange(shouldFail: boolean): void {
     this.productService.setSimulateFailure(shouldFail);
+  }
+
+  // Bonus: triggers the simulated API call. Its own retry/catchError already guarantee it never errors out
+  // to this subscriber, so a single next-callback is enough to know the (possibly-retried, possibly-fallen-
+  // back) result has landed and _products$ has been updated.
+  protected refreshCatalogue(): void {
+    this.refreshing.set(true);
+    this.productService.refreshFromApi$().subscribe(() => this.refreshing.set(false));
   }
 
   protected onMinPriceChange(value: number): void {

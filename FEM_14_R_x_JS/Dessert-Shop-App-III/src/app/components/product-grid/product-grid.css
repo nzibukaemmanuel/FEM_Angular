@@ -109,6 +109,34 @@
   cursor: pointer;
 }
 
+.refresh-button {
+  padding: 7px 14px;
+  border-radius: 8px;
+  border: 1px solid color-mix(in srgb, var(--color-secondary) 40%, transparent);
+  background: var(--color-white);
+  color: var(--color-text-secondary);
+  font-weight: 500;
+  font-size: var(--size-small);
+  cursor: pointer;
+  transition: background-color var(--transition-fast), color var(--transition-fast),
+    border-color var(--transition-fast);
+}
+
+.refresh-button:hover:not(:disabled) {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.refresh-button:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.refresh-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 .error-banner {
   max-width: var(--content-max-width);
   margin: -16px auto 32px;
