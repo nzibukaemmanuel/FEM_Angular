@@ -1,0 +1,32 @@
+<nav class="skip-links" aria-label="Skip links">
+  <a class="skip-link" href="#menu">Skip to Menu</a>
+  <a class="skip-link" href="#about">Skip to About</a>
+  <a class="skip-link" href="#contact">Skip to Contact</a>
+</nav>
+
+<app-header [totalQuantity]="totalQuantity()" />
+<main>
+  <app-hero />
+  <app-product-grid
+    [cartItems]="items()"
+    (add)="addToCart($event)"
+    (increment)="incrementItem($event)"
+    (decrement)="decrementItem($event)"
+  />
+  <app-cart-summary
+    [items]="items()"
+    [subtotal]="subtotal()"
+    (remove)="removeItem($event)"
+    (confirmOrder)="confirmOrder()"
+  />
+</main>
+<app-footer />
+<app-order-modal
+  [orderConfirmed]="orderConfirmed()"
+  [items]="items()"
+  [subtotal]="subtotal()"
+  (startNewOrder)="startNewOrder()"
+/>
+<app-toast [message]="toastMessage()" />
+
+<router-outlet />

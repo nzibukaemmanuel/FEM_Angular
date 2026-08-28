@@ -1,0 +1,83 @@
+<section class="menu" id="menu" tabindex="-1">
+  <div class="heading">
+    <h2>Our Menu</h2>
+    <p>Everything is baked in small batches, so flavours may vary with the seasons.</p>
+  </div>
+
+  <div class="search">
+    <label for="search-input" class="visually-hidden">Search desserts by name</label>
+    <input
+      id="search-input"
+      type="search"
+      class="search-input"
+      placeholder="Search desserts..."
+      [value]="searchQuery()"
+      (input)="onSearchChange($any($event.target).value)"
+    />
+  </div>
+
+  <div class="toolbar">
+    <div class="filters" role="tablist" aria-label="Filter desserts by category">
+      @for (category of categories; track category) {
+        <button
+          type="button"
+          role="tab"
+          [attr.aria-selected]="activeCategory() === category"
+          class="filter"
+          [class.active]="activeCategory() === category"
+          (click)="selectCategory(category)"
+        >
+          {{ category }}
+        </button>
+      }
+    </div>
+
+    <div class="sort">
+      <span id="sort-label" class="sort-label">Sort by price</span>
+      <div class="sort-dropdown">
+        <button
+          type="button"
+          class="sort-trigger"
+          aria-haspopup="listbox"
+          aria-labelledby="sort-label"
+          [attr.aria-expanded]="sortOpen()"
+          (click)="toggleSort()"
+        >
+          {{ sortLabel() }}
+          <svg class="chevron" [class.open]="sortOpen()" width="10" height="6" viewBox="0 0 10 6" fill="none">
+            <path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </button>
+        @if (sortOpen()) {
+          <ul class="sort-listbox" role="listbox" aria-labelledby="sort-label">
+            @for (option of sortOptions; track option.value) {
+              <li
+                role="option"
+                class="sort-option"
+                [class.active]="(sortDirection() ?? '') === option.value"
+                [attr.aria-selected]="(sortDirection() ?? '') === option.value"
+                (click)="selectSort(option.value)"
+              >
+                {{ option.label }}
+              </li>
+            }
+          </ul>
+        }
+      </div>
+    </div>
+  </div>
+
+  <div class="grid">
+    @for (dessert of desserts(); track dessert.id) {
+      <app-product-card
+        [dessert]="dessert"
+        [quantity]="quantityOf(dessert.id)"
+        (add)="add.emit($event)"
+        (increment)="increment.emit($event)"
+        (decrement)="decrement.emit($event)"
+      />
+    } @empty {
+      <p class="empty">No desserts match your search — try a different name or category.</p>
+    }
+  </div>
+</section>
