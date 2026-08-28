@@ -1,6 +1,5 @@
-import { Injectable, computed, effect, inject, signal } from '@angular/core';
-import { toObservable } from '@angular/core/rxjs-interop';
-import { Observable, Subject, withLatestFrom } from 'rxjs';
+import { Injectable, inject } from '@angular/core';
+import { BehaviorSubject, Observable, Subject, map, withLatestFrom } from 'rxjs';
 import { CartItem, Dessert } from '../models/dessert.model';
 import { LoggingService } from './logging.service';
 import { ProductService } from './product.service';
@@ -16,28 +15,28 @@ export class CartService {
   private readonly utility = inject(UtilityService);
   private readonly products = inject(ProductService);
 
-  private readonly _items = signal<CartItem[]>(this.storage.get<CartItem[]>(CART_STORAGE_KEY, []));
-  private readonly _orderConfirmed = signal(false);
-  private readonly _toast = signal<string | null>(null);
+  // BehaviorSubjects are the cart's single source of truth: every subscriber — new or existing — always sees
+  // the current state immediately (no waiting for the next add/remove), and every mutation below calls
+  // `.next()` on one of these, which is what makes the header badge, cart panel, and totals update in lockstep.
+  private readonly _items$ = new BehaviorSubject<CartItem[]>(this.storage.get<CartItem[]>(CART_STORAGE_KEY, []));
+  private readonly _orderConfirmed$ = new BehaviorSubject(false);
+  private readonly _toast$ = new BehaviorSubject<string | null>(null);
   private readonly _addRequests$ = new Subject<Dessert>();
   private toastTimer?: ReturnType<typeof setTimeout>;
 
-  readonly items = this._items.asReadonly();
-  readonly orderConfirmed = this._orderConfirmed.asReadonly();
-  readonly toast = this._toast.asReadonly();
+  readonly items$: Observable<CartItem[]> = this._items$.asObservable();
+  readonly orderConfirmed$: Observable<boolean> = this._orderConfirmed$.asObservable();
+  readonly toast$: Observable<string | null> = this._toast$.asObservable();
 
-  readonly totalQuantity = computed(() => this.utility.totalQuantity(this._items()));
-
-  readonly subtotal = computed(() => this.utility.subtotal(this._items()));
-
-  // Observable views of the same state, for components that consume streams (async pipe) rather than signals.
-  readonly items$: Observable<CartItem[]> = toObservable(this.items);
-  readonly totalQuantity$: Observable<number> = toObservable(this.totalQuantity);
-  readonly subtotal$: Observable<number> = toObservable(this.subtotal);
+  // Derived directly from items$, so the displayed count and price stay in sync with the cart with no
+  // extra bookkeeping — any add/remove/clear that updates _items$ automatically recomputes both.
+  readonly totalQuantity$: Observable<number> = this.items$.pipe(map((items) => this.utility.totalQuantity(items)));
+  readonly subtotal$: Observable<number> = this.items$.pipe(map((items) => this.utility.subtotal(items)));
 
   constructor() {
     // Keep the cart in localStorage in sync with every change, so a refresh doesn't lose it.
-    effect(() => this.storage.set(CART_STORAGE_KEY, this._items()));
+    // BehaviorSubject.subscribe() replays the current value immediately, so this also does the initial write.
+    this._items$.subscribe((items) => this.storage.set(CART_STORAGE_KEY, items));
 
     // withLatestFrom pairs each add request with the catalogue's current value at that moment, so the cart
     // always stores the canonical product record (e.g. an up-to-date price) rather than a stale reference
@@ -48,7 +47,7 @@ export class CartService {
   }
 
   quantityOf(dessertId: string): number {
-    return this._items().find((item) => item.dessert.id === dessertId)?.quantity ?? 0;
+    return this._items$.value.find((item) => item.dessert.id === dessertId)?.quantity ?? 0;
   }
 
   add(dessert: Dessert): void {
@@ -56,7 +55,7 @@ export class CartService {
   }
 
   private performAdd(dessert: Dessert): void {
-    this._items.update((items) => {
+    this.updateItems((items) => {
       const existing = items.find((item) => item.dessert.id === dessert.id);
       if (existing) {
         return items.map((item) =>
@@ -71,12 +70,12 @@ export class CartService {
 
   private showToast(message: string): void {
     clearTimeout(this.toastTimer);
-    this._toast.set(message);
-    this.toastTimer = setTimeout(() => this._toast.set(null), 2500);
+    this._toast$.next(message);
+    this.toastTimer = setTimeout(() => this._toast$.next(null), 2500);
   }
 
   increment(dessertId: string): void {
-    this._items.update((items) =>
+    this.updateItems((items) =>
       items.map((item) =>
         item.dessert.id === dessertId ? { ...item, quantity: item.quantity + 1 } : item,
       ),
@@ -84,7 +83,7 @@ export class CartService {
   }
 
   decrement(dessertId: string): void {
-    this._items.update((items) =>
+    this.updateItems((items) =>
       items
         .map((item) =>
           item.dessert.id === dessertId ? { ...item, quantity: item.quantity - 1 } : item,
@@ -94,26 +93,31 @@ export class CartService {
   }
 
   remove(dessertId: string): void {
-    this._items.update((items) => items.filter((item) => item.dessert.id !== dessertId));
+    this.updateItems((items) => items.filter((item) => item.dessert.id !== dessertId));
     this.logger.info('Item removed from cart', { dessertId });
   }
 
   confirmOrder(): void {
-    if (this._items().length === 0) {
+    const items = this._items$.value;
+    if (items.length === 0) {
       this.logger.warn('Attempted to confirm an empty order');
       return;
     }
-    this._orderConfirmed.set(true);
+    this._orderConfirmed$.next(true);
     this.logger.info('Order confirmed', {
-      itemCount: this.totalQuantity(),
-      subtotal: this.subtotal(),
+      itemCount: this.utility.totalQuantity(items),
+      subtotal: this.utility.subtotal(items),
     });
   }
 
   startNewOrder(): void {
-    this._items.set([]);
-    this._orderConfirmed.set(false);
+    this._items$.next([]);
+    this._orderConfirmed$.next(false);
     this.storage.remove(CART_STORAGE_KEY);
     this.logger.info('Cart cleared for new order');
+  }
+
+  private updateItems(updater: (items: CartItem[]) => CartItem[]): void {
+    this._items$.next(updater(this._items$.value));
   }
 }

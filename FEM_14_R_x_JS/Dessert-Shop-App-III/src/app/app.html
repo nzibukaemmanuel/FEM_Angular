@@ -22,11 +22,11 @@
 </main>
 <app-footer />
 <app-order-modal
-  [orderConfirmed]="orderConfirmed()"
+  [orderConfirmed]="(orderConfirmed$ | async) ?? false"
   [items]="(items$ | async) ?? []"
   [subtotal]="(subtotal$ | async) ?? 0"
   (startNewOrder)="startNewOrder()"
 />
-<app-toast [message]="toastMessage()" />
+<app-toast [message]="(toastMessage$ | async) ?? null" />
 
 <router-outlet />

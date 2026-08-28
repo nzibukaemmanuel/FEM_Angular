@@ -24,8 +24,8 @@ export class App {
   protected readonly items$ = this.cart.items$;
   protected readonly totalQuantity$ = this.cart.totalQuantity$;
   protected readonly subtotal$ = this.cart.subtotal$;
-  protected readonly orderConfirmed = this.cart.orderConfirmed;
-  protected readonly toastMessage = this.cart.toast;
+  protected readonly orderConfirmed$ = this.cart.orderConfirmed$;
+  protected readonly toastMessage$ = this.cart.toast$;
 
   protected addToCart(dessert: Dessert): void {
     this.cart.add(dessert);
