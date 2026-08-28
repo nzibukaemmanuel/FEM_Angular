@@ -100,6 +100,27 @@
   color: var(--color-text-secondary);
 }
 
+.simulate-failure {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--size-small);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+}
+
+.error-banner {
+  max-width: var(--content-max-width);
+  margin: -16px auto 32px;
+  padding: 12px 18px;
+  border-radius: 8px;
+  border: 1px solid color-mix(in srgb, #b3261e 40%, transparent);
+  background: color-mix(in srgb, #b3261e 8%, var(--color-white));
+  color: #7a1a15;
+  font-size: var(--size-small);
+  text-align: center;
+}
+
 .sort-dropdown {
   position: relative;
 }

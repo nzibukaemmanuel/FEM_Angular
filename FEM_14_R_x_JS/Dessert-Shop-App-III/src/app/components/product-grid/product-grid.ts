@@ -15,11 +15,13 @@ import {
   Observable,
   Subject,
   Subscription,
+  catchError,
   combineLatest,
   debounceTime,
   distinctUntilChanged,
   filter,
   map,
+  of,
   switchMap,
   take,
   takeUntil,
@@ -76,10 +78,31 @@ export class ProductGrid implements OnDestroy {
     () => this.sortOptions.find((option) => option.value === (this.sortDirection() ?? ''))?.label ?? 'Default',
   );
 
+  // Surfaced in the template as a dismissible-by-retry banner; cleared on the next successful fetch.
+  protected readonly loadError = signal<string | null>(null);
+
+  // The most recent successfully loaded category list, used as the fallback when a fetch fails — so a
+  // transient error degrades the grid to "possibly stale" rather than to "empty."
+  private lastGoodCategoryProducts: Dessert[] = [];
+
   // Re-fetches (simulated) whenever the category changes; switchMap cancels a still-in-flight fetch for a
   // stale category the moment a newer one is selected, so an old response can never overwrite a new one.
+  // catchError lives inside the switchMap projection so one failed fetch only affects that emission — the
+  // outer stream stays alive and keeps reacting to further category changes instead of terminating.
   private readonly categoryProducts$: Observable<Dessert[]> = toObservable(this.activeCategory).pipe(
-    switchMap((category) => this.productService.fetchByCategory$(category)),
+    switchMap((category) =>
+      this.productService.fetchByCategory$(category).pipe(
+        tap((products) => {
+          this.lastGoodCategoryProducts = products;
+          this.loadError.set(null);
+        }),
+        catchError((error: Error) => {
+          this.logger.error('Failed to load desserts', { message: error.message });
+          this.loadError.set(`${error.message} Showing the last loaded items instead.`);
+          return of(this.lastGoodCategoryProducts);
+        }),
+      ),
+    ),
   );
 
   // Waits for a pause in typing before filtering, and skips re-filtering when the value hasn't actually
@@ -141,6 +164,10 @@ export class ProductGrid implements OnDestroy {
     this.catalogueLoadedSubscription.unsubscribe();
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  protected onSimulateFailureChange(shouldFail: boolean): void {
+    this.productService.setSimulateFailure(shouldFail);
   }
 
   protected onMinPriceChange(value: number): void {

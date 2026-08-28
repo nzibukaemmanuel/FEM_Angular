@@ -20,11 +20,27 @@ export class ProductService {
     return this.products$.pipe(map((products) => products.find((dessert) => dessert.id === dessertId)));
   }
 
+  // Lets a component deliberately trigger the failure branch of fetchByCategory$ below — a real network flake
+  // can't be scheduled on demand, so this stands in for one to demo/verify error handling.
+  private readonly _simulateFailure$ = new BehaviorSubject(false);
+  readonly simulateFailure$: Observable<boolean> = this._simulateFailure$.asObservable();
+
+  setSimulateFailure(shouldFail: boolean): void {
+    this._simulateFailure$.next(shouldFail);
+  }
+
   // Simulates a category-scoped catalogue request (e.g. a filtered/paginated API call) with network latency,
   // so callers can switchMap on it and see a stale in-flight "fetch" get cancelled by a newer category selection.
+  // Errors like a real failed request would (map's project function throwing turns into an error notification),
+  // rather than resolving to an empty/invalid value — so callers must handle it explicitly (see catchError usage).
   fetchByCategory$(category: DessertCategory): Observable<Dessert[]> {
     return timer(SIMULATED_FETCH_DELAY_MS).pipe(
-      map(() => this.filterByCategory(this._products$.value, category)),
+      map(() => {
+        if (this._simulateFailure$.value) {
+          throw new Error(`Failed to load "${category}" desserts. Please check your connection and try again.`);
+        }
+        return this.filterByCategory(this._products$.value, category);
+      }),
     );
   }
 

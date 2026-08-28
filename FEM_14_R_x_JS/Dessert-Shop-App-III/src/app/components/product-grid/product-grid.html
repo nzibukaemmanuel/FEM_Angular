@@ -90,7 +90,16 @@
         }
       </div>
     </div>
+
+    <label class="simulate-failure">
+      <input type="checkbox" (change)="onSimulateFailureChange($any($event.target).checked)" />
+      Simulate a failed load
+    </label>
   </div>
+
+  @if (loadError(); as message) {
+    <p class="error-banner" role="alert">{{ message }}</p>
+  }
 
   <div class="grid">
     @for (entry of (dessertsWithQuantity$ | async) ?? []; track entry.dessert.id) {
