@@ -26,7 +26,10 @@
       </div>
     }
   </div>
-  <a class="btn" [routerLink]="['edit']">Edit task</a>
+  <div class="task-detail-card__actions">
+    <a class="btn" [routerLink]="['edit']">Edit task</a>
+    <button type="button" class="btn-secondary" (click)="deleteTask()">Delete task</button>
+  </div>
 } @else {
   <p class="empty-state">Task not found.</p>
 }

@@ -41,6 +41,13 @@ export class TaskService {
       [boardId]: (all[boardId] ?? []).map((task) => (task.id === taskId ? { ...task, ...changes } : task)),
     }));
   }
+
+  deleteTask(boardId: string, taskId: string): void {
+    this.boardTasks.update((all) => ({
+      ...all,
+      [boardId]: (all[boardId] ?? []).filter((task) => task.id !== taskId),
+    }));
+  }
 }
 
 function slugify(title: string): string {

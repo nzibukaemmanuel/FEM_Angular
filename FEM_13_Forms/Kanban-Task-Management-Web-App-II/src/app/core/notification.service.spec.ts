@@ -11,6 +11,7 @@ describe('NotificationService', () => {
 
   afterEach(() => {
     vi.useRealTimers();
+    localStorage.clear();
   });
 
   it('starts with no notice', () => {
@@ -64,5 +65,15 @@ describe('NotificationService', () => {
     vi.advanceTimersByTime(3000); // 6000ms since "First.", but only 3000ms since "Second."
 
     expect(service.notice()?.message).toBe('Second.');
+  });
+
+  it('does not auto-dismiss a success notice once persistSuccess is enabled', () => {
+    vi.useFakeTimers();
+    service.setPersistSuccess(true);
+
+    service.success('Task added.');
+    vi.advanceTimersByTime(10000);
+
+    expect(service.notice()).not.toBeNull();
   });
 });

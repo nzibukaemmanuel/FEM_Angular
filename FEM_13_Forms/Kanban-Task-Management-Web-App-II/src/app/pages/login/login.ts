@@ -3,6 +3,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { map } from 'rxjs';
 import { AuthService } from '../../core/auth.service';
+import { PreferencesService } from '../../core/preferences.service';
 
 @Component({
   imports: [],
@@ -14,6 +15,7 @@ export class Login {
   private readonly auth = inject(AuthService);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
+  private readonly preferencesService = inject(PreferencesService);
 
   // Present only when authGuard bounced the user here — lets the template explain *why*
   // they landed on the login page instead of the page they asked for.
@@ -34,6 +36,8 @@ export class Login {
       return;
     }
     this.error.set(null);
-    this.router.navigateByUrl(this.returnUrl() ?? '/settings');
+    const defaultBoardId = this.preferencesService.defaultBoardId();
+    const fallbackUrl = defaultBoardId ? `/boards/${defaultBoardId}` : '/settings';
+    this.router.navigateByUrl(this.returnUrl() ?? fallbackUrl);
   }
 }

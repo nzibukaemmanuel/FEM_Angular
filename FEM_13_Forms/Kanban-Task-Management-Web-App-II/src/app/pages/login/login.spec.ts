@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter, Router } from '@angular/router';
 import { AuthService } from '../../core/auth.service';
+import { PreferencesService } from '../../core/preferences.service';
 import { Login } from './login';
 
 describe('Login', () => {
@@ -16,6 +17,10 @@ describe('Login', () => {
     fixture = TestBed.createComponent(Login);
     component = fixture.componentInstance;
     await fixture.whenStable();
+  });
+
+  afterEach(() => {
+    localStorage.clear();
   });
 
   it('should create', () => {
@@ -48,6 +53,18 @@ describe('Login', () => {
     expect(auth.isAuthenticated()).toBe(false);
     expect(navigateByUrlSpy).not.toHaveBeenCalled();
     expect(component.error()).toBe('Incorrect username or password.');
+  });
+
+  it('navigates to the configured default board instead of /settings when one is set', () => {
+    TestBed.inject(PreferencesService).setDefaultBoardId('roadmap');
+    const router = TestBed.inject(Router);
+    const navigateByUrlSpy = vi.spyOn(router, 'navigateByUrl').mockResolvedValue(true);
+
+    component.username.set('MANNAZ');
+    component.password.set('NZIBUKA123');
+    component.submit();
+
+    expect(navigateByUrlSpy).toHaveBeenCalledWith('/boards/roadmap');
   });
 
   it('toggles the password field between hidden and visible', () => {

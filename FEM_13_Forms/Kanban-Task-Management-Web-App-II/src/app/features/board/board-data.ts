@@ -17,6 +17,8 @@ export interface Task {
 }
 
 export const BOARD_TASKS: Record<string, Task[]> = {
+  // keys below double as the app's board id list — BOARD_IDS derives from them so board
+  // pickers (Boards quick-jump, Settings' default board) never drift out of sync with the data.
   'platform-launch': [
     {
       id: 'define-scope',
@@ -99,3 +101,5 @@ export const BOARD_TASKS: Record<string, Task[]> = {
     },
   ],
 };
+
+export const BOARD_IDS = Object.keys(BOARD_TASKS);

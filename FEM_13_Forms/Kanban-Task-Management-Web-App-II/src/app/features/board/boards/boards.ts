@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { SelectField, SelectFieldOption } from '../../../shared/select-field/select-field';
+import { BOARD_IDS } from '../board-data';
 
 @Component({
   imports: [RouterLink, SelectField],
@@ -11,7 +12,7 @@ import { SelectField, SelectFieldOption } from '../../../shared/select-field/sel
 export class Boards {
   private readonly router = inject(Router);
 
-  readonly boardIds = ['platform-launch', 'marketing-plan', 'roadmap'];
+  readonly boardIds = BOARD_IDS;
 
   readonly boardOptions: SelectFieldOption[] = [
     { value: '', label: 'Choose a board…' },

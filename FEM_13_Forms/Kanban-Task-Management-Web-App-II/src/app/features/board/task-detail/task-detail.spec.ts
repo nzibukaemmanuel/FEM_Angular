@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter, Router } from '@angular/router';
+import { PreferencesService } from '../../../core/preferences.service';
 import { TaskDetail } from './task-detail';
 import { TaskService } from '../task.service';
 
@@ -16,6 +17,11 @@ describe('TaskDetail', () => {
     fixture = TestBed.createComponent(TaskDetail);
     component = fixture.componentInstance;
     await fixture.whenStable();
+  });
+
+  afterEach(() => {
+    localStorage.clear();
+    vi.restoreAllMocks();
   });
 
   it('should create', () => {
@@ -54,5 +60,36 @@ describe('TaskDetail', () => {
     component.goToBoard();
 
     expect(navigateSpy).toHaveBeenCalledWith(['/boards', 'roadmap']);
+  });
+
+  describe('deleteTask', () => {
+    it('removes the task and navigates back to the board when confirmation is off', () => {
+      TestBed.inject(PreferencesService).setConfirmBeforeDelete(false);
+      const confirmSpy = vi.spyOn(window, 'confirm');
+      const router = TestBed.inject(Router);
+      const navigateSpy = vi.spyOn(router, 'navigate').mockResolvedValue(true);
+      fixture.componentRef.setInput('boardId', 'roadmap');
+      fixture.componentRef.setInput('taskId', 'q1-goals');
+
+      component.deleteTask();
+
+      expect(confirmSpy).not.toHaveBeenCalled();
+      expect(TestBed.inject(TaskService).getTask('roadmap', 'q1-goals')).toBeUndefined();
+      expect(navigateSpy).toHaveBeenCalledWith(['/boards', 'roadmap']);
+    });
+
+    it('does nothing when the user declines the confirmation prompt', () => {
+      TestBed.inject(PreferencesService).setConfirmBeforeDelete(true);
+      vi.spyOn(window, 'confirm').mockReturnValue(false);
+      const router = TestBed.inject(Router);
+      const navigateSpy = vi.spyOn(router, 'navigate').mockResolvedValue(true);
+      fixture.componentRef.setInput('boardId', 'roadmap');
+      fixture.componentRef.setInput('taskId', 'q1-goals');
+
+      component.deleteTask();
+
+      expect(TestBed.inject(TaskService).getTask('roadmap', 'q1-goals')).toBeDefined();
+      expect(navigateSpy).not.toHaveBeenCalled();
+    });
   });
 });

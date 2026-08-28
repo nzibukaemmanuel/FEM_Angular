@@ -32,8 +32,10 @@
   color: var(--color-muted-text);
 }
 
-.task-detail-card + .btn {
-  margin-right: var(--space-4);
+.task-detail-card__actions {
+  display: flex;
+  gap: var(--space-4);
+  margin-bottom: var(--space-4);
 }
 
 .task-detail-card__subtasks-summary {
