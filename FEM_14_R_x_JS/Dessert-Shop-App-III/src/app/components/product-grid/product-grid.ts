@@ -84,28 +84,47 @@ export class ProductGrid implements OnDestroy {
   // Bonus: tracks the in-flight state of the simulated "refresh from API" call below, for a loading indicator.
   protected readonly refreshing = signal(false);
 
-  // The most recent successfully loaded category list, used as the fallback when a fetch fails — so a
-  // transient error degrades the grid to "possibly stale" rather than to "empty."
-  private lastGoodCategoryProducts: Dessert[] = [];
+  // Successfully loaded lists, keyed by category — so a category that already loaded fine stays fine (and
+  // a failed one falls back to its own last-good data, never another category's) instead of every category
+  // sharing one "last loaded" bucket. Cleared on refreshCatalogue() so a manual refresh re-fetches everything.
+  private readonly categoryCache = new Map<DessertCategory, Dessert[]>();
 
-  // Re-fetches (simulated) whenever the category changes; switchMap cancels a still-in-flight fetch for a
-  // stale category the moment a newer one is selected, so an old response can never overwrite a new one.
-  // catchError lives inside the switchMap projection so one failed fetch only affects that emission — the
-  // outer stream stays alive and keeps reacting to further category changes instead of terminating.
-  private readonly categoryProducts$: Observable<Dessert[]> = toObservable(this.activeCategory).pipe(
-    switchMap((category) =>
-      this.productService.fetchByCategory$(category).pipe(
+  // Bumped by refreshCatalogue() once the simulated API call settles. activeCategory alone wouldn't change
+  // when you refresh without switching tabs, so nothing downstream would re-fetch — this gives the pipeline
+  // below a second reason to re-run the (now cache-cleared) fetch for whatever category is still on screen.
+  private readonly refreshTick = signal(0);
+
+  // Re-fetches (simulated) whenever the category changes, or refreshTick advances; switchMap cancels a
+  // still-in-flight fetch for a stale category/tick the moment a newer one is selected, so an old response
+  // can never overwrite a new one. catchError lives inside the switchMap projection so one failed fetch only
+  // affects that emission — the outer stream stays alive and keeps reacting to further changes instead of
+  // terminating.
+  // A category already present in categoryCache is served straight from there without hitting the
+  // (simulated) network again — otherwise re-visiting a category you'd already loaded successfully would
+  // needlessly re-fail while "Simulate a failed load" is still checked.
+  private readonly categoryProducts$: Observable<Dessert[]> = combineLatest([
+    toObservable(this.activeCategory),
+    toObservable(this.refreshTick),
+  ]).pipe(
+    map(([category]) => category),
+    switchMap((category) => {
+      const cached = this.categoryCache.get(category);
+      if (cached) {
+        this.loadError.set(null);
+        return of(cached);
+      }
+      return this.productService.fetchByCategory$(category).pipe(
         tap((products) => {
-          this.lastGoodCategoryProducts = products;
+          this.categoryCache.set(category, products);
           this.loadError.set(null);
         }),
         catchError((error: Error) => {
           this.logger.error('Failed to load desserts', { message: error.message });
           this.loadError.set(`${error.message} Showing the last loaded items instead.`);
-          return of(this.lastGoodCategoryProducts);
+          return of(this.categoryCache.get(category) ?? []);
         }),
-      ),
-    ),
+      );
+    }),
   );
 
   // Waits for a pause in typing before filtering, and skips re-filtering when the value hasn't actually
@@ -175,10 +194,17 @@ export class ProductGrid implements OnDestroy {
 
   // Bonus: triggers the simulated API call. Its own retry/catchError already guarantee it never errors out
   // to this subscriber, so a single next-callback is enough to know the (possibly-retried, possibly-fallen-
-  // back) result has landed and _products$ has been updated.
+  // back) result has landed and _products$ has been updated. Clearing categoryCache makes this a genuine
+  // refresh — otherwise a cached category would keep serving its old list forever and never hit the network.
+  // Bumping refreshTick afterwards is what actually makes the currently-viewed category re-fetch: activeCategory
+  // hasn't changed, so without it categoryProducts$ would never re-run and the grid would look untouched.
   protected refreshCatalogue(): void {
     this.refreshing.set(true);
-    this.productService.refreshFromApi$().subscribe(() => this.refreshing.set(false));
+    this.categoryCache.clear();
+    this.productService.refreshFromApi$().subscribe(() => {
+      this.refreshing.set(false);
+      this.refreshTick.update((tick) => tick + 1);
+    });
   }
 
   protected onMinPriceChange(value: number): void {
