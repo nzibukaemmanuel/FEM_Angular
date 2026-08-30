@@ -211,6 +211,34 @@ button:disabled,
   color: var(--color-primary);
 }
 
+/* Low-emphasis nav buttons ("back to ...") — kept visually lighter than the
+   primary/secondary action buttons they share a page with. */
+.btn-tertiary {
+  background: transparent;
+  color: var(--color-text-secondary);
+  box-shadow: none;
+  padding: var(--space-2) var(--space-3);
+}
+
+button.btn-tertiary:hover {
+  background: var(--color-card-hover);
+  color: var(--color-primary);
+  transform: none;
+  box-shadow: none;
+}
+
+/* Shared footer row for page-level "back" navigation, separated from the
+   content above by a hairline so it reads as a distinct nav band. */
+.page-nav {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: var(--space-4);
+  margin-top: var(--space-6);
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--color-border);
+}
+
 /* Focus visibility — required everywhere, including custom components */
 :focus-visible {
   outline: 2px solid var(--color-primary);

@@ -34,8 +34,15 @@
 
 .task-detail-card__actions {
   display: flex;
+  flex-wrap: wrap;
   gap: var(--space-4);
   margin-bottom: var(--space-4);
+}
+
+.task-detail-nav {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: var(--space-2);
 }
 
 .task-detail-card__subtasks-summary {
