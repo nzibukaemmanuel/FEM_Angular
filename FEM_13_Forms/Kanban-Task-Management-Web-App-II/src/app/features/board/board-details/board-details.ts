@@ -1,10 +1,12 @@
 import { Component, computed, inject, input } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink, RouterOutlet } from '@angular/router';
 import { SelectField, SelectFieldOption } from '../../../shared/select-field/select-field';
+import { NotFound } from '../../../pages/not-found/not-found';
+import { BOARD_IDS } from '../board-data';
 import { TaskService } from '../task.service';
 
 @Component({
-  imports: [RouterLink, RouterOutlet, SelectField],
+  imports: [RouterLink, RouterOutlet, SelectField, NotFound],
   selector: 'app-board-details',
   styleUrl: './board-details.css',
   templateUrl: './board-details.html',
@@ -17,6 +19,11 @@ export class BoardDetails {
   readonly boardId = input('');
   readonly status = input('all');
   readonly sort = input<'title' | 'status'>('title');
+
+  // Board ids come from a fixed fixture list, so a mistyped/stale URL (e.g. a bookmarked
+  // board that got removed) never matches one — show the same 404 as an unmatched route
+  // instead of an empty board shell with no tasks.
+  readonly boardExists = computed(() => BOARD_IDS.includes(this.boardId()));
 
   readonly statusOptions: SelectFieldOption[] = [
     { value: 'all', label: 'All' },

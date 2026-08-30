@@ -73,6 +73,18 @@ describe('BoardDetails', () => {
     expect(component.tasks()).toEqual([]);
   });
 
+  it('flags an unknown board id as not existing', () => {
+    fixture.componentRef.setInput('boardId', 'does-not-exist');
+
+    expect(component.boardExists()).toBe(false);
+  });
+
+  it('flags a real board id as existing', () => {
+    fixture.componentRef.setInput('boardId', 'platform-launch');
+
+    expect(component.boardExists()).toBe(true);
+  });
+
   it('reflects an edit made through TaskService without needing a reload', () => {
     fixture.componentRef.setInput('boardId', 'platform-launch');
     const taskService = TestBed.inject(TaskService);
