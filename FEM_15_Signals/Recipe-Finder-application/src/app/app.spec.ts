@@ -135,4 +135,83 @@ describe('App', () => {
     expect(app.favoritesOnly()).toBe(true);
     expect(fixture.nativeElement.querySelectorAll('#all-recipes .recipe-list app-recipe-card').length).toBe(1);
   });
+
+  describe('menu', () => {
+    it('should be closed by default and open when the menu button is clicked', () => {
+      const fixture = setup();
+      expect(fixture.nativeElement.querySelector('.menu-dropdown')).toBeFalsy();
+
+      fixture.nativeElement.querySelector('.menu-button').click();
+      fixture.detectChanges();
+
+      expect(fixture.nativeElement.querySelector('.menu-dropdown')).toBeTruthy();
+    });
+
+    it('should close when the backdrop is clicked', () => {
+      const fixture = setup();
+      fixture.nativeElement.querySelector('.menu-button').click();
+      fixture.detectChanges();
+
+      fixture.nativeElement.querySelector('.menu-backdrop').click();
+      fixture.detectChanges();
+
+      expect(fixture.nativeElement.querySelector('.menu-dropdown')).toBeFalsy();
+    });
+
+    it('should filter to favorites and close the menu when "Favourites" or "Saved" is clicked', () => {
+      const fixture = setup();
+      const favoriteButton: HTMLButtonElement = fixture.nativeElement.querySelector('.row-favorite-button');
+      favoriteButton.click();
+      fixture.detectChanges();
+
+      fixture.nativeElement.querySelector('.menu-button').click();
+      fixture.detectChanges();
+      const [, favouritesItem, savedItem] = fixture.nativeElement.querySelectorAll('.menu-item');
+
+      favouritesItem.click();
+      fixture.detectChanges();
+
+      const app = fixture.componentInstance as any;
+      expect(app.favoritesOnly()).toBe(true);
+      expect(fixture.nativeElement.querySelector('.menu-dropdown')).toBeFalsy();
+      expect(fixture.nativeElement.querySelectorAll('#all-recipes .recipe-list app-recipe-card').length).toBe(1);
+
+      app.favoritesOnly.set(false);
+      fixture.nativeElement.querySelector('.menu-button').click();
+      fixture.detectChanges();
+      fixture.nativeElement.querySelectorAll('.menu-item')[2].click();
+      fixture.detectChanges();
+      expect(app.favoritesOnly()).toBe(true);
+    });
+
+    it('should open the About panel when "Users" is clicked, and close via the close button', () => {
+      const fixture = setup();
+      fixture.nativeElement.querySelector('.menu-button').click();
+      fixture.detectChanges();
+
+      fixture.nativeElement.querySelectorAll('.menu-item')[3].click();
+      fixture.detectChanges();
+
+      expect(fixture.nativeElement.querySelector('.about-panel')).toBeTruthy();
+      expect(fixture.nativeElement.querySelector('.menu-dropdown')).toBeFalsy();
+
+      fixture.nativeElement.querySelector('.about-close').click();
+      fixture.detectChanges();
+
+      expect(fixture.nativeElement.querySelector('.about-panel')).toBeFalsy();
+    });
+
+    it('should close the About panel when the backdrop is clicked', () => {
+      const fixture = setup();
+      fixture.nativeElement.querySelector('.menu-button').click();
+      fixture.detectChanges();
+      fixture.nativeElement.querySelectorAll('.menu-item')[3].click();
+      fixture.detectChanges();
+
+      fixture.nativeElement.querySelector('.modal-backdrop').click();
+      fixture.detectChanges();
+
+      expect(fixture.nativeElement.querySelector('.about-panel')).toBeFalsy();
+    });
+  });
 });

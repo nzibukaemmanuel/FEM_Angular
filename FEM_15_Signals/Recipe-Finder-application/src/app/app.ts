@@ -79,6 +79,9 @@ export class App {
   );
   protected readonly carouselRecipes = computed(() => this.filteredRecipes().slice(0, CAROUSEL_COUNT));
 
+  protected readonly showMenu = signal(false);
+  protected readonly showAbout = signal(false);
+
   constructor() {
     effect(() => {
       console.log('[Recipe Finder] filters changed', {
@@ -155,5 +158,32 @@ export class App {
     setTimeout(() => {
       document.getElementById(`recipe-${id}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
     });
+  }
+
+  protected toggleMenu(): void {
+    this.showMenu.update((value) => !value);
+  }
+
+  protected closeMenu(): void {
+    this.showMenu.set(false);
+  }
+
+  protected goHome(): void {
+    this.showMenu.set(false);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  protected openFavoritesFromMenu(): void {
+    this.showMenu.set(false);
+    this.viewFavorites();
+  }
+
+  protected openAboutFromMenu(): void {
+    this.showMenu.set(false);
+    this.showAbout.set(true);
+  }
+
+  protected closeAbout(): void {
+    this.showAbout.set(false);
   }
 }

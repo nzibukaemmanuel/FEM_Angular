@@ -1,6 +1,29 @@
 <div class="page">
   <header class="hero-header">
     <div class="hero-top">
+      <div class="menu-wrapper">
+        <button
+          type="button"
+          class="menu-button"
+          (click)="toggleMenu()"
+          aria-haspopup="true"
+          [attr.aria-expanded]="showMenu()"
+          aria-label="Open menu"
+        >
+          ☰
+        </button>
+
+        @if (showMenu()) {
+          <div class="menu-backdrop" (click)="closeMenu()"></div>
+          <nav class="menu-dropdown" aria-label="Main menu">
+            <button type="button" class="menu-item" (click)="goHome()">🏠 Home</button>
+            <button type="button" class="menu-item" (click)="openFavoritesFromMenu()">♥ Favourites</button>
+            <button type="button" class="menu-item" (click)="openFavoritesFromMenu()">🔖 Saved</button>
+            <button type="button" class="menu-item" (click)="openAboutFromMenu()">👤 Users</button>
+          </nav>
+        }
+      </div>
+
       <div class="brand">
         <h1>{{ title() }}</h1>
         <p class="subtitle">Search, filter, and save your favorite recipes.</p>
@@ -138,3 +161,17 @@
     </section>
   }
 </div>
+
+@if (showAbout()) {
+  <div class="modal-backdrop" (click)="closeAbout()"></div>
+  <div class="about-panel" role="dialog" aria-modal="true" aria-label="About Recipe Finder">
+    <button type="button" class="about-close" (click)="closeAbout()" aria-label="Close">✕</button>
+    <h2>About Recipe Finder</h2>
+    <p>
+      A reactive recipe search and filtering app built entirely with Angular Signals —
+      <code>signal()</code>, <code>computed()</code>, and <code>effect()</code> drive search, filtering,
+      sorting, and favorites without any backend.
+    </p>
+    <p>Built for the FEM_15 Signals lab.</p>
+  </div>
+}
