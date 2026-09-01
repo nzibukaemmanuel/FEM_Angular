@@ -29,12 +29,14 @@
         <p class="subtitle">Search, filter, and save your favorite recipes.</p>
       </div>
 
+      <span class="hero-top-spacer" aria-hidden="true"></span>
+
       <label class="search-bar" for="search">
         <span class="search-icon" aria-hidden="true">🔍</span>
         <input
           id="search"
           type="search"
-          placeholder="Search by name or ingredient…"
+          placeholder="Search recipes"
           [value]="searchQuery()"
           (input)="onSearchChange(searchInput.value)"
           #searchInput

@@ -76,6 +76,10 @@
   flex-shrink: 0;
 }
 
+.hero-top-spacer {
+  display: none;
+}
+
 .menu-button {
   border: none;
   background: rgba(255, 255, 255, 0.35);
@@ -578,12 +582,23 @@
     border-radius: 0 0 1.5rem 1.5rem;
   }
 
-  .menu-wrapper {
-    display: none;
+  .brand {
+    flex: 1 1 auto;
+    text-align: center;
   }
 
   .brand h1 {
     font-size: 1.5rem;
+  }
+
+  .brand .subtitle {
+    display: none;
+  }
+
+  .hero-top-spacer {
+    display: block;
+    width: 2.75rem;
+    flex-shrink: 0;
   }
 
   .search-bar {
