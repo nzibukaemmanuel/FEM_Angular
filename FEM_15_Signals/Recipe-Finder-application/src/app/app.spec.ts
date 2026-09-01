@@ -20,10 +20,24 @@ describe('App', () => {
     expect(fixture.componentInstance).toBeTruthy();
   });
 
-  it('should render all recipes by default', () => {
+  it('should show only the top 3 picks by default', () => {
     const fixture = setup();
     const cards = fixture.nativeElement.querySelectorAll('app-recipe-card');
-    expect(cards.length).toBeGreaterThan(0);
+    expect(cards.length).toBe(3);
+  });
+
+  it('should reveal the full grid when "See all" is clicked', () => {
+    const fixture = setup();
+    const app = fixture.componentInstance as any;
+    const total = app.filteredRecipes().length;
+
+    const seeAllButton: HTMLButtonElement = fixture.nativeElement.querySelector('.see-all-button');
+    seeAllButton.click();
+    fixture.detectChanges();
+
+    const cards = fixture.nativeElement.querySelectorAll('app-recipe-card');
+    expect(cards.length).toBe(total);
+    expect(fixture.nativeElement.querySelector('.recipe-grid')).toBeTruthy();
   });
 
   it('should filter recipes by search query', () => {
@@ -90,6 +104,9 @@ describe('App', () => {
 
   it('should show only favorited recipes when favorites-only is enabled', () => {
     const fixture = setup();
+    fixture.nativeElement.querySelector('.see-all-button').click();
+    fixture.detectChanges();
+
     const favoriteButton: HTMLButtonElement = fixture.nativeElement.querySelector('.favorite-button');
     favoriteButton.click();
     fixture.detectChanges();

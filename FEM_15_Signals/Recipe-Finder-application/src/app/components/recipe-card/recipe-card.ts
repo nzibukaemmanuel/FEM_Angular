@@ -9,6 +9,7 @@ import { Recipe } from '../../models/recipe';
 export class RecipeCard {
   readonly recipe = input.required<Recipe>();
   readonly isFavorite = input(false);
+  readonly compact = input(false);
   readonly favoriteToggled = output<string>();
 
   @HostBinding('id')

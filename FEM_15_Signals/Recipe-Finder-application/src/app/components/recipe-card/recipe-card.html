@@ -1,21 +1,33 @@
-<article class="recipe-card">
-  <div class="recipe-photo">
-    <img class="recipe-photo-img" [src]="recipe().image" [alt]="recipe().name" loading="lazy" />
-    <button
-      type="button"
-      class="favorite-button"
-      [class.is-active]="isFavorite()"
-      [attr.aria-pressed]="isFavorite()"
-      [attr.aria-label]="(isFavorite() ? 'Remove ' : 'Add ') + recipe().name + (isFavorite() ? ' from favorites' : ' to favorites')"
-      (click)="onToggleFavorite()"
-    >
-      {{ isFavorite() ? '♥' : '♡' }}
-    </button>
-  </div>
+@if (compact()) {
+  <article class="recipe-row">
+    <div class="row-thumb">
+      <img [src]="recipe().image" [alt]="recipe().name" loading="lazy" />
+    </div>
+    <div class="row-body">
+      <h3 class="row-title">{{ recipe().name }}</h3>
+      <span class="row-tag">✓ Ready in {{ recipe().cookTime }} min</span>
+    </div>
+  </article>
+} @else {
+  <article class="recipe-card">
+    <div class="recipe-photo">
+      <img class="recipe-photo-img" [src]="recipe().image" [alt]="recipe().name" loading="lazy" />
+      <button
+        type="button"
+        class="favorite-button"
+        [class.is-active]="isFavorite()"
+        [attr.aria-pressed]="isFavorite()"
+        [attr.aria-label]="(isFavorite() ? 'Remove ' : 'Add ') + recipe().name + (isFavorite() ? ' from favorites' : ' to favorites')"
+        (click)="onToggleFavorite()"
+      >
+        {{ isFavorite() ? '♥' : '♡' }}
+      </button>
+    </div>
 
-  <div class="recipe-body">
-    <h3 class="recipe-title">{{ recipe().name }}</h3>
-    <span class="time-chip">✓ {{ recipe().cookTime }} min</span>
-    <p class="recipe-ingredients">{{ recipe().ingredients.join(', ') }}</p>
-  </div>
-</article>
+    <div class="recipe-body">
+      <h3 class="recipe-title">{{ recipe().name }}</h3>
+      <span class="time-chip">✓ {{ recipe().cookTime }} min</span>
+      <p class="recipe-ingredients">{{ recipe().ingredients.join(', ') }}</p>
+    </div>
+  </article>
+}

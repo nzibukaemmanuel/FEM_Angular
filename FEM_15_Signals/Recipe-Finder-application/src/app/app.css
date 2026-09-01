@@ -286,6 +286,43 @@
   line-height: 1.4;
 }
 
+/* Top picks */
+
+.top-picks {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.see-all-button {
+  display: block;
+  width: 100%;
+  border: none;
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 0.75rem;
+  border-radius: 999px;
+  margin-bottom: 1.75rem;
+  transition: background 0.15s ease;
+}
+
+.see-all-button:hover,
+.see-all-button:focus-visible {
+  background: var(--color-primary);
+  color: #ffffff;
+  outline: none;
+}
+
+.section-heading {
+  margin: 0 0 1rem;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
 /* Results */
 
 .result-count {

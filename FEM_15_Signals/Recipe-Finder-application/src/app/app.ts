@@ -17,6 +17,7 @@ interface PersistedState {
 
 const STORAGE_KEY = 'recipe-finder-state';
 const MAX_COOK_TIME = 60;
+const TOP_PICKS_COUNT = 3;
 
 function loadPersistedState(): Partial<PersistedState> {
   try {
@@ -72,6 +73,10 @@ export class App {
   protected readonly resultCount = computed(() => this.filteredRecipes().length);
   protected readonly hasResults = computed(() => this.resultCount() > 0);
   protected readonly heroRecipe = computed(() => this.recipes().find((recipe) => recipe.featured));
+
+  protected readonly showAllRecipes = signal(false);
+  protected readonly hasMoreRecipes = computed(() => this.resultCount() > TOP_PICKS_COUNT);
+  protected readonly topPicks = computed(() => this.filteredRecipes().slice(0, TOP_PICKS_COUNT));
 
   constructor() {
     effect(() => {
@@ -136,7 +141,14 @@ export class App {
     });
   }
 
+  protected toggleShowAll(): void {
+    this.showAllRecipes.update((value) => !value);
+  }
+
   protected scrollToRecipe(id: string): void {
-    document.getElementById(`recipe-${id}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    this.showAllRecipes.set(true);
+    setTimeout(() => {
+      document.getElementById(`recipe-${id}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
   }
 }

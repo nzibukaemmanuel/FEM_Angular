@@ -59,6 +59,30 @@
     </div>
   </section>
 
+  @if (hasResults()) {
+    <p class="result-count" aria-live="polite">
+      {{ resultCount() }} {{ resultCount() === 1 ? 'recipe' : 'recipes' }} found
+    </p>
+
+    @if (!showAllRecipes()) {
+      <section class="top-picks" aria-label="Top picks">
+        @for (recipe of topPicks(); track recipe.id) {
+          <app-recipe-card [recipe]="recipe" [compact]="true" />
+        }
+      </section>
+    }
+
+    @if (hasMoreRecipes()) {
+      <button type="button" class="see-all-button" (click)="toggleShowAll()">
+        {{ showAllRecipes() ? 'Show less' : 'See all ' + resultCount() + ' recipes' }}
+      </button>
+    }
+  } @else {
+    <p class="empty-state" role="status">
+      No recipes match your search. Try a different keyword or increase the max cook time.
+    </p>
+  }
+
   @if (heroRecipe(); as hero) {
     <section class="weekly-pick">
       <div class="weekly-pick-media">
@@ -86,11 +110,8 @@
     </section>
   }
 
-  <p class="result-count" aria-live="polite">
-    {{ resultCount() }} {{ resultCount() === 1 ? 'recipe' : 'recipes' }} found
-  </p>
-
-  @if (hasResults()) {
+  @if (showAllRecipes() && hasResults()) {
+    <h2 class="section-heading">All recipes</h2>
     <section class="recipe-grid">
       @for (recipe of filteredRecipes(); track recipe.id) {
         <app-recipe-card
@@ -100,9 +121,5 @@
         />
       }
     </section>
-  } @else {
-    <p class="empty-state" role="status">
-      No recipes match your search. Try a different keyword or increase the max cook time.
-    </p>
   }
 </div>
