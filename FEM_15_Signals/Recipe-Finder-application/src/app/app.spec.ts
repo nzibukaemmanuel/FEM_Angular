@@ -37,9 +37,9 @@ describe('App', () => {
     expect(fixture.componentInstance).toBeTruthy();
   });
 
-  it('should show a carousel of top picks and a short list by default', () => {
+  it('should show the featured carousel and a short list by default', () => {
     const fixture = setup();
-    expect(fixture.nativeElement.querySelectorAll('.carousel-scroller app-recipe-card').length).toBe(2);
+    expect(fixture.nativeElement.querySelectorAll('.carousel-scroller app-featured-recipe-card').length).toBe(2);
     expect(fixture.nativeElement.querySelectorAll('#all-recipes .recipe-list app-recipe-card').length).toBe(3);
   });
 
@@ -114,7 +114,7 @@ describe('App', () => {
       input.dispatchEvent(new Event('input'));
       fixture.detectChanges();
 
-      expect(fixture.nativeElement.querySelectorAll('.carousel-scroller app-recipe-card').length).toBe(1);
+      expect(fixture.nativeElement.querySelectorAll('.carousel-scroller app-featured-recipe-card').length).toBe(2);
       expect(fixture.nativeElement.querySelectorAll('#all-recipes .recipe-list app-recipe-card').length).toBe(1);
       expect(fixture.nativeElement.textContent).toContain('Grilled Salmon');
     });

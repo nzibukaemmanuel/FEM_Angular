@@ -373,8 +373,7 @@
   display: flex;
   gap: 1.25rem;
   overflow-x: auto;
-  padding-top: 0.75rem;
-  padding-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
   margin-left: 1rem;
   scroll-snap-type: x proximity;
   scrollbar-width: none;

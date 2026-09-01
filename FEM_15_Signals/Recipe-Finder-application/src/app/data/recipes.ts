@@ -2,24 +2,6 @@ import { Recipe } from '../models/recipe';
 
 export const RECIPES: Recipe[] = [
   {
-    id: 'Keto Salad',
-    name: 'Keto Salad',
-    ingredients: ['lettuce', 'cucumber', 'tomato', 'avocado', 'olives'],
-    cookTime: 10,
-    image: '/recipes/Keto Salad.png',
-    subtitle: 'Beans & fruits',
-    rating: 4.5,
-  },
-  {
-    id: 'Sewers Salad',
-    name: 'Sewers Salad',
-    ingredients: ['lettuce', 'cucumber', 'tomato', 'avocado', 'olives'],
-    cookTime: 10,
-    image: '/recipes/Sewers Salad.png',
-    subtitle: 'Chicken & dal',
-    rating: 4.5,
-  },
-  {
     id: 'Spaghetti Carbonara',
     name: 'Spaghetti Carbonara',
     ingredients: ['spaghetti', 'eggs', 'parmesan', 'pancetta', 'black pepper'],

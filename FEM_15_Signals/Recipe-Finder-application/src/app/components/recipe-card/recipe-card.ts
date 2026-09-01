@@ -2,8 +2,6 @@ import { Component, HostBinding, input, output } from '@angular/core';
 import { Icon } from '../icon/icon';
 import { Recipe } from '../../models/recipe';
 
-export type RecipeCardVariant = 'row' | 'carousel';
-
 @Component({
   selector: 'app-recipe-card',
   imports: [Icon],
@@ -13,7 +11,6 @@ export type RecipeCardVariant = 'row' | 'carousel';
 export class RecipeCard {
   readonly recipe = input.required<Recipe>();
   readonly isFavorite = input(false);
-  readonly variant = input<RecipeCardVariant>('row');
   readonly locked = input(false);
   readonly favoriteToggled = output<string>();
 

@@ -1,8 +1,10 @@
 import { Component, computed, effect, signal } from '@angular/core';
+import { FeaturedRecipeCard } from './components/featured-recipe-card/featured-recipe-card';
 import { Icon } from './components/icon/icon';
 import { Login } from './components/login/login';
 import { RecipeCard } from './components/recipe-card/recipe-card';
 import { Toast, ToastMessage, ToastType } from './components/toast/toast';
+import { FEATURED_RECIPES } from './data/featured-recipes';
 import { RECIPES } from './data/recipes';
 import { Recipe } from './models/recipe';
 
@@ -20,7 +22,6 @@ interface PersistedState {
 const STORAGE_KEY = 'recipe-finder-state';
 const MAX_COOK_TIME = 60;
 const TOP_PICKS_COUNT = 3;
-const CAROUSEL_COUNT = 2;
 const TOAST_DURATION_MS = 4000;
 
 function loadPersistedState(): Partial<PersistedState> {
@@ -34,7 +35,7 @@ function loadPersistedState(): Partial<PersistedState> {
 
 @Component({
   selector: 'app-root',
-  imports: [RecipeCard, Login, Toast, Icon],
+  imports: [RecipeCard, FeaturedRecipeCard, Login, Toast, Icon],
   templateUrl: './app.html',
   styleUrl: './app.css',
 })
@@ -43,6 +44,7 @@ export class App {
 
   protected readonly title = signal('Recipe Finder');
   protected readonly maxCookTimeLimit = MAX_COOK_TIME;
+  protected readonly featuredRecipes = FEATURED_RECIPES;
 
   private readonly recipes = signal<Recipe[]>(RECIPES);
 
@@ -81,7 +83,6 @@ export class App {
   protected readonly topPicks = computed(() =>
     this.showAllRecipes() ? this.filteredRecipes() : this.filteredRecipes().slice(0, TOP_PICKS_COUNT),
   );
-  protected readonly carouselRecipes = computed(() => this.filteredRecipes().slice(0, CAROUSEL_COUNT));
 
   protected readonly showMenu = signal(false);
   protected readonly showAccount = signal(false);

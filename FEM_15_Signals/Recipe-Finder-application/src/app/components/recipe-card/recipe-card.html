@@ -1,33 +1,20 @@
-@if (variant() === 'carousel') {
-  <article class="recipe-carousel-card">
-    <div class="carousel-photo">
-      <img [src]="recipe().image" [alt]="recipe().name" loading="lazy" />
-      <span class="rating-badge">★ {{ recipe().rating }}</span>
-    </div>
-    <div class="carousel-body">
-      <h3 class="carousel-title">{{ recipe().name }}</h3>
-      <p class="carousel-subtitle">{{ recipe().subtitle }}</p>
-    </div>
-  </article>
-} @else {
-  <article class="recipe-row">
-    <div class="row-thumb">
-      <img [src]="recipe().image" [alt]="recipe().name" loading="lazy" />
-    </div>
-    <div class="row-body">
-      <h3 class="row-title">{{ recipe().name }}</h3>
-      <span class="row-tag">✓ Ready in {{ recipe().cookTime }} min</span>
-    </div>
-    <button
-      type="button"
-      class="row-favorite-button"
-      [class.is-active]="isFavorite()"
-      [disabled]="locked()"
-      [attr.aria-pressed]="isFavorite()"
-      [attr.aria-label]="(isFavorite() ? 'Remove ' : 'Add ') + recipe().name + (isFavorite() ? ' from favorites' : ' to favorites')"
-      (click)="onToggleFavorite()"
-    >
-      <app-icon name="heart" [filled]="isFavorite()" />
-    </button>
-  </article>
-}
+<article class="recipe-row">
+  <div class="row-thumb">
+    <img [src]="recipe().image" [alt]="recipe().name" loading="lazy" />
+  </div>
+  <div class="row-body">
+    <h3 class="row-title">{{ recipe().name }}</h3>
+    <span class="row-tag">✓ Ready in {{ recipe().cookTime }} min</span>
+  </div>
+  <button
+    type="button"
+    class="row-favorite-button"
+    [class.is-active]="isFavorite()"
+    [disabled]="locked()"
+    [attr.aria-pressed]="isFavorite()"
+    [attr.aria-label]="(isFavorite() ? 'Remove ' : 'Add ') + recipe().name + (isFavorite() ? ' from favorites' : ' to favorites')"
+    (click)="onToggleFavorite()"
+  >
+    <app-icon name="heart" [filled]="isFavorite()" />
+  </button>
+</article>

@@ -13,7 +13,7 @@ describe('RecipeCard', () => {
     rating: 4.5,
   };
 
-  describe('row variant (default)', () => {
+  describe('recipe row', () => {
     it('should render the recipe details', () => {
       const fixture = TestBed.createComponent(RecipeCard);
       fixture.componentRef.setInput('recipe', recipe);
@@ -60,23 +60,6 @@ describe('RecipeCard', () => {
       fixture.detectChanges();
 
       expect(fixture.nativeElement.querySelector('.row-favorite-button').disabled).toBe(true);
-    });
-  });
-
-  describe('carousel variant', () => {
-    it('should render the photo, rating, and subtitle', () => {
-      const fixture = TestBed.createComponent(RecipeCard);
-      fixture.componentRef.setInput('recipe', recipe);
-      fixture.componentRef.setInput('variant', 'carousel');
-      fixture.detectChanges();
-
-      const text = (fixture.nativeElement as HTMLElement).textContent ?? '';
-      expect(text).toContain('Test Recipe');
-      expect(text).toContain('Flour & sugar');
-      expect(text).toContain('4.5');
-
-      const img: HTMLImageElement = fixture.nativeElement.querySelector('.carousel-photo img');
-      expect(img.src).toContain('/recipes/test-recipe.jpg');
     });
   });
 });

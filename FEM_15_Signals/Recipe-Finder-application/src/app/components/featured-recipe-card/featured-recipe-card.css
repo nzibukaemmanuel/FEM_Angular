@@ -1,0 +1,15 @@
+:host {
+  display: block;
+}
+
+.featured-recipe-card {
+  width: 190px;
+  flex-shrink: 0;
+  scroll-snap-align: start;
+}
+
+.featured-recipe-card img {
+  display: block;
+  width: 100%;
+  height: auto;
+}

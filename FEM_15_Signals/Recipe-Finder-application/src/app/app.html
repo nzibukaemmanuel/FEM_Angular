@@ -116,14 +116,8 @@
       </div>
 
       <div class="carousel-scroller">
-        @for (recipe of carouselRecipes(); track recipe.id) {
-          <app-recipe-card
-            [recipe]="recipe"
-            variant="carousel"
-            [isFavorite]="isFavorite(recipe.id)"
-            [locked]="!isLoggedIn()"
-            (favoriteToggled)="toggleFavorite($event)"
-          />
+        @for (featured of featuredRecipes; track featured.id) {
+          <app-featured-recipe-card [image]="featured.image" [alt]="featured.alt" />
         }
       </div>
     </section>
