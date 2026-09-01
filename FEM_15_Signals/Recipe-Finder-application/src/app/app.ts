@@ -1,4 +1,5 @@
 import { Component, computed, effect, signal } from '@angular/core';
+import { Login } from './components/login/login';
 import { RecipeCard } from './components/recipe-card/recipe-card';
 import { RECIPES } from './data/recipes';
 import { Recipe } from './models/recipe';
@@ -30,7 +31,7 @@ function loadPersistedState(): Partial<PersistedState> {
 
 @Component({
   selector: 'app-root',
-  imports: [RecipeCard],
+  imports: [RecipeCard, Login],
   templateUrl: './app.html',
   styleUrl: './app.css',
 })

@@ -1,0 +1,38 @@
+@if (username(); as name) {
+  <h2>Welcome, {{ name }}!</h2>
+  <p class="login-description">
+    You're signed in on this device. This is a local demo login — no real account was created.
+  </p>
+  <button type="button" class="login-submit" (click)="logout()">Log out</button>
+} @else {
+  <h2>Login</h2>
+  <p class="login-description">
+    Enter a username and password to sign in. Validated locally only — no real account is created.
+  </p>
+
+  <div class="login-field">
+    <label for="login-username">Username</label>
+    <input id="login-username" type="text" #usernameInput autocomplete="username" />
+    @if (usernameError(); as error) {
+      <span class="login-error">{{ error }}</span>
+    }
+  </div>
+
+  <div class="login-field">
+    <label for="login-password">Password</label>
+    <input
+      id="login-password"
+      type="password"
+      #passwordInput
+      autocomplete="current-password"
+      (keydown.enter)="submit(usernameInput.value, passwordInput.value)"
+    />
+    @if (passwordError(); as error) {
+      <span class="login-error">{{ error }}</span>
+    }
+  </div>
+
+  <button type="button" class="login-submit" (click)="submit(usernameInput.value, passwordInput.value)">
+    Login
+  </button>
+}

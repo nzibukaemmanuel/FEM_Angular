@@ -190,63 +190,6 @@
   outline: none;
 }
 
-.about-panel h2 {
-  margin: 0 0 0.75rem;
-  font-size: 1.25rem;
-  color: var(--color-text);
-}
-
-.about-panel p {
-  margin: 0 0 0.75rem;
-  color: var(--color-text-muted);
-  font-size: 0.9rem;
-  line-height: 1.5;
-}
-
-.about-panel p:last-child {
-  margin-bottom: 0;
-}
-
-.about-panel code {
-  background: var(--color-primary-soft);
-  color: var(--color-primary);
-  padding: 0.1rem 0.35rem;
-  border-radius: 0.4rem;
-  font-size: 0.85em;
-}
-
-.login-fields {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-.login-fields input[type='text'] {
-  border: 1px solid var(--color-border);
-  border-radius: 0.75rem;
-  padding: 0.65rem 0.85rem;
-  font-size: 0.95rem;
-  color: var(--color-text);
-  background: var(--color-bg);
-}
-
-.login-fields input[type='text']:focus-visible {
-  outline: 2px solid var(--color-primary);
-  outline-offset: 2px;
-}
-
-.login-panel .promo-button {
-  align-self: flex-start;
-  color: #ffffff;
-  background: var(--color-primary);
-}
-
-.login-panel .promo-button:hover,
-.login-panel .promo-button:focus-visible {
-  outline: 2px solid var(--color-primary);
-  outline-offset: 2px;
-}
-
 /* Filters */
 
 .filters-card {

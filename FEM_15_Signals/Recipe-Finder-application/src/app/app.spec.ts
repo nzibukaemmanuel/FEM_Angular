@@ -134,9 +134,9 @@ describe('App', () => {
       fixture.nativeElement.querySelector('.promo-banner .promo-button').click();
       fixture.detectChanges();
 
-      const nameInput: HTMLInputElement = fixture.nativeElement.querySelector('.login-fields input');
-      nameInput.value = 'Ama';
-      fixture.nativeElement.querySelector('.login-fields .promo-button').click();
+      fixture.nativeElement.querySelector('#login-username').value = 'Ama';
+      fixture.nativeElement.querySelector('#login-password').value = 'secret1';
+      fixture.nativeElement.querySelector('.login-submit').click();
       fixture.detectChanges();
 
       const app = fixture.componentInstance as any;
@@ -226,7 +226,7 @@ describe('App', () => {
       fixture.detectChanges();
 
       expect(fixture.nativeElement.querySelector('.about-panel')).toBeTruthy();
-      expect(fixture.nativeElement.querySelector('.login-fields')).toBeTruthy();
+      expect(fixture.nativeElement.querySelector('#login-username')).toBeTruthy();
       expect(fixture.nativeElement.querySelector('.menu-dropdown')).toBeFalsy();
 
       fixture.nativeElement.querySelector('.about-close').click();
@@ -260,7 +260,7 @@ describe('App', () => {
       fixture.detectChanges();
 
       expect(fixture.nativeElement.querySelector('.about-panel').textContent).toContain('Welcome, Ama');
-      expect(fixture.nativeElement.querySelector('.login-fields')).toBeFalsy();
+      expect(fixture.nativeElement.querySelector('#login-username')).toBeFalsy();
     });
   });
 
