@@ -1,6 +1,7 @@
 import { Component, computed, effect, signal } from '@angular/core';
 import { Login } from './components/login/login';
 import { RecipeCard } from './components/recipe-card/recipe-card';
+import { Toast, ToastMessage, ToastType } from './components/toast/toast';
 import { RECIPES } from './data/recipes';
 import { Recipe } from './models/recipe';
 
@@ -19,6 +20,7 @@ const STORAGE_KEY = 'recipe-finder-state';
 const MAX_COOK_TIME = 60;
 const TOP_PICKS_COUNT = 3;
 const CAROUSEL_COUNT = 4;
+const TOAST_DURATION_MS = 4000;
 
 function loadPersistedState(): Partial<PersistedState> {
   try {
@@ -31,7 +33,7 @@ function loadPersistedState(): Partial<PersistedState> {
 
 @Component({
   selector: 'app-root',
-  imports: [RecipeCard, Login],
+  imports: [RecipeCard, Login, Toast],
   templateUrl: './app.html',
   styleUrl: './app.css',
 })
@@ -84,6 +86,9 @@ export class App {
   protected readonly showMenu = signal(false);
   protected readonly showAccount = signal(false);
   protected readonly username = signal<string | null>(this.persisted.username ?? null);
+
+  protected readonly toast = signal<ToastMessage | null>(null);
+  private toastTimeoutId?: ReturnType<typeof setTimeout>;
 
   constructor() {
     effect(() => {
@@ -202,9 +207,21 @@ export class App {
     }
     this.username.set(trimmed);
     this.showAccount.set(false);
+    this.showToast(`Welcome, ${trimmed}! You're logged in.`, 'success');
   }
 
   protected logout(): void {
     this.username.set(null);
+  }
+
+  protected showToast(text: string, type: ToastType = 'error'): void {
+    clearTimeout(this.toastTimeoutId);
+    this.toast.set({ text, type });
+    this.toastTimeoutId = setTimeout(() => this.toast.set(null), TOAST_DURATION_MS);
+  }
+
+  protected dismissToast(): void {
+    clearTimeout(this.toastTimeoutId);
+    this.toast.set(null);
   }
 }

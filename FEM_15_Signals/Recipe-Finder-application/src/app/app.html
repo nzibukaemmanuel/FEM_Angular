@@ -1,3 +1,5 @@
+<app-toast [toast]="toast()" (dismissed)="dismissToast()" />
+
 <div class="page">
   <header class="hero-header">
     <div class="hero-top">
@@ -111,6 +113,7 @@
       }
     </div>
     <img class="promo-chef-img" src="/chief.png" alt="Smiling chef with arms crossed" />
+    <img class="promo-food2-img" src="/food2.png" alt="Greek salad platter" />
     <img class="promo-food-img" src="/food.png" alt="Fresh Greek salad" />
   </section>
 
@@ -193,6 +196,11 @@
   <div class="modal-backdrop" (click)="closeAccount()"></div>
   <div class="about-panel" role="dialog" aria-modal="true" aria-label="Account">
     <button type="button" class="about-close" (click)="closeAccount()" aria-label="Close">✕</button>
-    <app-login [username]="username()" (loggedIn)="login($event)" (loggedOut)="logout()" />
+    <app-login
+      [username]="username()"
+      (loggedIn)="login($event)"
+      (loggedOut)="logout()"
+      (loginFailed)="showToast($event)"
+    />
   </div>
 }

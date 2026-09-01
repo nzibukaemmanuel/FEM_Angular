@@ -382,8 +382,22 @@
   width: auto;
   object-fit: cover;
   object-position: top center;
-  mix-blend-mode: multiply;
+  -webkit-mask-image: radial-gradient(ellipse 72% 88% at 58% 32%, #000 55%, transparent 100%);
+  mask-image: radial-gradient(ellipse 72% 88% at 58% 32%, #000 55%, transparent 100%);
   z-index: 1;
+}
+
+.promo-food2-img {
+  position: absolute;
+  right: 30%;
+  bottom: -0.5rem;
+  width: 130px;
+  height: 155px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 4px solid #ffffff;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.22);
+  z-index: 2;
 }
 
 .promo-food-img {
@@ -396,7 +410,7 @@
   object-fit: cover;
   border: 4px solid #ffffff;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.22);
-  z-index: 2;
+  z-index: 3;
 }
 
 /* Weekly pick hero */
@@ -621,6 +635,11 @@
 
   .promo-chef-img {
     max-width: 42%;
+  }
+
+  .promo-food2-img {
+    width: 85px;
+    height: 105px;
   }
 
   .promo-food-img {

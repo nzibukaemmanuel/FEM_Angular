@@ -12,6 +12,7 @@ export class Login {
   readonly username = input<string | null>(null);
   readonly loggedIn = output<string>();
   readonly loggedOut = output<void>();
+  readonly loginFailed = output<string>();
 
   protected readonly usernameError = signal<string | null>(null);
   protected readonly passwordError = signal<string | null>(null);
@@ -21,16 +22,22 @@ export class Login {
     const usernameValid = trimmedUsername.length >= MIN_USERNAME_LENGTH;
     const passwordValid = password.length >= MIN_PASSWORD_LENGTH;
 
-    this.usernameError.set(
-      usernameValid ? null : `Username must be at least ${MIN_USERNAME_LENGTH} characters.`,
-    );
-    this.passwordError.set(
-      passwordValid ? null : `Password must be at least ${MIN_PASSWORD_LENGTH} characters.`,
-    );
+    const usernameMessage = usernameValid
+      ? null
+      : `Username must be at least ${MIN_USERNAME_LENGTH} characters.`;
+    const passwordMessage = passwordValid
+      ? null
+      : `Password must be at least ${MIN_PASSWORD_LENGTH} characters.`;
+
+    this.usernameError.set(usernameMessage);
+    this.passwordError.set(passwordMessage);
 
     if (usernameValid && passwordValid) {
       this.loggedIn.emit(trimmedUsername);
+      return;
     }
+
+    this.loginFailed.emit([usernameMessage, passwordMessage].filter(Boolean).join(' '));
   }
 
   protected logout(): void {

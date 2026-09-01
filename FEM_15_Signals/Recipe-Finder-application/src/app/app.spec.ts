@@ -155,6 +155,44 @@ describe('App', () => {
       expect(app.username()).toBeNull();
     });
 
+    it('should show a success toast after logging in', () => {
+      const fixture = setup();
+      fixture.nativeElement.querySelector('.promo-banner .promo-button').click();
+      fixture.detectChanges();
+
+      fixture.nativeElement.querySelector('#login-username').value = 'Ama';
+      fixture.nativeElement.querySelector('#login-password').value = 'secret123';
+      fixture.nativeElement.querySelector('.login-submit').click();
+      fixture.detectChanges();
+
+      const toastEl: HTMLElement = fixture.nativeElement.querySelector('.toast');
+      expect(toastEl).toBeTruthy();
+      expect(toastEl.classList.contains('toast-success')).toBe(true);
+      expect(toastEl.textContent).toContain('Welcome, Ama');
+    });
+
+    it('should show an error toast when login validation fails', () => {
+      const fixture = setup();
+      fixture.nativeElement.querySelector('.promo-banner .promo-button').click();
+      fixture.detectChanges();
+
+      fixture.nativeElement.querySelector('#login-username').value = 'ab';
+      fixture.nativeElement.querySelector('#login-password').value = '123';
+      fixture.nativeElement.querySelector('.login-submit').click();
+      fixture.detectChanges();
+
+      const toastEl: HTMLElement = fixture.nativeElement.querySelector('.toast');
+      expect(toastEl).toBeTruthy();
+      expect(toastEl.classList.contains('toast-error')).toBe(true);
+
+      const app = fixture.componentInstance as any;
+      expect(app.username()).toBeNull();
+
+      fixture.nativeElement.querySelector('.toast-close').click();
+      fixture.detectChanges();
+      expect(fixture.nativeElement.querySelector('.toast')).toBeFalsy();
+    });
+
     it('should log out from the promo banner', () => {
       const fixture = setup();
       const app = fixture.componentInstance as any;
