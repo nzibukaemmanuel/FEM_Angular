@@ -1,7 +1,7 @@
 import { Component, input, output, signal } from '@angular/core';
 
 const MIN_USERNAME_LENGTH = 3;
-const MIN_PASSWORD_LENGTH = 6;
+const MIN_PASSWORD_LENGTH = 8;
 
 @Component({
   selector: 'app-login',

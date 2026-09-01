@@ -42,7 +42,7 @@ describe('Login', () => {
     fixture.componentInstance.loggedIn.subscribe((name) => emitted.push(name));
 
     fixture.nativeElement.querySelector('#login-username').value = '  Ama  ';
-    fixture.nativeElement.querySelector('#login-password').value = 'secret1';
+    fixture.nativeElement.querySelector('#login-password').value = 'secret123';
     fixture.nativeElement.querySelector('.login-submit').click();
     fixture.detectChanges();
 

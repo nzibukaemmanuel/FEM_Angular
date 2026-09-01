@@ -106,11 +106,12 @@
         <p>Welcome back, {{ name }}! Ready to cook something great?</p>
         <button type="button" class="promo-button" (click)="logout()">Log out</button>
       } @else {
-        <p>Sign in as a home chef to personalize your recipe experience.</p>
+        <p>Learn how to become a master chef right now!</p>
         <button type="button" class="promo-button" (click)="openAccount()">Login</button>
       }
     </div>
-    <img class="promo-icon-img" src="/chef.jpg" alt="Smiling chef presenting a plated dish" />
+    <img class="promo-chef-img" src="/chief.png" alt="Smiling chef with arms crossed" />
+    <img class="promo-food-img" src="/food.png" alt="Fresh Greek salad" />
   </section>
 
   @if (heroRecipe(); as hero) {
