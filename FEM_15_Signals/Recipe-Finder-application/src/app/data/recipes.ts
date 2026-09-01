@@ -7,6 +7,8 @@ export const RECIPES: Recipe[] = [
     ingredients: ['spaghetti', 'eggs', 'parmesan', 'pancetta', 'black pepper'],
     cookTime: 20,
     image: '/recipes/spaghetti-carbonara.jpg',
+    subtitle: 'Eggs & pancetta',
+    rating: 4.7,
   },
   {
     id: 'margherita-pizza',
@@ -14,6 +16,8 @@ export const RECIPES: Recipe[] = [
     ingredients: ['pizza dough', 'tomato sauce', 'mozzarella', 'basil'],
     cookTime: 25,
     image: '/recipes/margherita-pizza.jpg',
+    subtitle: 'Tomato & mozzarella',
+    rating: 4.6,
   },
   {
     id: 'chicken-caesar-salad',
@@ -21,6 +25,8 @@ export const RECIPES: Recipe[] = [
     ingredients: ['chicken breast', 'romaine lettuce', 'parmesan', 'croutons', 'caesar dressing'],
     cookTime: 15,
     image: '/recipes/chicken-caesar-salad.jpg',
+    subtitle: 'Chicken & parmesan',
+    rating: 4.5,
   },
   {
     id: 'beef-tacos',
@@ -28,6 +34,8 @@ export const RECIPES: Recipe[] = [
     ingredients: ['ground beef', 'taco shells', 'lettuce', 'cheddar cheese', 'salsa'],
     cookTime: 20,
     image: '/recipes/beef-tacos.jpg',
+    subtitle: 'Beef & salsa',
+    rating: 4.4,
   },
   {
     id: 'vegetable-stir-fry',
@@ -35,6 +43,8 @@ export const RECIPES: Recipe[] = [
     ingredients: ['broccoli', 'carrots', 'bell peppers', 'soy sauce', 'tofu'],
     cookTime: 15,
     image: '/recipes/vegetable-stir-fry.jpg',
+    subtitle: 'Broccoli & tofu',
+    rating: 4.3,
   },
   {
     id: 'classic-pancakes',
@@ -42,6 +52,8 @@ export const RECIPES: Recipe[] = [
     ingredients: ['flour', 'eggs', 'milk', 'butter', 'maple syrup'],
     cookTime: 20,
     image: '/recipes/classic-pancakes.jpg',
+    subtitle: 'Butter & syrup',
+    rating: 4.8,
   },
   {
     id: 'tomato-basil-soup',
@@ -49,6 +61,8 @@ export const RECIPES: Recipe[] = [
     ingredients: ['tomatoes', 'basil', 'garlic', 'onion', 'vegetable stock'],
     cookTime: 30,
     image: '/recipes/tomato-basil-soup.jpg',
+    subtitle: 'Tomato & basil',
+    rating: 4.5,
   },
   {
     id: 'grilled-salmon',
@@ -56,6 +70,8 @@ export const RECIPES: Recipe[] = [
     ingredients: ['salmon fillet', 'lemon', 'dill', 'olive oil', 'asparagus'],
     cookTime: 18,
     image: '/recipes/grilled-salmon.jpg',
+    subtitle: 'Salmon & lemon',
+    rating: 4.9,
   },
   {
     id: 'mushroom-risotto',
@@ -63,6 +79,8 @@ export const RECIPES: Recipe[] = [
     ingredients: ['arborio rice', 'mushrooms', 'parmesan', 'white wine', 'butter'],
     cookTime: 35,
     image: '/recipes/mushroom-risotto.jpg',
+    subtitle: 'Mushroom & parmesan',
+    rating: 4.6,
   },
   {
     id: 'greek-salad',
@@ -70,6 +88,8 @@ export const RECIPES: Recipe[] = [
     ingredients: ['cucumber', 'tomato', 'feta cheese', 'olives', 'red onion'],
     cookTime: 10,
     image: '/recipes/greek-salad.jpg',
+    subtitle: 'Feta & olives',
+    rating: 4.4,
   },
   {
     id: 'chocolate-chip-cookies',
@@ -77,6 +97,8 @@ export const RECIPES: Recipe[] = [
     ingredients: ['flour', 'butter', 'sugar', 'chocolate chips', 'eggs'],
     cookTime: 25,
     image: '/recipes/chocolate-chip-cookies.jpg',
+    subtitle: 'Chocolate & butter',
+    rating: 4.9,
   },
   {
     id: 'chicken-curry',
@@ -84,6 +106,8 @@ export const RECIPES: Recipe[] = [
     ingredients: ['chicken thighs', 'coconut milk', 'curry powder', 'onion', 'garlic'],
     cookTime: 40,
     image: '/recipes/chicken-curry.jpg',
+    subtitle: 'Chicken & coconut',
+    rating: 4.8,
     featured: true,
     tagline: 'This warming coconut curry is perfect for cozy nights in.',
     heroImage: '/recipes/chicken-curry-hero.jpg',

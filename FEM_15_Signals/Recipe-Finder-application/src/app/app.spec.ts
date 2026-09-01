@@ -15,29 +15,40 @@ describe('App', () => {
     return fixture;
   }
 
+  function openFilters(fixture: ReturnType<typeof setup>) {
+    fixture.nativeElement.querySelector('.menu-button').click();
+    fixture.detectChanges();
+  }
+
   it('should create the app', () => {
     const fixture = setup();
     expect(fixture.componentInstance).toBeTruthy();
   });
 
-  it('should show only the top 3 picks by default', () => {
+  it('should show a carousel of top picks and a short list by default', () => {
     const fixture = setup();
-    const cards = fixture.nativeElement.querySelectorAll('app-recipe-card');
-    expect(cards.length).toBe(3);
+    expect(fixture.nativeElement.querySelectorAll('.carousel-scroller app-recipe-card').length).toBe(4);
+    expect(fixture.nativeElement.querySelectorAll('#all-recipes .recipe-list app-recipe-card').length).toBe(3);
   });
 
-  it('should reveal the full grid when "See all" is clicked', () => {
+  it('should keep the filters panel hidden until the menu button is clicked', () => {
+    const fixture = setup();
+    expect(fixture.nativeElement.querySelector('#cook-time')).toBeFalsy();
+
+    openFilters(fixture);
+
+    expect(fixture.nativeElement.querySelector('#cook-time')).toBeTruthy();
+  });
+
+  it('should reveal every matching recipe in the list when "See all" is clicked', () => {
     const fixture = setup();
     const app = fixture.componentInstance as any;
     const total = app.filteredRecipes().length;
 
-    const seeAllButton: HTMLButtonElement = fixture.nativeElement.querySelector('.see-all-button');
-    seeAllButton.click();
+    fixture.nativeElement.querySelector('#all-recipes .see-all-link').click();
     fixture.detectChanges();
 
-    const cards = fixture.nativeElement.querySelectorAll('app-recipe-card');
-    expect(cards.length).toBe(total);
-    expect(fixture.nativeElement.querySelector('.recipe-grid')).toBeTruthy();
+    expect(fixture.nativeElement.querySelectorAll('#all-recipes .recipe-list app-recipe-card').length).toBe(total);
   });
 
   it('should filter recipes by search query', () => {
@@ -47,8 +58,8 @@ describe('App', () => {
     input.dispatchEvent(new Event('input'));
     fixture.detectChanges();
 
-    const cards = fixture.nativeElement.querySelectorAll('app-recipe-card');
-    expect(cards.length).toBe(1);
+    expect(fixture.nativeElement.querySelectorAll('.carousel-scroller app-recipe-card').length).toBe(1);
+    expect(fixture.nativeElement.querySelectorAll('#all-recipes .recipe-list app-recipe-card').length).toBe(1);
     expect(fixture.nativeElement.textContent).toContain('Grilled Salmon');
   });
 
@@ -76,6 +87,8 @@ describe('App', () => {
 
   it('should filter out recipes above the max cook time', () => {
     const fixture = setup();
+    openFilters(fixture);
+
     const range: HTMLInputElement = fixture.nativeElement.querySelector('#cook-time');
     range.value = '10';
     range.dispatchEvent(new Event('input'));
@@ -89,6 +102,8 @@ describe('App', () => {
 
   it('should sort by shortest cook time when the sort toggle is checked', () => {
     const fixture = setup();
+    openFilters(fixture);
+
     const sortToggle: HTMLInputElement = fixture.nativeElement.querySelectorAll(
       '.toggle-control input[type="checkbox"]',
     )[1];
@@ -104,13 +119,11 @@ describe('App', () => {
 
   it('should show only favorited recipes when favorites-only is enabled', () => {
     const fixture = setup();
-    fixture.nativeElement.querySelector('.see-all-button').click();
-    fixture.detectChanges();
-
-    const favoriteButton: HTMLButtonElement = fixture.nativeElement.querySelector('.favorite-button');
+    const favoriteButton: HTMLButtonElement = fixture.nativeElement.querySelector('.row-favorite-button');
     favoriteButton.click();
     fixture.detectChanges();
 
+    openFilters(fixture);
     const favoritesOnlyToggle: HTMLInputElement = fixture.nativeElement.querySelectorAll(
       '.toggle-control input[type="checkbox"]',
     )[0];
@@ -118,16 +131,35 @@ describe('App', () => {
     favoritesOnlyToggle.dispatchEvent(new Event('change'));
     fixture.detectChanges();
 
-    const cards = fixture.nativeElement.querySelectorAll('app-recipe-card');
-    expect(cards.length).toBe(1);
+    expect(fixture.nativeElement.querySelectorAll('#all-recipes .recipe-list app-recipe-card').length).toBe(1);
   });
 
-  it('should toggle the theme attribute on the document element', () => {
+  it('should toggle favorites-only from the bottom nav heart icon', () => {
+    const fixture = setup();
+    const app = fixture.componentInstance as any;
+
+    fixture.nativeElement.querySelectorAll('.nav-icon')[1].click();
+    fixture.detectChanges();
+
+    expect(app.favoritesOnly()).toBe(true);
+  });
+
+  it('should toggle dark mode from the promo banner button', () => {
     const fixture = setup();
     expect(document.documentElement.getAttribute('data-theme')).toBe('light');
 
-    const themeToggle: HTMLButtonElement = fixture.nativeElement.querySelector('.theme-toggle');
-    themeToggle.click();
+    fixture.nativeElement.querySelector('.promo-button').click();
+    fixture.detectChanges();
+
+    expect(document.documentElement.getAttribute('data-theme')).toBe('dark');
+    expect(fixture.nativeElement.querySelector('.promo-button').textContent).toContain('Switch to light');
+  });
+
+  it('should toggle the theme attribute from the bottom nav floating button', () => {
+    const fixture = setup();
+    expect(document.documentElement.getAttribute('data-theme')).toBe('light');
+
+    fixture.nativeElement.querySelector('.nav-fab').click();
     fixture.detectChanges();
 
     expect(document.documentElement.getAttribute('data-theme')).toBe('dark');

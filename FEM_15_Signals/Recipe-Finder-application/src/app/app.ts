@@ -18,6 +18,7 @@ interface PersistedState {
 const STORAGE_KEY = 'recipe-finder-state';
 const MAX_COOK_TIME = 60;
 const TOP_PICKS_COUNT = 3;
+const CAROUSEL_COUNT = 4;
 
 function loadPersistedState(): Partial<PersistedState> {
   try {
@@ -76,7 +77,12 @@ export class App {
 
   protected readonly showAllRecipes = signal(false);
   protected readonly hasMoreRecipes = computed(() => this.resultCount() > TOP_PICKS_COUNT);
-  protected readonly topPicks = computed(() => this.filteredRecipes().slice(0, TOP_PICKS_COUNT));
+  protected readonly topPicks = computed(() =>
+    this.showAllRecipes() ? this.filteredRecipes() : this.filteredRecipes().slice(0, TOP_PICKS_COUNT),
+  );
+  protected readonly carouselRecipes = computed(() => this.filteredRecipes().slice(0, CAROUSEL_COUNT));
+
+  protected readonly showFilters = signal(false);
 
   constructor() {
     effect(() => {
@@ -143,6 +149,15 @@ export class App {
 
   protected toggleShowAll(): void {
     this.showAllRecipes.update((value) => !value);
+    if (this.showAllRecipes()) {
+      setTimeout(() => {
+        document.getElementById('all-recipes')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    }
+  }
+
+  protected toggleFilters(): void {
+    this.showFilters.update((value) => !value);
   }
 
   protected scrollToRecipe(id: string): void {
@@ -150,5 +165,9 @@ export class App {
     setTimeout(() => {
       document.getElementById(`recipe-${id}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
     });
+  }
+
+  protected scrollToTop(): void {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 }
