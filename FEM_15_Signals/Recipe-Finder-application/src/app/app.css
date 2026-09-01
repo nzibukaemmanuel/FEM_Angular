@@ -534,3 +534,91 @@
   background: var(--color-surface);
   margin-bottom: 1.75rem;
 }
+
+/* Mobile nav (replaces the header menu on small screens) */
+
+.mobile-nav {
+  display: none;
+}
+
+.mobile-nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  border: none;
+  background: none;
+  color: var(--color-text-muted);
+  font-size: 1.2rem;
+  padding: 0.35rem 0.5rem;
+  line-height: 1;
+}
+
+.mobile-nav-item:hover,
+.mobile-nav-item:focus-visible {
+  color: var(--color-primary);
+  outline: none;
+}
+
+.mobile-nav-label {
+  font-size: 0.65rem;
+  font-weight: 600;
+}
+
+/* Responsive: mobile layout */
+
+@media (max-width: 640px) {
+  .page {
+    padding: 0 1rem 5.5rem;
+  }
+
+  .hero-header {
+    margin: 0 -1rem 1.25rem;
+    padding: 1.5rem 1rem;
+    border-radius: 0 0 1.5rem 1.5rem;
+  }
+
+  .menu-wrapper {
+    display: none;
+  }
+
+  .brand h1 {
+    font-size: 1.5rem;
+  }
+
+  .search-bar {
+    flex-basis: 100%;
+  }
+
+  .promo-banner {
+    flex-wrap: wrap;
+    padding: 1.25rem;
+  }
+
+  .promo-icon {
+    font-size: 2.5rem;
+  }
+
+  .weekly-pick {
+    min-height: 220px;
+  }
+
+  .weekly-pick-content h2 {
+    font-size: 1.35rem;
+  }
+
+  .mobile-nav {
+    display: flex;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 25;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0.5rem 0.5rem calc(0.5rem + env(safe-area-inset-bottom));
+    background: var(--color-surface);
+    border-top: 1px solid var(--color-border);
+    box-shadow: 0 -6px 16px rgba(24, 26, 32, 0.08);
+  }
+}

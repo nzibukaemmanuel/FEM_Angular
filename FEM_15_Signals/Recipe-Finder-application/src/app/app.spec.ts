@@ -214,4 +214,31 @@ describe('App', () => {
       expect(fixture.nativeElement.querySelector('.about-panel')).toBeFalsy();
     });
   });
+
+  describe('mobile nav', () => {
+    it('should mirror the same four actions as the header menu', () => {
+      const fixture = setup();
+      const favoriteButton: HTMLButtonElement = fixture.nativeElement.querySelector('.row-favorite-button');
+      favoriteButton.click();
+      fixture.detectChanges();
+
+      const items = fixture.nativeElement.querySelectorAll('.mobile-nav-item');
+      expect(items.length).toBe(4);
+
+      items[1].click(); // Favourites
+      fixture.detectChanges();
+
+      const app = fixture.componentInstance as any;
+      expect(app.favoritesOnly()).toBe(true);
+      expect(fixture.nativeElement.querySelectorAll('#all-recipes .recipe-list app-recipe-card').length).toBe(1);
+    });
+
+    it('should open the About panel from the mobile nav', () => {
+      const fixture = setup();
+      fixture.nativeElement.querySelectorAll('.mobile-nav-item')[3].click();
+      fixture.detectChanges();
+
+      expect(fixture.nativeElement.querySelector('.about-panel')).toBeTruthy();
+    });
+  });
 });

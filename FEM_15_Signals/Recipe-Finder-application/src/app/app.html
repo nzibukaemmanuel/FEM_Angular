@@ -162,6 +162,25 @@
   }
 </div>
 
+<nav class="mobile-nav" aria-label="Main menu">
+  <button type="button" class="mobile-nav-item" (click)="goHome()">
+    <span aria-hidden="true">🏠</span>
+    <span class="mobile-nav-label">Home</span>
+  </button>
+  <button type="button" class="mobile-nav-item" (click)="openFavoritesFromMenu()">
+    <span aria-hidden="true">♥</span>
+    <span class="mobile-nav-label">Favourites</span>
+  </button>
+  <button type="button" class="mobile-nav-item" (click)="openFavoritesFromMenu()">
+    <span aria-hidden="true">🔖</span>
+    <span class="mobile-nav-label">Saved</span>
+  </button>
+  <button type="button" class="mobile-nav-item" (click)="openAboutFromMenu()">
+    <span aria-hidden="true">👤</span>
+    <span class="mobile-nav-label">Users</span>
+  </button>
+</nav>
+
 @if (showAbout()) {
   <div class="modal-backdrop" (click)="closeAbout()"></div>
   <div class="about-panel" role="dialog" aria-modal="true" aria-label="About Recipe Finder">
