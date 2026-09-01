@@ -6,13 +6,11 @@
   <button type="button" class="login-submit" (click)="logout()">Log out</button>
 } @else {
   <h2>Login</h2>
-  <p class="login-description">
-    Enter a username and password to sign in. Validated locally only — no real account is created.
-  </p>
+  <p class="login-description">Sign in with your credentials to unlock the recipe finder.</p>
 
   <div class="login-field">
     <label for="login-username">Username</label>
-    <input id="login-username" type="text" #usernameInput autocomplete="username" />
+    <input id="login-username" type="text" required #usernameInput autocomplete="username" />
     @if (usernameError(); as error) {
       <span class="login-error">{{ error }}</span>
     }
@@ -20,13 +18,25 @@
 
   <div class="login-field">
     <label for="login-password">Password</label>
-    <input
-      id="login-password"
-      type="password"
-      #passwordInput
-      autocomplete="current-password"
-      (keydown.enter)="submit(usernameInput.value, passwordInput.value)"
-    />
+    <div class="password-input">
+      <input
+        id="login-password"
+        [type]="showPassword() ? 'text' : 'password'"
+        required
+        #passwordInput
+        autocomplete="current-password"
+        (keydown.enter)="submit(usernameInput.value, passwordInput.value)"
+      />
+      <button
+        type="button"
+        class="password-toggle"
+        (click)="togglePasswordVisibility()"
+        [attr.aria-label]="showPassword() ? 'Hide password' : 'Show password'"
+        [attr.aria-pressed]="showPassword()"
+      >
+        {{ showPassword() ? '🙈' : '👁️' }}
+      </button>
+    </div>
     @if (passwordError(); as error) {
       <span class="login-error">{{ error }}</span>
     }

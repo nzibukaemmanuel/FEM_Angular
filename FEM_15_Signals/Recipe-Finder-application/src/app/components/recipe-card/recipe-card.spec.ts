@@ -52,6 +52,15 @@ describe('RecipeCard', () => {
 
       expect(emitted).toEqual(['test-recipe']);
     });
+
+    it('should disable the favorite button when locked', () => {
+      const fixture = TestBed.createComponent(RecipeCard);
+      fixture.componentRef.setInput('recipe', recipe);
+      fixture.componentRef.setInput('locked', true);
+      fixture.detectChanges();
+
+      expect(fixture.nativeElement.querySelector('.row-favorite-button').disabled).toBe(true);
+    });
   });
 
   describe('carousel variant', () => {

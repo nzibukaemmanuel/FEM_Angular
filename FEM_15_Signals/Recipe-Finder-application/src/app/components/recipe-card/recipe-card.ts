@@ -12,6 +12,7 @@ export class RecipeCard {
   readonly recipe = input.required<Recipe>();
   readonly isFavorite = input(false);
   readonly variant = input<RecipeCardVariant>('row');
+  readonly locked = input(false);
   readonly favoriteToggled = output<string>();
 
   @HostBinding('id')

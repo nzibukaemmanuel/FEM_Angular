@@ -86,6 +86,7 @@ export class App {
   protected readonly showMenu = signal(false);
   protected readonly showAccount = signal(false);
   protected readonly username = signal<string | null>(this.persisted.username ?? null);
+  protected readonly isLoggedIn = computed(() => this.username() !== null);
 
   protected readonly toast = signal<ToastMessage | null>(null);
   private toastTimeoutId?: ReturnType<typeof setTimeout>;

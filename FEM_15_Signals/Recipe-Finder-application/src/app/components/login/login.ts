@@ -1,7 +1,8 @@
 import { Component, input, output, signal } from '@angular/core';
 
-const MIN_USERNAME_LENGTH = 3;
-const MIN_PASSWORD_LENGTH = 8;
+const VALID_USERNAME = 'NZIBUKA';
+const VALID_PASSWORD = 'MANNAZ789@';
+const INVALID_CREDENTIALS_MESSAGE = 'Incorrect username or password.';
 
 @Component({
   selector: 'app-login',
@@ -16,28 +17,36 @@ export class Login {
 
   protected readonly usernameError = signal<string | null>(null);
   protected readonly passwordError = signal<string | null>(null);
+  protected readonly showPassword = signal(false);
 
   protected submit(username: string, password: string): void {
     const trimmedUsername = username.trim();
-    const usernameValid = trimmedUsername.length >= MIN_USERNAME_LENGTH;
-    const passwordValid = password.length >= MIN_PASSWORD_LENGTH;
+    const usernameProvided = trimmedUsername.length > 0;
+    const passwordProvided = password.length > 0;
 
-    const usernameMessage = usernameValid
-      ? null
-      : `Username must be at least ${MIN_USERNAME_LENGTH} characters.`;
-    const passwordMessage = passwordValid
-      ? null
-      : `Password must be at least ${MIN_PASSWORD_LENGTH} characters.`;
-
-    this.usernameError.set(usernameMessage);
-    this.passwordError.set(passwordMessage);
-
-    if (usernameValid && passwordValid) {
-      this.loggedIn.emit(trimmedUsername);
+    if (!usernameProvided || !passwordProvided) {
+      const usernameMessage = usernameProvided ? null : 'Username is required.';
+      const passwordMessage = passwordProvided ? null : 'Password is required.';
+      this.usernameError.set(usernameMessage);
+      this.passwordError.set(passwordMessage);
+      this.loginFailed.emit([usernameMessage, passwordMessage].filter(Boolean).join(' '));
       return;
     }
 
-    this.loginFailed.emit([usernameMessage, passwordMessage].filter(Boolean).join(' '));
+    if (trimmedUsername !== VALID_USERNAME || password !== VALID_PASSWORD) {
+      this.usernameError.set(INVALID_CREDENTIALS_MESSAGE);
+      this.passwordError.set(INVALID_CREDENTIALS_MESSAGE);
+      this.loginFailed.emit(INVALID_CREDENTIALS_MESSAGE);
+      return;
+    }
+
+    this.usernameError.set(null);
+    this.passwordError.set(null);
+    this.loggedIn.emit(trimmedUsername);
+  }
+
+  protected togglePasswordVisibility(): void {
+    this.showPassword.update((value) => !value);
   }
 
   protected logout(): void {

@@ -190,6 +190,67 @@
   outline: none;
 }
 
+/* Lock hint */
+
+.lock-hint {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+  font-weight: 600;
+  font-size: 0.85rem;
+  padding: 0.75rem 1.1rem;
+  border-radius: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.lock-hint-link {
+  border: none;
+  background: none;
+  padding: 0;
+  color: var(--color-primary);
+  font-weight: 700;
+  font-size: inherit;
+  text-decoration: underline;
+}
+
+.lock-hint-link:hover,
+.lock-hint-link:focus-visible {
+  color: var(--color-text);
+  outline: none;
+}
+
+/* Disabled states (locked behind login) */
+
+.search-bar input:disabled,
+.cook-time-filter input:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.filters-card:has(input:disabled) .chip-toggle {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.see-all-link:disabled,
+.hero-cta:disabled,
+.hero-favorite-button:disabled,
+.menu-item:disabled,
+.mobile-nav-item:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.see-all-link:disabled:hover,
+.see-all-link:disabled:focus-visible {
+  color: var(--color-text-muted);
+  text-decoration: none;
+  outline: none;
+}
+
 /* Filters */
 
 .filters-card {

@@ -19,8 +19,12 @@
           <div class="menu-backdrop" (click)="closeMenu()"></div>
           <nav class="menu-dropdown" aria-label="Main menu">
             <button type="button" class="menu-item" (click)="goHome()">🏠 Home</button>
-            <button type="button" class="menu-item" (click)="openFavoritesFromMenu()">♥ Favourites</button>
-            <button type="button" class="menu-item" (click)="openFavoritesFromMenu()">🔖 Saved</button>
+            <button type="button" class="menu-item" [disabled]="!isLoggedIn()" (click)="openFavoritesFromMenu()">
+              ♥ Favourites
+            </button>
+            <button type="button" class="menu-item" [disabled]="!isLoggedIn()" (click)="openFavoritesFromMenu()">
+              🔖 Saved
+            </button>
             <button type="button" class="menu-item" (click)="openAccountFromMenu()">👤 Users</button>
           </nav>
         }
@@ -40,12 +44,21 @@
           type="search"
           placeholder="Search recipes"
           [value]="searchQuery()"
+          [disabled]="!isLoggedIn()"
           (input)="onSearchChange(searchInput.value)"
           #searchInput
         />
       </label>
     </div>
   </header>
+
+  @if (!isLoggedIn()) {
+    <p class="lock-hint">
+      🔒
+      <button type="button" class="lock-hint-link" (click)="openAccount()">Log in</button>
+      to search, filter, and save your favorite recipes.
+    </p>
+  }
 
   <section class="filters-card" aria-label="Filters">
     <div class="cook-time-filter">
@@ -57,6 +70,7 @@
         [max]="maxCookTimeLimit"
         step="5"
         [value]="maxCookTime()"
+        [disabled]="!isLoggedIn()"
         (input)="onMaxCookTimeChange(+rangeInput.value)"
         #rangeInput
       />
@@ -64,12 +78,22 @@
 
     <div class="filter-chips">
       <label class="toggle-control chip-toggle">
-        <input type="checkbox" [checked]="favoritesOnly()" (change)="toggleFavoritesOnly()" />
+        <input
+          type="checkbox"
+          [checked]="favoritesOnly()"
+          [disabled]="!isLoggedIn()"
+          (change)="toggleFavoritesOnly()"
+        />
         <span>♥ Favorites only</span>
       </label>
 
       <label class="toggle-control chip-toggle">
-        <input type="checkbox" [checked]="sortOrder() === 'cookTime'" (change)="toggleSortByCookTime()" />
+        <input
+          type="checkbox"
+          [checked]="sortOrder() === 'cookTime'"
+          [disabled]="!isLoggedIn()"
+          (change)="toggleSortByCookTime()"
+        />
         <span>⏱ Quickest first</span>
       </label>
     </div>
@@ -82,7 +106,9 @@
           <h2 class="section-title">Healthy Recipes</h2>
           <span class="section-subtitle">with features</span>
         </div>
-        <button type="button" class="see-all-link" (click)="toggleShowAll()">See all</button>
+        <button type="button" class="see-all-link" [disabled]="!isLoggedIn()" (click)="toggleShowAll()">
+          See all
+        </button>
       </div>
 
       <div class="carousel-scroller">
@@ -91,6 +117,7 @@
             [recipe]="recipe"
             variant="carousel"
             [isFavorite]="isFavorite(recipe.id)"
+            [locked]="!isLoggedIn()"
             (favoriteToggled)="toggleFavorite($event)"
           />
         }
@@ -127,6 +154,7 @@
         type="button"
         class="hero-favorite-button"
         [class.is-active]="isFavorite(hero.id)"
+        [disabled]="!isLoggedIn()"
         [attr.aria-pressed]="isFavorite(hero.id)"
         [attr.aria-label]="(isFavorite(hero.id) ? 'Remove ' : 'Add ') + hero.name + (isFavorite(hero.id) ? ' from favorites' : ' to favorites')"
         (click)="toggleFavorite(hero.id)"
@@ -134,7 +162,9 @@
         {{ isFavorite(hero.id) ? '♥' : '♡' }}
       </button>
 
-      <button type="button" class="hero-cta" (click)="scrollToRecipe(hero.id)">View recipe</button>
+      <button type="button" class="hero-cta" [disabled]="!isLoggedIn()" (click)="scrollToRecipe(hero.id)">
+        View recipe
+      </button>
 
       <div class="weekly-pick-content">
         <span class="weekly-pick-label">Weekly pick</span>
@@ -151,7 +181,7 @@
           <h2 class="section-title">All Recipes</h2>
           <span class="section-subtitle">with benefits</span>
         </div>
-        <button type="button" class="see-all-link" (click)="toggleShowAll()">
+        <button type="button" class="see-all-link" [disabled]="!isLoggedIn()" (click)="toggleShowAll()">
           {{ showAllRecipes() ? 'Show less' : 'See all' }}
         </button>
       </div>
@@ -165,6 +195,7 @@
           <app-recipe-card
             [recipe]="recipe"
             [isFavorite]="isFavorite(recipe.id)"
+            [locked]="!isLoggedIn()"
             (favoriteToggled)="toggleFavorite($event)"
           />
         }
@@ -178,11 +209,11 @@
     <span aria-hidden="true">🏠</span>
     <span class="mobile-nav-label">Home</span>
   </button>
-  <button type="button" class="mobile-nav-item" (click)="openFavoritesFromMenu()">
+  <button type="button" class="mobile-nav-item" [disabled]="!isLoggedIn()" (click)="openFavoritesFromMenu()">
     <span aria-hidden="true">♥</span>
     <span class="mobile-nav-label">Favourites</span>
   </button>
-  <button type="button" class="mobile-nav-item" (click)="openFavoritesFromMenu()">
+  <button type="button" class="mobile-nav-item" [disabled]="!isLoggedIn()" (click)="openFavoritesFromMenu()">
     <span aria-hidden="true">🔖</span>
     <span class="mobile-nav-label">Saved</span>
   </button>

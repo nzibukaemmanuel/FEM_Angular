@@ -85,6 +85,12 @@
   color: #ffffff;
 }
 
+.row-favorite-button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+}
+
 /* Carousel card */
 
 .recipe-carousel-card {
@@ -154,6 +160,12 @@
 .carousel-favorite-button.is-active {
   color: var(--color-primary);
   background: rgba(255, 255, 255, 0.92);
+}
+
+.carousel-favorite-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
 }
 
 .carousel-body {
