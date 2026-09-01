@@ -8,7 +8,8 @@ describe('RecipeCard', () => {
     name: 'Test Recipe',
     ingredients: ['flour', 'sugar'],
     cookTime: 12,
-    image: '🍽️',
+    image: '/recipes/test-recipe.jpg',
+    emoji: '🍽️',
   };
 
   it('should render the recipe details', () => {
@@ -20,6 +21,22 @@ describe('RecipeCard', () => {
     expect(text).toContain('Test Recipe');
     expect(text).toContain('12 min');
     expect(text).toContain('flour, sugar');
+
+    const img: HTMLImageElement = fixture.nativeElement.querySelector('.recipe-photo-img');
+    expect(img.src).toContain('/recipes/test-recipe.jpg');
+    expect(img.alt).toBe('Test Recipe');
+  });
+
+  it('should fall back to the emoji when the photo fails to load', () => {
+    const fixture = TestBed.createComponent(RecipeCard);
+    fixture.componentRef.setInput('recipe', recipe);
+    fixture.detectChanges();
+
+    fixture.nativeElement.querySelector('.recipe-photo-img').dispatchEvent(new Event('error'));
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelector('.recipe-photo-img')).toBeFalsy();
+    expect(fixture.nativeElement.querySelector('.recipe-emoji').textContent).toBe('🍽️');
   });
 
   it('should show a filled heart when marked as a favorite', () => {
