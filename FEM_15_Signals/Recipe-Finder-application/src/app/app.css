@@ -199,19 +199,6 @@
   object-fit: cover;
 }
 
-.weekly-pick-media:has(.weekly-pick-emoji) {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  padding-right: 2.5rem;
-  opacity: 0.4;
-}
-
-.weekly-pick-emoji {
-  font-size: 9rem;
-  line-height: 1;
-}
-
 .hero-favorite-button,
 .hero-cta {
   position: absolute;

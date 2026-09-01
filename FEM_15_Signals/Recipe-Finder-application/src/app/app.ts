@@ -38,7 +38,6 @@ export class App {
 
   protected readonly title = signal('Recipe Finder');
   protected readonly maxCookTimeLimit = MAX_COOK_TIME;
-  protected readonly heroPhotoFailed = signal(false);
 
   private readonly recipes = signal<Recipe[]>(RECIPES);
 

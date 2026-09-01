@@ -62,16 +62,7 @@
   @if (heroRecipe(); as hero) {
     <section class="weekly-pick">
       <div class="weekly-pick-media">
-        @if (!heroPhotoFailed()) {
-          <img
-            class="weekly-pick-img"
-            [src]="hero.heroImage ?? hero.image"
-            [alt]="hero.name"
-            (error)="heroPhotoFailed.set(true)"
-          />
-        } @else {
-          <span class="weekly-pick-emoji" aria-hidden="true">{{ hero.emoji }}</span>
-        }
+        <img class="weekly-pick-img" [src]="hero.heroImage ?? hero.image" [alt]="hero.name" />
       </div>
 
       <button

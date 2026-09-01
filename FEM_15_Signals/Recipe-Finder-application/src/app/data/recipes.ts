@@ -7,7 +7,6 @@ export const RECIPES: Recipe[] = [
     ingredients: ['spaghetti', 'eggs', 'parmesan', 'pancetta', 'black pepper'],
     cookTime: 20,
     image: '/recipes/spaghetti-carbonara.jpg',
-    emoji: '🍝',
   },
   {
     id: 'margherita-pizza',
@@ -15,7 +14,6 @@ export const RECIPES: Recipe[] = [
     ingredients: ['pizza dough', 'tomato sauce', 'mozzarella', 'basil'],
     cookTime: 25,
     image: '/recipes/margherita-pizza.jpg',
-    emoji: '🍕',
   },
   {
     id: 'chicken-caesar-salad',
@@ -23,7 +21,6 @@ export const RECIPES: Recipe[] = [
     ingredients: ['chicken breast', 'romaine lettuce', 'parmesan', 'croutons', 'caesar dressing'],
     cookTime: 15,
     image: '/recipes/chicken-caesar-salad.jpg',
-    emoji: '🥗',
   },
   {
     id: 'beef-tacos',
@@ -31,7 +28,6 @@ export const RECIPES: Recipe[] = [
     ingredients: ['ground beef', 'taco shells', 'lettuce', 'cheddar cheese', 'salsa'],
     cookTime: 20,
     image: '/recipes/beef-tacos.jpg',
-    emoji: '🌮',
   },
   {
     id: 'vegetable-stir-fry',
@@ -39,7 +35,6 @@ export const RECIPES: Recipe[] = [
     ingredients: ['broccoli', 'carrots', 'bell peppers', 'soy sauce', 'tofu'],
     cookTime: 15,
     image: '/recipes/vegetable-stir-fry.jpg',
-    emoji: '🥦',
   },
   {
     id: 'classic-pancakes',
@@ -47,7 +42,6 @@ export const RECIPES: Recipe[] = [
     ingredients: ['flour', 'eggs', 'milk', 'butter', 'maple syrup'],
     cookTime: 20,
     image: '/recipes/classic-pancakes.jpg',
-    emoji: '🥞',
   },
   {
     id: 'tomato-basil-soup',
@@ -55,7 +49,6 @@ export const RECIPES: Recipe[] = [
     ingredients: ['tomatoes', 'basil', 'garlic', 'onion', 'vegetable stock'],
     cookTime: 30,
     image: '/recipes/tomato-basil-soup.jpg',
-    emoji: '🍲',
   },
   {
     id: 'grilled-salmon',
@@ -63,7 +56,6 @@ export const RECIPES: Recipe[] = [
     ingredients: ['salmon fillet', 'lemon', 'dill', 'olive oil', 'asparagus'],
     cookTime: 18,
     image: '/recipes/grilled-salmon.jpg',
-    emoji: '🐟',
   },
   {
     id: 'mushroom-risotto',
@@ -71,7 +63,6 @@ export const RECIPES: Recipe[] = [
     ingredients: ['arborio rice', 'mushrooms', 'parmesan', 'white wine', 'butter'],
     cookTime: 35,
     image: '/recipes/mushroom-risotto.jpg',
-    emoji: '🍚',
   },
   {
     id: 'greek-salad',
@@ -79,7 +70,6 @@ export const RECIPES: Recipe[] = [
     ingredients: ['cucumber', 'tomato', 'feta cheese', 'olives', 'red onion'],
     cookTime: 10,
     image: '/recipes/greek-salad.jpg',
-    emoji: '🫒',
   },
   {
     id: 'chocolate-chip-cookies',
@@ -87,7 +77,6 @@ export const RECIPES: Recipe[] = [
     ingredients: ['flour', 'butter', 'sugar', 'chocolate chips', 'eggs'],
     cookTime: 25,
     image: '/recipes/chocolate-chip-cookies.jpg',
-    emoji: '🍪',
   },
   {
     id: 'chicken-curry',
@@ -95,7 +84,6 @@ export const RECIPES: Recipe[] = [
     ingredients: ['chicken thighs', 'coconut milk', 'curry powder', 'onion', 'garlic'],
     cookTime: 40,
     image: '/recipes/chicken-curry.jpg',
-    emoji: '🍛',
     featured: true,
     tagline: 'This warming coconut curry is perfect for cozy nights in.',
     heroImage: '/recipes/chicken-curry-hero.jpg',

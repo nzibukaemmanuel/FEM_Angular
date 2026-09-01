@@ -1,16 +1,6 @@
 <article class="recipe-card">
   <div class="recipe-photo">
-    @if (!photoFailed()) {
-      <img
-        class="recipe-photo-img"
-        [src]="recipe().image"
-        [alt]="recipe().name"
-        loading="lazy"
-        (error)="photoFailed.set(true)"
-      />
-    } @else {
-      <span class="recipe-emoji" aria-hidden="true">{{ recipe().emoji }}</span>
-    }
+    <img class="recipe-photo-img" [src]="recipe().image" [alt]="recipe().name" loading="lazy" />
     <button
       type="button"
       class="favorite-button"
