@@ -1,10 +1,12 @@
 import { Component, HostBinding, input, output } from '@angular/core';
+import { Icon } from '../icon/icon';
 import { Recipe } from '../../models/recipe';
 
 export type RecipeCardVariant = 'row' | 'carousel';
 
 @Component({
   selector: 'app-recipe-card',
+  imports: [Icon],
   templateUrl: './recipe-card.html',
   styleUrl: './recipe-card.css',
 })

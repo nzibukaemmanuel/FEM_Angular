@@ -1,4 +1,5 @@
 import { Component, computed, effect, signal } from '@angular/core';
+import { Icon } from './components/icon/icon';
 import { Login } from './components/login/login';
 import { RecipeCard } from './components/recipe-card/recipe-card';
 import { Toast, ToastMessage, ToastType } from './components/toast/toast';
@@ -33,7 +34,7 @@ function loadPersistedState(): Partial<PersistedState> {
 
 @Component({
   selector: 'app-root',
-  imports: [RecipeCard, Login, Toast],
+  imports: [RecipeCard, Login, Toast, Icon],
   templateUrl: './app.html',
   styleUrl: './app.css',
 })

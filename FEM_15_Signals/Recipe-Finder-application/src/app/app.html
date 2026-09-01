@@ -18,14 +18,18 @@
         @if (showMenu()) {
           <div class="menu-backdrop" (click)="closeMenu()"></div>
           <nav class="menu-dropdown" aria-label="Main menu">
-            <button type="button" class="menu-item" (click)="goHome()">🏠 Home</button>
-            <button type="button" class="menu-item" [disabled]="!isLoggedIn()" (click)="openFavoritesFromMenu()">
-              ♥ Favourites
+            <button type="button" class="menu-item" (click)="goHome()">
+              <app-icon name="home" [filled]="true" /> Home
             </button>
             <button type="button" class="menu-item" [disabled]="!isLoggedIn()" (click)="openFavoritesFromMenu()">
-              🔖 Saved
+              <app-icon name="heart" /> Favourites
             </button>
-            <button type="button" class="menu-item" (click)="openAccountFromMenu()">👤 Users</button>
+            <button type="button" class="menu-item" [disabled]="!isLoggedIn()" (click)="openFavoritesFromMenu()">
+              <app-icon name="bookmark" /> Saved
+            </button>
+            <button type="button" class="menu-item" (click)="openAccountFromMenu()">
+              <app-icon name="user" /> Users
+            </button>
           </nav>
         }
       </div>
@@ -38,7 +42,7 @@
       <span class="hero-top-spacer" aria-hidden="true"></span>
 
       <label class="search-bar" for="search">
-        <span class="search-icon" aria-hidden="true">🔍</span>
+        <app-icon name="search" class="search-icon" />
         <input
           id="search"
           type="search"
@@ -54,9 +58,8 @@
 
   @if (!isLoggedIn()) {
     <p class="lock-hint">
-      🔒
       <button type="button" class="lock-hint-link" (click)="openAccount()">Log in</button>
-      to search, filter, and save your favorite recipes.
+      <strong>to search, filter, and save your favorite recipes.</strong>
     </p>
   }
 
@@ -159,7 +162,7 @@
         [attr.aria-label]="(isFavorite(hero.id) ? 'Remove ' : 'Add ') + hero.name + (isFavorite(hero.id) ? ' from favorites' : ' to favorites')"
         (click)="toggleFavorite(hero.id)"
       >
-        {{ isFavorite(hero.id) ? '♥' : '♡' }}
+        <app-icon name="heart" [filled]="isFavorite(hero.id)" />
       </button>
 
       <button type="button" class="hero-cta" [disabled]="!isLoggedIn()" (click)="scrollToRecipe(hero.id)">
@@ -206,19 +209,19 @@
 
 <nav class="mobile-nav" aria-label="Main menu">
   <button type="button" class="mobile-nav-item" (click)="goHome()">
-    <span aria-hidden="true">🏠</span>
+    <app-icon name="home" [filled]="true" />
     <span class="mobile-nav-label">Home</span>
   </button>
   <button type="button" class="mobile-nav-item" [disabled]="!isLoggedIn()" (click)="openFavoritesFromMenu()">
-    <span aria-hidden="true">♥</span>
+    <app-icon name="heart" />
     <span class="mobile-nav-label">Favourites</span>
   </button>
   <button type="button" class="mobile-nav-item" [disabled]="!isLoggedIn()" (click)="openFavoritesFromMenu()">
-    <span aria-hidden="true">🔖</span>
+    <app-icon name="bookmark" />
     <span class="mobile-nav-label">Saved</span>
   </button>
   <button type="button" class="mobile-nav-item" (click)="openAccountFromMenu()">
-    <span aria-hidden="true">👤</span>
+    <app-icon name="user" />
     <span class="mobile-nav-label">Users</span>
   </button>
 </nav>

@@ -36,7 +36,7 @@ describe('RecipeCard', () => {
 
       const button: HTMLButtonElement = fixture.nativeElement.querySelector('.row-favorite-button');
       expect(button.classList.contains('is-active')).toBe(true);
-      expect(button.textContent?.trim()).toBe('♥');
+      expect(button.querySelector('svg')?.getAttribute('fill')).toBe('currentColor');
     });
 
     it('should emit favoriteToggled with the recipe id when clicked', () => {
