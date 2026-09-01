@@ -1,0 +1,88 @@
+import { Recipe } from '../models/recipe';
+
+export const RECIPES: Recipe[] = [
+  {
+    id: 'spaghetti-carbonara',
+    name: 'Spaghetti Carbonara',
+    ingredients: ['spaghetti', 'eggs', 'parmesan', 'pancetta', 'black pepper'],
+    cookTime: 20,
+    image: '🍝',
+  },
+  {
+    id: 'margherita-pizza',
+    name: 'Margherita Pizza',
+    ingredients: ['pizza dough', 'tomato sauce', 'mozzarella', 'basil'],
+    cookTime: 25,
+    image: '🍕',
+  },
+  {
+    id: 'chicken-caesar-salad',
+    name: 'Chicken Caesar Salad',
+    ingredients: ['chicken breast', 'romaine lettuce', 'parmesan', 'croutons', 'caesar dressing'],
+    cookTime: 15,
+    image: '🥗',
+  },
+  {
+    id: 'beef-tacos',
+    name: 'Beef Tacos',
+    ingredients: ['ground beef', 'taco shells', 'lettuce', 'cheddar cheese', 'salsa'],
+    cookTime: 20,
+    image: '🌮',
+  },
+  {
+    id: 'vegetable-stir-fry',
+    name: 'Vegetable Stir Fry',
+    ingredients: ['broccoli', 'carrots', 'bell peppers', 'soy sauce', 'tofu'],
+    cookTime: 15,
+    image: '🥦',
+  },
+  {
+    id: 'classic-pancakes',
+    name: 'Classic Pancakes',
+    ingredients: ['flour', 'eggs', 'milk', 'butter', 'maple syrup'],
+    cookTime: 20,
+    image: '🥞',
+  },
+  {
+    id: 'tomato-basil-soup',
+    name: 'Tomato Basil Soup',
+    ingredients: ['tomatoes', 'basil', 'garlic', 'onion', 'vegetable stock'],
+    cookTime: 30,
+    image: '🍲',
+  },
+  {
+    id: 'grilled-salmon',
+    name: 'Grilled Salmon',
+    ingredients: ['salmon fillet', 'lemon', 'dill', 'olive oil', 'asparagus'],
+    cookTime: 18,
+    image: '🐟',
+  },
+  {
+    id: 'mushroom-risotto',
+    name: 'Mushroom Risotto',
+    ingredients: ['arborio rice', 'mushrooms', 'parmesan', 'white wine', 'butter'],
+    cookTime: 35,
+    image: '🍚',
+  },
+  {
+    id: 'greek-salad',
+    name: 'Greek Salad',
+    ingredients: ['cucumber', 'tomato', 'feta cheese', 'olives', 'red onion'],
+    cookTime: 10,
+    image: '🫒',
+  },
+  {
+    id: 'chocolate-chip-cookies',
+    name: 'Chocolate Chip Cookies',
+    ingredients: ['flour', 'butter', 'sugar', 'chocolate chips', 'eggs'],
+    cookTime: 25,
+    image: '🍪',
+  },
+  {
+    id: 'chicken-curry',
+    name: 'Chicken Curry',
+    ingredients: ['chicken thighs', 'coconut milk', 'curry powder', 'onion', 'garlic'],
+    cookTime: 40,
+    image: '🍛',
+  },
+];

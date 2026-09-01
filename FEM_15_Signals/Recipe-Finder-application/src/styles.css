@@ -1,1 +1,47 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+  color-scheme: light dark;
+
+  --color-bg: #fdf6ec;
+  --color-surface: #ffffff;
+  --color-border: #e8ddcd;
+  --color-text: #3a2e26;
+  --color-text-muted: #7a6a5c;
+  --color-primary: #e2622a;
+  --color-primary-hover: #c94f1c;
+  --color-accent: #2f8f6e;
+  --shadow-card: 0 4px 14px rgba(58, 46, 38, 0.08);
+}
+
+html[data-theme='dark'] {
+  --color-bg: #1c1712;
+  --color-surface: #29221b;
+  --color-border: #3c332a;
+  --color-text: #f3ece1;
+  --color-text-muted: #b6a996;
+  --color-primary: #ff8452;
+  --color-primary-hover: #ff9c6f;
+  --color-accent: #4fbd93;
+  --shadow-card: 0 4px 14px rgba(0, 0, 0, 0.4);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: var(--color-bg);
+  color: var(--color-text);
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+input,
+button {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}

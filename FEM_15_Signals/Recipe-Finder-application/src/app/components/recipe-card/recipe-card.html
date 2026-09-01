@@ -1,0 +1,20 @@
+<article class="recipe-card">
+  <button
+    type="button"
+    class="favorite-button"
+    [class.is-active]="isFavorite()"
+    [attr.aria-pressed]="isFavorite()"
+    [attr.aria-label]="(isFavorite() ? 'Remove ' : 'Add ') + recipe().name + (isFavorite() ? ' from favorites' : ' to favorites')"
+    (click)="onToggleFavorite()"
+  >
+    {{ isFavorite() ? '★' : '☆' }}
+  </button>
+
+  <div class="recipe-image" aria-hidden="true">{{ recipe().image }}</div>
+
+  <div class="recipe-body">
+    <h3 class="recipe-title">{{ recipe().name }}</h3>
+    <p class="recipe-time">⏱ {{ recipe().cookTime }} min</p>
+    <p class="recipe-ingredients">{{ recipe().ingredients.join(', ') }}</p>
+  </div>
+</article>
