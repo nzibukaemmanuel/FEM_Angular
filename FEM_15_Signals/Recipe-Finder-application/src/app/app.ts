@@ -4,7 +4,6 @@ import { RECIPES } from './data/recipes';
 import { Recipe } from './models/recipe';
 
 type SortOrder = 'default' | 'cookTime';
-type Theme = 'light' | 'dark';
 
 interface PersistedState {
   searchQuery: string;
@@ -12,7 +11,6 @@ interface PersistedState {
   favoritesOnly: boolean;
   sortOrder: SortOrder;
   favoriteIds: string[];
-  theme: Theme;
 }
 
 const STORAGE_KEY = 'recipe-finder-state';
@@ -48,7 +46,6 @@ export class App {
   protected readonly favoritesOnly = signal(this.persisted.favoritesOnly ?? false);
   protected readonly sortOrder = signal<SortOrder>(this.persisted.sortOrder ?? 'default');
   protected readonly favoriteIds = signal<Set<string>>(new Set(this.persisted.favoriteIds ?? []));
-  protected readonly theme = signal<Theme>(this.persisted.theme ?? 'light');
 
   protected readonly filteredRecipes = computed(() => {
     const query = this.searchQuery().trim().toLowerCase();
@@ -82,8 +79,6 @@ export class App {
   );
   protected readonly carouselRecipes = computed(() => this.filteredRecipes().slice(0, CAROUSEL_COUNT));
 
-  protected readonly showFilters = signal(false);
-
   constructor() {
     effect(() => {
       console.log('[Recipe Finder] filters changed', {
@@ -95,17 +90,12 @@ export class App {
     });
 
     effect(() => {
-      document.documentElement.setAttribute('data-theme', this.theme());
-    });
-
-    effect(() => {
       const state: PersistedState = {
         searchQuery: this.searchQuery(),
         maxCookTime: this.maxCookTime(),
         favoritesOnly: this.favoritesOnly(),
         sortOrder: this.sortOrder(),
         favoriteIds: [...this.favoriteIds()],
-        theme: this.theme(),
       };
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
     });
@@ -125,10 +115,6 @@ export class App {
 
   protected toggleSortByCookTime(): void {
     this.sortOrder.update((order) => (order === 'cookTime' ? 'default' : 'cookTime'));
-  }
-
-  protected toggleTheme(): void {
-    this.theme.update((current) => (current === 'light' ? 'dark' : 'light'));
   }
 
   protected isFavorite(id: string): boolean {
@@ -156,8 +142,12 @@ export class App {
     }
   }
 
-  protected toggleFilters(): void {
-    this.showFilters.update((value) => !value);
+  protected viewFavorites(): void {
+    this.favoritesOnly.set(true);
+    this.showAllRecipes.set(true);
+    setTimeout(() => {
+      document.getElementById('all-recipes')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
   }
 
   protected scrollToRecipe(id: string): void {
@@ -165,9 +155,5 @@ export class App {
     setTimeout(() => {
       document.getElementById(`recipe-${id}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
     });
-  }
-
-  protected scrollToTop(): void {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 }

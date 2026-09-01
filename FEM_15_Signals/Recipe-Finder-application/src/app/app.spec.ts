@@ -15,11 +15,6 @@ describe('App', () => {
     return fixture;
   }
 
-  function openFilters(fixture: ReturnType<typeof setup>) {
-    fixture.nativeElement.querySelector('.menu-button').click();
-    fixture.detectChanges();
-  }
-
   it('should create the app', () => {
     const fixture = setup();
     expect(fixture.componentInstance).toBeTruthy();
@@ -31,12 +26,8 @@ describe('App', () => {
     expect(fixture.nativeElement.querySelectorAll('#all-recipes .recipe-list app-recipe-card').length).toBe(3);
   });
 
-  it('should keep the filters panel hidden until the menu button is clicked', () => {
+  it('should keep the filters panel visible without needing to be toggled', () => {
     const fixture = setup();
-    expect(fixture.nativeElement.querySelector('#cook-time')).toBeFalsy();
-
-    openFilters(fixture);
-
     expect(fixture.nativeElement.querySelector('#cook-time')).toBeTruthy();
   });
 
@@ -87,7 +78,6 @@ describe('App', () => {
 
   it('should filter out recipes above the max cook time', () => {
     const fixture = setup();
-    openFilters(fixture);
 
     const range: HTMLInputElement = fixture.nativeElement.querySelector('#cook-time');
     range.value = '10';
@@ -102,7 +92,6 @@ describe('App', () => {
 
   it('should sort by shortest cook time when the sort toggle is checked', () => {
     const fixture = setup();
-    openFilters(fixture);
 
     const sortToggle: HTMLInputElement = fixture.nativeElement.querySelectorAll(
       '.toggle-control input[type="checkbox"]',
@@ -123,7 +112,6 @@ describe('App', () => {
     favoriteButton.click();
     fixture.detectChanges();
 
-    openFilters(fixture);
     const favoritesOnlyToggle: HTMLInputElement = fixture.nativeElement.querySelectorAll(
       '.toggle-control input[type="checkbox"]',
     )[0];
@@ -134,34 +122,17 @@ describe('App', () => {
     expect(fixture.nativeElement.querySelectorAll('#all-recipes .recipe-list app-recipe-card').length).toBe(1);
   });
 
-  it('should toggle favorites-only from the bottom nav heart icon', () => {
+  it('should filter to favorites and reveal the full list when "View favorites" is clicked', () => {
     const fixture = setup();
-    const app = fixture.componentInstance as any;
-
-    fixture.nativeElement.querySelectorAll('.nav-icon')[1].click();
+    const favoriteButton: HTMLButtonElement = fixture.nativeElement.querySelector('.row-favorite-button');
+    favoriteButton.click();
     fixture.detectChanges();
-
-    expect(app.favoritesOnly()).toBe(true);
-  });
-
-  it('should toggle dark mode from the promo banner button', () => {
-    const fixture = setup();
-    expect(document.documentElement.getAttribute('data-theme')).toBe('light');
 
     fixture.nativeElement.querySelector('.promo-button').click();
     fixture.detectChanges();
 
-    expect(document.documentElement.getAttribute('data-theme')).toBe('dark');
-    expect(fixture.nativeElement.querySelector('.promo-button').textContent).toContain('Switch to light');
-  });
-
-  it('should toggle the theme attribute from the bottom nav floating button', () => {
-    const fixture = setup();
-    expect(document.documentElement.getAttribute('data-theme')).toBe('light');
-
-    fixture.nativeElement.querySelector('.nav-fab').click();
-    fixture.detectChanges();
-
-    expect(document.documentElement.getAttribute('data-theme')).toBe('dark');
+    const app = fixture.componentInstance as any;
+    expect(app.favoritesOnly()).toBe(true);
+    expect(fixture.nativeElement.querySelectorAll('#all-recipes .recipe-list app-recipe-card').length).toBe(1);
   });
 });

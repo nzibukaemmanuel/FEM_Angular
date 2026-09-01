@@ -1,5 +1,5 @@
 :root {
-  color-scheme: light dark;
+  color-scheme: light;
 
   --color-bg: #ffffff;
   --color-surface: #ffffff;
@@ -16,18 +16,6 @@
   --color-hero-bg: #181a20;
 }
 
-html[data-theme='dark'] {
-  --color-bg: #181a20;
-  --color-surface: #181a20;
-  --color-border: rgba(159, 159, 159, 0.25);
-  --color-text: #ffffff;
-  --color-text-muted: #9f9f9f;
-  --color-primary: #f6b100;
-  --color-primary-soft: rgba(246, 177, 0, 0.16);
-  --shadow-card: 0 6px 18px rgba(0, 0, 0, 0.4);
-  --shadow-card-hover: 0 16px 30px rgba(0, 0, 0, 0.55);
-}
-
 * {
   box-sizing: border-box;
 }
@@ -37,7 +25,6 @@ body {
   font-family: 'Poppins', 'Segoe UI', system-ui, -apple-system, sans-serif;
   background: var(--color-bg);
   color: var(--color-text);
-  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 input,
