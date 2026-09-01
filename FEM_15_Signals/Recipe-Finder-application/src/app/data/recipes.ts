@@ -84,5 +84,7 @@ export const RECIPES: Recipe[] = [
     ingredients: ['chicken thighs', 'coconut milk', 'curry powder', 'onion', 'garlic'],
     cookTime: 40,
     image: '🍛',
+    featured: true,
+    tagline: 'This warming coconut curry is perfect for cozy nights in.',
   },
 ];

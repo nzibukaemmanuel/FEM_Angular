@@ -22,7 +22,7 @@ describe('RecipeCard', () => {
     expect(text).toContain('flour, sugar');
   });
 
-  it('should show a filled star when marked as a favorite', () => {
+  it('should show a filled heart when marked as a favorite', () => {
     const fixture = TestBed.createComponent(RecipeCard);
     fixture.componentRef.setInput('recipe', recipe);
     fixture.componentRef.setInput('isFavorite', true);
@@ -30,7 +30,7 @@ describe('RecipeCard', () => {
 
     const button: HTMLButtonElement = fixture.nativeElement.querySelector('.favorite-button');
     expect(button.classList.contains('is-active')).toBe(true);
-    expect(button.textContent?.trim()).toBe('★');
+    expect(button.textContent?.trim()).toBe('♥');
   });
 
   it('should emit favoriteToggled with the recipe id when clicked', () => {

@@ -71,6 +71,7 @@ export class App {
 
   protected readonly resultCount = computed(() => this.filteredRecipes().length);
   protected readonly hasResults = computed(() => this.resultCount() > 0);
+  protected readonly heroRecipe = computed(() => this.recipes().find((recipe) => recipe.featured));
 
   constructor() {
     effect(() => {
@@ -133,5 +134,9 @@ export class App {
       }
       return next;
     });
+  }
+
+  protected scrollToRecipe(id: string): void {
+    document.getElementById(`recipe-${id}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 }

@@ -1,4 +1,4 @@
-import { Component, input, output } from '@angular/core';
+import { Component, HostBinding, input, output } from '@angular/core';
 import { Recipe } from '../../models/recipe';
 
 @Component({
@@ -10,6 +10,11 @@ export class RecipeCard {
   readonly recipe = input.required<Recipe>();
   readonly isFavorite = input(false);
   readonly favoriteToggled = output<string>();
+
+  @HostBinding('id')
+  protected get hostId(): string {
+    return `recipe-${this.recipe().id}`;
+  }
 
   protected onToggleFavorite(): void {
     this.favoriteToggled.emit(this.recipe().id);

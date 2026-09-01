@@ -4,4 +4,6 @@ export interface Recipe {
   ingredients: string[];
   cookTime: number;
   image: string;
+  featured?: boolean;
+  tagline?: string;
 }
