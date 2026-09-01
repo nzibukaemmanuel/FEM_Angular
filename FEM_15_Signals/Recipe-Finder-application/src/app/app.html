@@ -19,7 +19,7 @@
             <button type="button" class="menu-item" (click)="goHome()">🏠 Home</button>
             <button type="button" class="menu-item" (click)="openFavoritesFromMenu()">♥ Favourites</button>
             <button type="button" class="menu-item" (click)="openFavoritesFromMenu()">🔖 Saved</button>
-            <button type="button" class="menu-item" (click)="openAboutFromMenu()">👤 Users</button>
+            <button type="button" class="menu-item" (click)="openAccountFromMenu()">👤 Users</button>
           </nav>
         }
       </div>
@@ -102,10 +102,15 @@
 
   <section class="promo-banner">
     <div class="promo-text">
-      <p>Tap the heart on any recipe to save it — build your own quick-access list of favorites.</p>
-      <button type="button" class="promo-button" (click)="viewFavorites()">View favorites</button>
+      @if (username(); as name) {
+        <p>Welcome back, {{ name }}! Ready to cook something great?</p>
+        <button type="button" class="promo-button" (click)="logout()">Log out</button>
+      } @else {
+        <p>Sign in as a home chef to personalize your recipe experience.</p>
+        <button type="button" class="promo-button" (click)="openAccount()">Login</button>
+      }
     </div>
-    <span class="promo-icon" aria-hidden="true">❤️</span>
+    <img class="promo-icon-img" src="/chef.jpg" alt="Smiling chef presenting a plated dish" />
   </section>
 
   @if (heroRecipe(); as hero) {
@@ -177,22 +182,29 @@
     <span aria-hidden="true">🔖</span>
     <span class="mobile-nav-label">Saved</span>
   </button>
-  <button type="button" class="mobile-nav-item" (click)="openAboutFromMenu()">
+  <button type="button" class="mobile-nav-item" (click)="openAccountFromMenu()">
     <span aria-hidden="true">👤</span>
     <span class="mobile-nav-label">Users</span>
   </button>
 </nav>
 
-@if (showAbout()) {
-  <div class="modal-backdrop" (click)="closeAbout()"></div>
-  <div class="about-panel" role="dialog" aria-modal="true" aria-label="About Recipe Finder">
-    <button type="button" class="about-close" (click)="closeAbout()" aria-label="Close">✕</button>
-    <h2>About Recipe Finder</h2>
-    <p>
-      A reactive recipe search and filtering app built entirely with Angular Signals —
-      <code>signal()</code>, <code>computed()</code>, and <code>effect()</code> drive search, filtering,
-      sorting, and favorites without any backend.
-    </p>
-    <p>Built for the FEM_15 Signals lab.</p>
+@if (showAccount()) {
+  <div class="modal-backdrop" (click)="closeAccount()"></div>
+  <div class="about-panel login-panel" role="dialog" aria-modal="true" aria-label="Account">
+    <button type="button" class="about-close" (click)="closeAccount()" aria-label="Close">✕</button>
+    @if (username(); as name) {
+      <h2>Welcome, {{ name }}!</h2>
+      <p>You're signed in on this device — this is saved locally, no account or password needed.</p>
+      <button type="button" class="promo-button" (click)="logout()">Log out</button>
+    } @else {
+      <h2>Login</h2>
+      <p>Enter a name to personalize your Recipe Finder experience. Saved on this device only.</p>
+      <div class="login-fields">
+        <input type="text" placeholder="Your name" #nameInput (keydown.enter)="login(nameInput.value); nameInput.value = ''" />
+        <button type="button" class="promo-button" (click)="login(nameInput.value); nameInput.value = ''">
+          Login
+        </button>
+      </div>
+    }
   </div>
 }

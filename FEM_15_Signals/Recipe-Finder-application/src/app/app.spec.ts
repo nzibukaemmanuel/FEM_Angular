@@ -122,18 +122,51 @@ describe('App', () => {
     expect(fixture.nativeElement.querySelectorAll('#all-recipes .recipe-list app-recipe-card').length).toBe(1);
   });
 
-  it('should filter to favorites and reveal the full list when "View favorites" is clicked', () => {
-    const fixture = setup();
-    const favoriteButton: HTMLButtonElement = fixture.nativeElement.querySelector('.row-favorite-button');
-    favoriteButton.click();
-    fixture.detectChanges();
+  describe('login', () => {
+    it('should show a Login button in the promo banner when logged out', () => {
+      const fixture = setup();
+      const button: HTMLButtonElement = fixture.nativeElement.querySelector('.promo-banner .promo-button');
+      expect(button.textContent?.trim()).toBe('Login');
+    });
 
-    fixture.nativeElement.querySelector('.promo-button').click();
-    fixture.detectChanges();
+    it('should log the user in from the promo banner and persist the name', () => {
+      const fixture = setup();
+      fixture.nativeElement.querySelector('.promo-banner .promo-button').click();
+      fixture.detectChanges();
 
-    const app = fixture.componentInstance as any;
-    expect(app.favoritesOnly()).toBe(true);
-    expect(fixture.nativeElement.querySelectorAll('#all-recipes .recipe-list app-recipe-card').length).toBe(1);
+      const nameInput: HTMLInputElement = fixture.nativeElement.querySelector('.login-fields input');
+      nameInput.value = 'Ama';
+      fixture.nativeElement.querySelector('.login-fields .promo-button').click();
+      fixture.detectChanges();
+
+      const app = fixture.componentInstance as any;
+      expect(app.username()).toBe('Ama');
+      expect(fixture.nativeElement.querySelector('.about-panel')).toBeFalsy();
+      expect(fixture.nativeElement.querySelector('.promo-banner').textContent).toContain('Welcome back, Ama');
+
+      const stored = JSON.parse(localStorage.getItem('recipe-finder-state') ?? '{}');
+      expect(stored.username).toBe('Ama');
+    });
+
+    it('should ignore a blank name', () => {
+      const fixture = setup();
+      const app = fixture.componentInstance as any;
+      app.login('   ');
+      expect(app.username()).toBeNull();
+    });
+
+    it('should log out from the promo banner', () => {
+      const fixture = setup();
+      const app = fixture.componentInstance as any;
+      app.login('Ama');
+      fixture.detectChanges();
+
+      fixture.nativeElement.querySelector('.promo-banner .promo-button').click();
+      fixture.detectChanges();
+
+      expect(app.username()).toBeNull();
+      expect(fixture.nativeElement.querySelector('.promo-banner .promo-button').textContent?.trim()).toBe('Login');
+    });
   });
 
   describe('menu', () => {
@@ -184,7 +217,7 @@ describe('App', () => {
       expect(app.favoritesOnly()).toBe(true);
     });
 
-    it('should open the About panel when "Users" is clicked, and close via the close button', () => {
+    it('should open the account panel when "Users" is clicked, and close via the close button', () => {
       const fixture = setup();
       fixture.nativeElement.querySelector('.menu-button').click();
       fixture.detectChanges();
@@ -193,6 +226,7 @@ describe('App', () => {
       fixture.detectChanges();
 
       expect(fixture.nativeElement.querySelector('.about-panel')).toBeTruthy();
+      expect(fixture.nativeElement.querySelector('.login-fields')).toBeTruthy();
       expect(fixture.nativeElement.querySelector('.menu-dropdown')).toBeFalsy();
 
       fixture.nativeElement.querySelector('.about-close').click();
@@ -201,7 +235,7 @@ describe('App', () => {
       expect(fixture.nativeElement.querySelector('.about-panel')).toBeFalsy();
     });
 
-    it('should close the About panel when the backdrop is clicked', () => {
+    it('should close the account panel when the backdrop is clicked', () => {
       const fixture = setup();
       fixture.nativeElement.querySelector('.menu-button').click();
       fixture.detectChanges();
@@ -212,6 +246,21 @@ describe('App', () => {
       fixture.detectChanges();
 
       expect(fixture.nativeElement.querySelector('.about-panel')).toBeFalsy();
+    });
+
+    it('should show a welcome message and log-out option when already logged in', () => {
+      const fixture = setup();
+      const app = fixture.componentInstance as any;
+      app.login('Ama');
+      fixture.detectChanges();
+
+      fixture.nativeElement.querySelector('.menu-button').click();
+      fixture.detectChanges();
+      fixture.nativeElement.querySelectorAll('.menu-item')[3].click();
+      fixture.detectChanges();
+
+      expect(fixture.nativeElement.querySelector('.about-panel').textContent).toContain('Welcome, Ama');
+      expect(fixture.nativeElement.querySelector('.login-fields')).toBeFalsy();
     });
   });
 
@@ -233,7 +282,7 @@ describe('App', () => {
       expect(fixture.nativeElement.querySelectorAll('#all-recipes .recipe-list app-recipe-card').length).toBe(1);
     });
 
-    it('should open the About panel from the mobile nav', () => {
+    it('should open the account panel from the mobile nav', () => {
       const fixture = setup();
       fixture.nativeElement.querySelectorAll('.mobile-nav-item')[3].click();
       fixture.detectChanges();

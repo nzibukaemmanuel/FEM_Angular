@@ -215,6 +215,38 @@
   font-size: 0.85em;
 }
 
+.login-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.login-fields input[type='text'] {
+  border: 1px solid var(--color-border);
+  border-radius: 0.75rem;
+  padding: 0.65rem 0.85rem;
+  font-size: 0.95rem;
+  color: var(--color-text);
+  background: var(--color-bg);
+}
+
+.login-fields input[type='text']:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.login-panel .promo-button {
+  align-self: flex-start;
+  color: #ffffff;
+  background: var(--color-primary);
+}
+
+.login-panel .promo-button:hover,
+.login-panel .promo-button:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
 /* Filters */
 
 .filters-card {
@@ -392,10 +424,14 @@
   outline-offset: 2px;
 }
 
-.promo-icon {
-  font-size: 3.5rem;
+.promo-icon-img {
+  width: 120px;
+  height: 120px;
   flex-shrink: 0;
-  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.2));
+  object-fit: cover;
+  object-position: top center;
+  border-radius: 1.25rem;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.25);
 }
 
 /* Weekly pick hero */
@@ -610,8 +646,9 @@
     padding: 1.25rem;
   }
 
-  .promo-icon {
-    font-size: 2.5rem;
+  .promo-icon-img {
+    width: 90px;
+    height: 90px;
   }
 
   .weekly-pick {

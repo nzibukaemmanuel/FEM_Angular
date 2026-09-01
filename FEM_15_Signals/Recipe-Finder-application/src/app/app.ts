@@ -11,6 +11,7 @@ interface PersistedState {
   favoritesOnly: boolean;
   sortOrder: SortOrder;
   favoriteIds: string[];
+  username: string | null;
 }
 
 const STORAGE_KEY = 'recipe-finder-state';
@@ -80,7 +81,8 @@ export class App {
   protected readonly carouselRecipes = computed(() => this.filteredRecipes().slice(0, CAROUSEL_COUNT));
 
   protected readonly showMenu = signal(false);
-  protected readonly showAbout = signal(false);
+  protected readonly showAccount = signal(false);
+  protected readonly username = signal<string | null>(this.persisted.username ?? null);
 
   constructor() {
     effect(() => {
@@ -99,6 +101,7 @@ export class App {
         favoritesOnly: this.favoritesOnly(),
         sortOrder: this.sortOrder(),
         favoriteIds: [...this.favoriteIds()],
+        username: this.username(),
       };
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
     });
@@ -178,12 +181,29 @@ export class App {
     this.viewFavorites();
   }
 
-  protected openAboutFromMenu(): void {
+  protected openAccountFromMenu(): void {
     this.showMenu.set(false);
-    this.showAbout.set(true);
+    this.showAccount.set(true);
   }
 
-  protected closeAbout(): void {
-    this.showAbout.set(false);
+  protected openAccount(): void {
+    this.showAccount.set(true);
+  }
+
+  protected closeAccount(): void {
+    this.showAccount.set(false);
+  }
+
+  protected login(name: string): void {
+    const trimmed = name.trim();
+    if (!trimmed) {
+      return;
+    }
+    this.username.set(trimmed);
+    this.showAccount.set(false);
+  }
+
+  protected logout(): void {
+    this.username.set(null);
   }
 }
