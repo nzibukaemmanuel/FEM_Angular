@@ -54,6 +54,11 @@
   box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
 }
 
+.search-bar:focus-within {
+  outline: 3px solid var(--color-primary-strong);
+  outline-offset: 2px;
+}
+
 .search-icon {
   font-size: 1rem;
   opacity: 0.6;
@@ -98,7 +103,6 @@
 .menu-button:hover,
 .menu-button:focus-visible {
   background: rgba(255, 255, 255, 0.55);
-  outline: none;
 }
 
 .menu-backdrop {
@@ -140,8 +144,7 @@
 .menu-item:hover,
 .menu-item:focus-visible {
   background: var(--color-primary-soft);
-  color: var(--color-primary);
-  outline: none;
+  color: var(--color-primary-strong);
 }
 
 /* About modal */
@@ -186,8 +189,7 @@
 .about-close:hover,
 .about-close:focus-visible {
   background: var(--color-primary-soft);
-  color: var(--color-primary);
-  outline: none;
+  color: var(--color-primary-strong);
 }
 
 /* Lock hint */
@@ -198,7 +200,7 @@
   flex-wrap: wrap;
   gap: 0.4rem;
   background: var(--color-primary-soft);
-  color: var(--color-primary);
+  color: var(--color-primary-strong);
   font-weight: 600;
   font-size: 0.85rem;
   padding: 0.75rem 1.1rem;
@@ -210,7 +212,7 @@
   border: none;
   background: none;
   padding: 0;
-  color: var(--color-primary);
+  color: var(--color-primary-strong);
   font-weight: 700;
   font-size: inherit;
   text-decoration: underline;
@@ -219,7 +221,6 @@
 .lock-hint-link:hover,
 .lock-hint-link:focus-visible {
   color: var(--color-text);
-  outline: none;
 }
 
 /* Disabled states (locked behind login) */
@@ -248,7 +249,6 @@
 .see-all-link:disabled:focus-visible {
   color: var(--color-text-muted);
   text-decoration: none;
-  outline: none;
 }
 
 /* Filters */
@@ -301,7 +301,7 @@
   padding: 0.55rem 1rem;
   border-radius: 999px;
   background: var(--color-primary-soft);
-  color: var(--color-primary);
+  color: var(--color-primary-strong);
   font-weight: 600;
   font-size: 0.85rem;
   cursor: pointer;
@@ -309,7 +309,7 @@
 }
 
 .chip-toggle:has(input:checked) {
-  background: var(--color-primary);
+  background: var(--color-primary-strong);
   color: #ffffff;
 }
 
@@ -322,7 +322,7 @@
 }
 
 .chip-toggle:focus-within {
-  outline: 2px solid var(--color-primary);
+  outline: 3px solid var(--color-primary-strong);
   outline-offset: 2px;
 }
 
@@ -349,7 +349,7 @@
 .section-subtitle {
   display: block;
   margin-top: 0.15rem;
-  color: var(--color-primary);
+  color: var(--color-primary-strong);
   font-weight: 600;
   font-size: 0.85rem;
 }
@@ -365,8 +365,7 @@
 
 .see-all-link:hover,
 .see-all-link:focus-visible {
-  color: var(--color-primary);
-  outline: none;
+  color: var(--color-primary-strong);
   text-decoration: underline;
 }
 
@@ -409,7 +408,7 @@
 
 .promo-text p {
   margin: 0 0 1.25rem;
-  color: #ffffff;
+  color: var(--color-header-text);
   font-weight: 700;
   font-size: 1.5rem;
   line-height: 1.3;
@@ -419,7 +418,7 @@
 .promo-button {
   border: none;
   background: #ffffff;
-  color: var(--color-primary);
+  color: var(--color-primary-strong);
   font-weight: 700;
   font-size: 0.85rem;
   padding: 0.65rem 1.25rem;
@@ -430,7 +429,7 @@
 .promo-button:hover,
 .promo-button:focus-visible {
   transform: translateY(-1px);
-  outline: 2px solid #ffffff;
+  outline: 3px solid var(--color-text);
   outline-offset: 2px;
 }
 
@@ -530,18 +529,18 @@
 .hero-favorite-button:focus-visible {
   background: rgba(0, 0, 0, 0.5);
   transform: scale(1.08);
-  outline: 2px solid #ffffff;
+  outline: 3px solid #ffffff;
   outline-offset: 2px;
 }
 
 .hero-favorite-button.is-active {
-  color: var(--color-primary);
+  color: var(--color-primary-strong);
   background: rgba(255, 255, 255, 0.92);
 }
 
 .hero-cta {
   right: 1.25rem;
-  background: var(--color-primary);
+  background: var(--color-primary-strong);
   color: #ffffff;
   font-weight: 600;
   font-size: 0.85rem;
@@ -554,7 +553,7 @@
 .hero-cta:hover,
 .hero-cta:focus-visible {
   transform: translateY(-1px);
-  outline: 2px solid #ffffff;
+  outline: 3px solid #ffffff;
   outline-offset: 2px;
 }
 
@@ -636,8 +635,7 @@
 
 .mobile-nav-item:hover,
 .mobile-nav-item:focus-visible {
-  color: var(--color-primary);
-  outline: none;
+  color: var(--color-primary-strong);
 }
 
 .mobile-nav-label {

@@ -3,11 +3,12 @@
 
   --color-bg: #ffffff;
   --color-surface: #ffffff;
-  --color-border: rgba(159, 159, 159, 0.3);
+  --color-border: rgba(107, 107, 107, 0.35);
   --color-text: #181a20;
-  --color-text-muted: #9f9f9f;
+  --color-text-muted: #686868;
   --color-primary: #f6b100;
-  --color-primary-soft: rgba(246, 177, 0, 0.12);
+  --color-primary-strong: #90600a;
+  --color-primary-soft: rgba(246, 177, 0, 0.16);
   --shadow-card: 0 6px 18px rgba(24, 26, 32, 0.1);
   --shadow-card-hover: 0 16px 30px rgba(24, 26, 32, 0.18);
 
@@ -35,4 +36,11 @@ button {
 
 button {
   cursor: pointer;
+}
+
+/* Strong, consistent focus indicator for keyboard/assistive-tech users */
+:focus-visible {
+  outline: 3px solid var(--color-primary-strong);
+  outline-offset: 2px;
+  border-radius: 4px;
 }

@@ -38,7 +38,7 @@ h2 {
 }
 
 .login-field input:focus-visible {
-  outline: 2px solid var(--color-primary);
+  outline: 3px solid var(--color-primary-strong);
   outline-offset: 2px;
 }
 
@@ -68,20 +68,19 @@ h2 {
 
 .password-toggle:hover,
 .password-toggle:focus-visible {
-  color: var(--color-primary);
+  color: var(--color-primary-strong);
   background: var(--color-primary-soft);
-  outline: none;
 }
 
 .login-error {
-  color: #d64545;
+  color: #c62828;
   font-size: 0.8rem;
   font-weight: 600;
 }
 
 .login-submit {
   border: none;
-  background: var(--color-primary);
+  background: var(--color-primary-strong);
   color: #ffffff;
   font-weight: 700;
   font-size: 0.85rem;
@@ -93,6 +92,6 @@ h2 {
 .login-submit:hover,
 .login-submit:focus-visible {
   transform: translateY(-1px);
-  outline: 2px solid var(--color-primary);
+  outline: 3px solid var(--color-primary-strong);
   outline-offset: 2px;
 }

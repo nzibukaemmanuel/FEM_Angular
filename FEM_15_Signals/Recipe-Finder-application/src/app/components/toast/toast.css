@@ -58,8 +58,7 @@
 .toast-close:hover,
 .toast-close:focus-visible {
   background: var(--color-primary-soft);
-  color: var(--color-primary);
-  outline: none;
+  color: var(--color-primary-strong);
 }
 
 @keyframes toast-in {
