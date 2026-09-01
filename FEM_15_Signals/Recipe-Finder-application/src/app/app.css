@@ -269,7 +269,7 @@
   min-height: 260px;
   border-radius: 1.5rem;
   overflow: hidden;
-  background: var(--gradient-hero);
+  background: var(--color-hero-bg);
   box-shadow: var(--shadow-card-hover);
   margin-bottom: 1.75rem;
 }
