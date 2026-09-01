@@ -78,19 +78,5 @@ describe('RecipeCard', () => {
       const img: HTMLImageElement = fixture.nativeElement.querySelector('.carousel-photo img');
       expect(img.src).toContain('/recipes/test-recipe.jpg');
     });
-
-    it('should emit favoriteToggled when the carousel heart is clicked', () => {
-      const fixture = TestBed.createComponent(RecipeCard);
-      fixture.componentRef.setInput('recipe', recipe);
-      fixture.componentRef.setInput('variant', 'carousel');
-      fixture.detectChanges();
-
-      const emitted: string[] = [];
-      fixture.componentInstance.favoriteToggled.subscribe((id) => emitted.push(id));
-
-      fixture.nativeElement.querySelector('.carousel-favorite-button').click();
-
-      expect(emitted).toEqual(['test-recipe']);
-    });
   });
 });

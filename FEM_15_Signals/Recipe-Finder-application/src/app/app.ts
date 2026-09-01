@@ -20,7 +20,7 @@ interface PersistedState {
 const STORAGE_KEY = 'recipe-finder-state';
 const MAX_COOK_TIME = 60;
 const TOP_PICKS_COUNT = 3;
-const CAROUSEL_COUNT = 4;
+const CAROUSEL_COUNT = 2;
 const TOAST_DURATION_MS = 4000;
 
 function loadPersistedState(): Partial<PersistedState> {
@@ -75,7 +75,6 @@ export class App {
 
   protected readonly resultCount = computed(() => this.filteredRecipes().length);
   protected readonly hasResults = computed(() => this.resultCount() > 0);
-  protected readonly heroRecipe = computed(() => this.recipes().find((recipe) => recipe.featured));
 
   protected readonly showAllRecipes = signal(false);
   protected readonly hasMoreRecipes = computed(() => this.resultCount() > TOP_PICKS_COUNT);
@@ -161,13 +160,6 @@ export class App {
     this.showAllRecipes.set(true);
     setTimeout(() => {
       document.getElementById('all-recipes')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    });
-  }
-
-  protected scrollToRecipe(id: string): void {
-    this.showAllRecipes.set(true);
-    setTimeout(() => {
-      document.getElementById(`recipe-${id}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
     });
   }
 

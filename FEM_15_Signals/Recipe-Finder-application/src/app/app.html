@@ -148,36 +148,6 @@
     <img class="promo-food-img" src="/food.png" alt="Fresh Greek salad" />
   </section>
 
-  @if (heroRecipe(); as hero) {
-    <section class="weekly-pick">
-      <div class="weekly-pick-media">
-        <img class="weekly-pick-img" [src]="hero.heroImage ?? hero.image" [alt]="hero.name" />
-      </div>
-
-      <button
-        type="button"
-        class="hero-favorite-button"
-        [class.is-active]="isFavorite(hero.id)"
-        [disabled]="!isLoggedIn()"
-        [attr.aria-pressed]="isFavorite(hero.id)"
-        [attr.aria-label]="(isFavorite(hero.id) ? 'Remove ' : 'Add ') + hero.name + (isFavorite(hero.id) ? ' from favorites' : ' to favorites')"
-        (click)="toggleFavorite(hero.id)"
-      >
-        <app-icon name="heart" [filled]="isFavorite(hero.id)" />
-      </button>
-
-      <button type="button" class="hero-cta" [disabled]="!isLoggedIn()" (click)="scrollToRecipe(hero.id)">
-        View recipe
-      </button>
-
-      <div class="weekly-pick-content">
-        <span class="weekly-pick-label">Weekly pick</span>
-        <h2>{{ hero.name }}</h2>
-        <p>{{ hero.tagline }}</p>
-      </div>
-    </section>
-  }
-
   @if (hasResults()) {
     <section class="section-block" id="all-recipes" aria-label="All recipes">
       <div class="section-heading-row">

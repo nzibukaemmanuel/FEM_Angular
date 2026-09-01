@@ -94,15 +94,26 @@
 /* Carousel card */
 
 .recipe-carousel-card {
-  width: 156px;
+  width: 164px;
   flex-shrink: 0;
   scroll-snap-align: start;
+  background: var(--color-surface);
+  border-radius: 1.25rem;
+  padding: 1rem 0.9rem 1.1rem;
+  box-shadow: var(--shadow-card);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.recipe-carousel-card:hover,
+.recipe-carousel-card:focus-within {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(24, 26, 32, 0.16);
 }
 
 .carousel-photo {
   position: relative;
-  width: 140px;
-  height: 140px;
+  width: 120px;
+  height: 120px;
   margin: 0 auto 0.75rem;
 }
 
@@ -112,7 +123,6 @@
   border-radius: 50%;
   object-fit: cover;
   border: 5px solid var(--color-surface);
-  box-shadow: var(--shadow-card);
 }
 
 .rating-badge {
@@ -122,50 +132,13 @@
   display: inline-flex;
   align-items: center;
   gap: 0.2rem;
-  background: var(--color-primary-strong);
+  background: var(--color-primary);
   color: #ffffff;
   font-size: 0.7rem;
   font-weight: 700;
   padding: 0.2rem 0.5rem;
   border-radius: 999px;
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
-}
-
-.carousel-favorite-button {
-  position: absolute;
-  top: 0.3rem;
-  right: 0.3rem;
-  width: 1.9rem;
-  height: 1.9rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: none;
-  border-radius: 50%;
-  background: rgba(0, 0, 0, 0.3);
-  color: #ffffff;
-  font-size: 1rem;
-  line-height: 1;
-  transition: background 0.15s ease, transform 0.15s ease;
-}
-
-.carousel-favorite-button:hover,
-.carousel-favorite-button:focus-visible {
-  background: rgba(0, 0, 0, 0.45);
-  transform: scale(1.08);
-  outline: 2px solid #ffffff;
-  outline-offset: 2px;
-}
-
-.carousel-favorite-button.is-active {
-  color: var(--color-primary);
-  background: rgba(255, 255, 255, 0.92);
-}
-
-.carousel-favorite-button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  transform: none;
 }
 
 .carousel-body {

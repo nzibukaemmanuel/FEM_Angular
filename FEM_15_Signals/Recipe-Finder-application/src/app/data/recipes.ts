@@ -2,6 +2,42 @@ import { Recipe } from '../models/recipe';
 
 export const RECIPES: Recipe[] = [
   {
+    id: 'Keto Salad',
+    name: 'Keto Salad',
+    ingredients: ['lettuce', 'cucumber', 'tomato', 'avocado', 'olives'],
+    cookTime: 10,
+    image: '/recipes/Keto Salad.png',
+    subtitle: 'Beans & fruits',
+    rating: 4.5,
+  },
+  {
+    id: 'Sewers Salad',
+    name: 'Sewers Salad',
+    ingredients: ['lettuce', 'cucumber', 'tomato', 'avocado', 'olives'],
+    cookTime: 10,
+    image: '/recipes/Sewers Salad.png',
+    subtitle: 'Chicken & dal',
+    rating: 4.5,
+  },
+  {
+    id: 'Spaghetti Carbonara',
+    name: 'Spaghetti Carbonara',
+    ingredients: ['spaghetti', 'eggs', 'parmesan', 'pancetta', 'black pepper'],
+    cookTime: 20,
+    image: '/recipes/spaghetti-carbonara.jpg',
+    subtitle: 'Eggs & pancetta',
+    rating: 4.7,
+  },
+  {
+    id: 'margherita-pizza',
+    name: 'Margherita Pizza',
+    ingredients: ['pizza dough', 'tomato sauce', 'mozzarella', 'basil'],
+    cookTime: 25,
+    image: '/recipes/margherita-pizza.jpg',
+    subtitle: 'Tomato & mozzarella',
+    rating: 4.6,
+  },
+  {
     id: 'spaghetti-carbonara',
     name: 'Spaghetti Carbonara',
     ingredients: ['spaghetti', 'eggs', 'parmesan', 'pancetta', 'black pepper'],
@@ -108,8 +144,5 @@ export const RECIPES: Recipe[] = [
     image: '/recipes/chicken-curry.jpg',
     subtitle: 'Chicken & coconut',
     rating: 4.8,
-    featured: true,
-    tagline: 'This warming coconut curry is perfect for cozy nights in.',
-    heroImage: '/recipes/chicken-curry-hero.jpg',
   },
 ];

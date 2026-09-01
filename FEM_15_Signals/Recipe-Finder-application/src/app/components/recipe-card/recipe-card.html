@@ -3,17 +3,6 @@
     <div class="carousel-photo">
       <img [src]="recipe().image" [alt]="recipe().name" loading="lazy" />
       <span class="rating-badge">★ {{ recipe().rating }}</span>
-      <button
-        type="button"
-        class="carousel-favorite-button"
-        [class.is-active]="isFavorite()"
-        [disabled]="locked()"
-        [attr.aria-pressed]="isFavorite()"
-        [attr.aria-label]="(isFavorite() ? 'Remove ' : 'Add ') + recipe().name + (isFavorite() ? ' from favorites' : ' to favorites')"
-        (click)="onToggleFavorite()"
-      >
-        <app-icon name="heart" [filled]="isFavorite()" />
-      </button>
     </div>
     <div class="carousel-body">
       <h3 class="carousel-title">{{ recipe().name }}</h3>

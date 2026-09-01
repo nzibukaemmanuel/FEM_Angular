@@ -39,7 +39,7 @@ describe('App', () => {
 
   it('should show a carousel of top picks and a short list by default', () => {
     const fixture = setup();
-    expect(fixture.nativeElement.querySelectorAll('.carousel-scroller app-recipe-card').length).toBe(4);
+    expect(fixture.nativeElement.querySelectorAll('.carousel-scroller app-recipe-card').length).toBe(2);
     expect(fixture.nativeElement.querySelectorAll('#all-recipes .recipe-list app-recipe-card').length).toBe(3);
   });
 
@@ -58,10 +58,7 @@ describe('App', () => {
         .querySelectorAll('.toggle-control input[type="checkbox"]')
         .forEach((checkbox: HTMLInputElement) => expect(checkbox.disabled).toBe(true));
       expect(fixture.nativeElement.querySelector('.row-favorite-button').disabled).toBe(true);
-      expect(fixture.nativeElement.querySelector('.carousel-favorite-button').disabled).toBe(true);
       expect(fixture.nativeElement.querySelector('#all-recipes .see-all-link').disabled).toBe(true);
-      expect(fixture.nativeElement.querySelector('.hero-favorite-button').disabled).toBe(true);
-      expect(fixture.nativeElement.querySelector('.hero-cta').disabled).toBe(true);
     });
 
     it('should show a lock hint pointing to login', () => {

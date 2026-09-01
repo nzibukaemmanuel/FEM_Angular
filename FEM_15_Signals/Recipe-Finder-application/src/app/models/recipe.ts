@@ -6,7 +6,4 @@ export interface Recipe {
   image: string;
   subtitle: string;
   rating: number;
-  featured?: boolean;
-  tagline?: string;
-  heroImage?: string;
 }
