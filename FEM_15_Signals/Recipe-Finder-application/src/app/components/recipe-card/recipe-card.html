@@ -1,20 +1,46 @@
-<article class="recipe-row">
-  <div class="row-thumb">
-    <img [src]="recipe().image" [alt]="recipe().name" loading="lazy" />
+<article class="recipe-row" [class.is-expanded]="expanded()">
+  <div class="row-main">
+    <div class="row-thumb">
+      <img [src]="recipe().image" [alt]="recipe().name" loading="lazy" />
+    </div>
+    <div class="row-body">
+      <h3 class="row-title">{{ recipe().name }}</h3>
+      <span class="row-tag">✓ Ready in {{ recipe().cookTime }} min</span>
+    </div>
+    <button
+      type="button"
+      class="row-favorite-button"
+      [class.is-active]="isFavorite()"
+      [disabled]="locked()"
+      [attr.aria-pressed]="isFavorite()"
+      [attr.aria-label]="(isFavorite() ? 'Remove ' : 'Add ') + recipe().name + (isFavorite() ? ' from favorites' : ' to favorites')"
+      (click)="onToggleFavorite()"
+    >
+      <app-icon name="heart" [filled]="isFavorite()" />
+    </button>
   </div>
-  <div class="row-body">
-    <h3 class="row-title">{{ recipe().name }}</h3>
-    <span class="row-tag">✓ Ready in {{ recipe().cookTime }} min</span>
-  </div>
+
   <button
     type="button"
-    class="row-favorite-button"
-    [class.is-active]="isFavorite()"
-    [disabled]="locked()"
-    [attr.aria-pressed]="isFavorite()"
-    [attr.aria-label]="(isFavorite() ? 'Remove ' : 'Add ') + recipe().name + (isFavorite() ? ' from favorites' : ' to favorites')"
-    (click)="onToggleFavorite()"
+    class="row-explore-toggle"
+    [attr.aria-expanded]="expanded()"
+    [attr.aria-controls]="detailsId"
+    (click)="onToggleExpanded()"
   >
-    <app-icon name="heart" [filled]="isFavorite()" />
+    <span>{{ expanded() ? 'Show less' : 'Explore more' }}</span>
+    <app-icon name="chevron" />
   </button>
+
+  <div class="row-details" [id]="detailsId" [class.is-open]="expanded()">
+    <div class="row-details-inner">
+      <p class="row-subtitle">{{ recipe().subtitle }}</p>
+      <p class="row-rating">★ {{ recipe().rating }}</p>
+      <h4 class="row-details-heading">Ingredients</h4>
+      <ul class="row-ingredients">
+        @for (ingredient of recipe().ingredients; track ingredient) {
+          <li>{{ ingredient }}</li>
+        }
+      </ul>
+    </div>
+  </div>
 </article>

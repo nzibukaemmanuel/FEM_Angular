@@ -1,4 +1,4 @@
-import { Component, HostBinding, input, output } from '@angular/core';
+import { Component, HostBinding, input, output, signal } from '@angular/core';
 import { Icon } from '../icon/icon';
 import { Recipe } from '../../models/recipe';
 
@@ -14,12 +14,22 @@ export class RecipeCard {
   readonly locked = input(false);
   readonly favoriteToggled = output<string>();
 
+  protected readonly expanded = signal(false);
+
   @HostBinding('id')
   protected get hostId(): string {
     return `recipe-${this.recipe().id}`;
   }
 
+  protected get detailsId(): string {
+    return `recipe-details-${this.recipe().id}`;
+  }
+
   protected onToggleFavorite(): void {
     this.favoriteToggled.emit(this.recipe().id);
+  }
+
+  protected onToggleExpanded(): void {
+    this.expanded.update((value) => !value);
   }
 }
