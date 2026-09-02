@@ -130,8 +130,8 @@
   <section class="promo-banner">
     <div class="promo-text">
       @if (username(); as name) {
-        <p>Welcome back, {{ name }}! Ready to cook something great?</p>
-        <button type="button" class="promo-button" (click)="logout()">Log out</button>
+        <p class="promo-welcome-text">Welcome back, {{ name }}! Ready to cook something great?</p>
+        <button type="button" class="promo-button promo-button--logout" (click)="logout()">Log out</button>
       } @else {
         <p>Learn how to become a master chef right now!</p>
         <button type="button" class="promo-button" (click)="openAccount()">Login</button>
@@ -139,7 +139,7 @@
     </div>
     <img class="promo-chef-img" src="/chief.png" alt="Smiling chef with arms crossed" />
     <img class="promo-food2-img" src="/food2.png" alt="Greek salad platter" />
-    <img class="promo-food-img" src="/food.png" alt="Fresh Greek salad" />
+    <img class="promo-food-img" src="/food1.png" alt="Fresh Greek salad" />
   </section>
 
   @if (hasResults()) {
