@@ -29,7 +29,8 @@
   transform: translate(-50%, -50%);
   border-radius: 50%;
   overflow: hidden;
-  box-shadow: var(--shadow-card-hover);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-card);
   z-index: 2;
 }
 
@@ -38,6 +39,8 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+   transform: scale(1.9);
+    margin-top: 15px;
 }
 
 .featured-body {

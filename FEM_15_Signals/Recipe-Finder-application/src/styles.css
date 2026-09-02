@@ -9,8 +9,8 @@
   --color-primary: #f6b100;
   --color-primary-strong: #90600a;
   --color-primary-soft: rgba(246, 177, 0, 0.16);
-  --shadow-card: 0 6px 18px rgba(24, 26, 32, 0.1);
-  --shadow-card-hover: 0 16px 30px rgba(24, 26, 32, 0.18);
+  --shadow-card: 0 4px 12px rgba(24, 26, 32, 0.05);
+  --shadow-card-hover: 0 10px 20px rgba(24, 26, 32, 0.1);
 
   --color-header-bg: #f6b100;
   --color-header-text: #181a20;
@@ -27,8 +27,8 @@
   --color-primary: #f6b100;
   --color-primary-strong: #ffcf5c;
   --color-primary-soft: rgba(246, 177, 0, 0.2);
-  --shadow-card: 0 6px 18px rgba(0, 0, 0, 0.5);
-  --shadow-card-hover: 0 16px 30px rgba(0, 0, 0, 0.6);
+  --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.3);
+  --shadow-card-hover: 0 10px 20px rgba(0, 0, 0, 0.4);
 
   --color-header-bg: #f6b100;
   --color-header-text: #181a20;
