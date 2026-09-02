@@ -2,24 +2,6 @@ import { Recipe } from '../models/recipe';
 
 export const RECIPES: Recipe[] = [
   {
-    id: 'Spaghetti Carbonara',
-    name: 'Spaghetti Carbonara',
-    ingredients: ['spaghetti', 'eggs', 'parmesan', 'pancetta', 'black pepper'],
-    cookTime: 20,
-    image: '/recipes/spaghetti-carbonara.jpg',
-    subtitle: 'Eggs & pancetta',
-    rating: 4.7,
-  },
-  {
-    id: 'margherita-pizza',
-    name: 'Margherita Pizza',
-    ingredients: ['pizza dough', 'tomato sauce', 'mozzarella', 'basil'],
-    cookTime: 25,
-    image: '/recipes/margherita-pizza.jpg',
-    subtitle: 'Tomato & mozzarella',
-    rating: 4.6,
-  },
-  {
     id: 'spaghetti-carbonara',
     name: 'Spaghetti Carbonara',
     ingredients: ['spaghetti', 'eggs', 'parmesan', 'pancetta', 'black pepper'],
