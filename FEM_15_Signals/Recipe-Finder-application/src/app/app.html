@@ -103,6 +103,10 @@
     </div>
   </section>
 
+  <p class="filtered-count" aria-live="polite">
+    {{ resultCount() }} {{ resultCount() === 1 ? 'recipe' : 'recipes' }} match your filters
+  </p>
+
   @if (hasResults()) {
     <section class="section-block" aria-label="Top features">
       <div class="section-heading-row">
