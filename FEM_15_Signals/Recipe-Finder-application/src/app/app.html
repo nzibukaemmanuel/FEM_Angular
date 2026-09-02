@@ -130,8 +130,8 @@
       </div>
 
       <div class="carousel-scroller">
-        @for (featured of featuredRecipes; track featured.id) {
-          <app-featured-recipe-card [image]="featured.image" [alt]="featured.alt" />
+        @for (featured of featuredRecipes(); track featured.id) {
+          <app-featured-recipe-card [recipe]="featured" />
         }
       </div>
     </section>

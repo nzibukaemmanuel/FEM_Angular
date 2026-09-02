@@ -4,7 +4,7 @@ import { Icon } from './components/icon/icon';
 import { Login } from './components/login/login';
 import { RecipeCard } from './components/recipe-card/recipe-card';
 import { Toast, ToastMessage, ToastType } from './components/toast/toast';
-import { FEATURED_RECIPES } from './data/featured-recipes';
+import { FEATURED_RECIPE_IDS } from './data/featured-recipes';
 import { RECIPES } from './data/recipes';
 import { Recipe } from './models/recipe';
 
@@ -50,9 +50,13 @@ export class App {
 
   protected readonly title = signal('Recipe Finder');
   protected readonly maxCookTimeLimit = MAX_COOK_TIME;
-  protected readonly featuredRecipes = FEATURED_RECIPES;
 
   private readonly recipes = signal<Recipe[]>(RECIPES);
+
+  protected readonly featuredRecipes = computed(() => {
+    const byId = new Map(this.recipes().map((recipe) => [recipe.id, recipe]));
+    return FEATURED_RECIPE_IDS.map((id) => byId.get(id)).filter((recipe): recipe is Recipe => !!recipe);
+  });
 
   protected readonly searchQuery = signal(this.persisted.searchQuery ?? '');
   protected readonly maxCookTime = signal(this.persisted.maxCookTime ?? MAX_COOK_TIME);

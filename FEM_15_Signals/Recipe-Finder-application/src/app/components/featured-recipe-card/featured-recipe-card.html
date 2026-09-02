@@ -1,3 +1,12 @@
 <article class="featured-recipe-card">
-  <img [src]="image()" [alt]="alt()" loading="lazy" />
+  <div class="featured-photo">
+    <img [src]="recipe().image" [alt]="recipe().name" loading="lazy" />
+  </div>
+  <div class="featured-body">
+    <h3 class="featured-title">{{ recipe().name }}</h3>
+    <div class="featured-meta-row">
+      <span class="featured-subtitle">{{ recipe().subtitle }}</span>
+      <span class="featured-rating">★ {{ recipe().rating }}</span>
+    </div>
+  </div>
 </article>

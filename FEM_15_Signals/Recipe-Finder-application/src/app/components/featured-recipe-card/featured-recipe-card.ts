@@ -1,4 +1,5 @@
 import { Component, input } from '@angular/core';
+import { Recipe } from '../../models/recipe';
 
 @Component({
   selector: 'app-featured-recipe-card',
@@ -7,6 +8,5 @@ import { Component, input } from '@angular/core';
   styleUrl: './featured-recipe-card.css',
 })
 export class FeaturedRecipeCard {
-  readonly image = input.required<string>();
-  readonly alt = input.required<string>();
+  readonly recipe = input.required<Recipe>();
 }

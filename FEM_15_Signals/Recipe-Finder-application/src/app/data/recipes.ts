@@ -109,4 +109,22 @@ export const RECIPES: Recipe[] = [
     subtitle: 'Chicken & coconut',
     rating: 4.8,
   },
+  {
+    id: 'keto-salad',
+    name: 'Keto Salad',
+    ingredients: ['green beans', 'avocado', 'mixed greens', 'orange segments', 'red cabbage', 'toasted walnuts'],
+    cookTime: 15,
+    image: '/recipes/keto-salad.png',
+    subtitle: 'Beans & fruits',
+    rating: 4.9,
+  },
+  {
+    id: 'sewers-salad',
+    name: 'Sewers Salad',
+    ingredients: ['grilled chicken', 'red lentils', 'couscous', 'yogurt sauce', 'fresh parsley'],
+    cookTime: 20,
+    image: '/recipes/sewers-salad.png',
+    subtitle: 'Chicken & dal',
+    rating: 4.5,
+  },
 ];
