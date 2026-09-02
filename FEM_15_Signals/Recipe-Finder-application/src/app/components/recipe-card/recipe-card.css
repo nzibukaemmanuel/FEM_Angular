@@ -56,10 +56,24 @@
 .row-tag {
   display: inline-flex;
   align-items: center;
-  gap: 0.3rem;
-  color: var(--color-primary-strong);
+  gap: 0.4rem;
+  color: var(--color-primary);
   font-weight: 600;
   font-size: 0.85rem;
+}
+
+.row-tag-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 1.15rem;
+  height: 1.15rem;
+  border-radius: 50%;
+  background: var(--color-primary);
+  color: #ffffff;
+  font-size: 0.65rem;
+  line-height: 1;
 }
 
 .row-favorite-button {
