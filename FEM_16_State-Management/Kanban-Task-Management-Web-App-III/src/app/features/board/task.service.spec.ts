@@ -1,4 +1,5 @@
 import { TestBed } from '@angular/core/testing';
+import { firstValueFrom } from 'rxjs';
 import { TaskService } from './task.service';
 
 describe('TaskService', () => {
@@ -56,6 +57,33 @@ describe('TaskService', () => {
       const second = service.addTask('roadmap', { title: 'Duplicate', description: '', status: 'todo', dueDate: '', subtasks: [] });
 
       expect(first.id).not.toBe(second.id);
+    });
+  });
+
+  describe('the BehaviorSubject-backed Observable API', () => {
+    it('getTasks$ emits the current tasks for a board to a new subscriber', async () => {
+      const tasks = await firstValueFrom(service.getTasks$('roadmap'));
+      expect(tasks.map((task) => task.id)).toEqual(['q1-goals', 'prioritize-features']);
+    });
+
+    it('getTask$ emits a single task by board and id', async () => {
+      const task = await firstValueFrom(service.getTask$('roadmap', 'q1-goals'));
+      expect(task?.title).toBe('Set Q1 goals');
+    });
+
+    it('streams a new value on getTasks$ after addTask, without re-subscribing', async () => {
+      const emissions: number[] = [];
+      const subscription = service.getTasks$('roadmap').subscribe((tasks) => emissions.push(tasks.length));
+
+      service.addTask('roadmap', { title: 'New task', description: '', status: 'todo', dueDate: '', subtasks: [] });
+      subscription.unsubscribe();
+
+      expect(emissions).toEqual([2, 3]);
+    });
+
+    it('boardTasks$ and the synchronous getters stay consistent — same BehaviorSubject, two ways to read it', async () => {
+      const viaObservable = await firstValueFrom(service.boardTasks$);
+      expect(viaObservable['roadmap']).toEqual(service.getTasks('roadmap'));
     });
   });
 

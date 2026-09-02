@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter, Router } from '@angular/router';
+import { firstValueFrom } from 'rxjs';
 import { Boards } from './boards';
+import { TaskService } from '../task.service';
 
 describe('Boards', () => {
   let component: Boards;
@@ -37,5 +39,19 @@ describe('Boards', () => {
     component.jumpToBoard('');
 
     expect(navigateSpy).not.toHaveBeenCalled();
+  });
+
+  it('streams the current task count for a board', async () => {
+    expect(await firstValueFrom(component.taskCount$('roadmap')!)).toBe(2);
+  });
+
+  it('reflects a task added through TaskService — via its shared BehaviorSubject — without a reload', async () => {
+    const taskService = TestBed.inject(TaskService);
+    const before = await firstValueFrom(component.taskCount$('roadmap')!);
+
+    taskService.addTask('roadmap', { title: 'New task', description: '', status: 'todo', dueDate: '', subtasks: [] });
+
+    const after = await firstValueFrom(component.taskCount$('roadmap')!);
+    expect(after).toBe(before + 1);
   });
 });

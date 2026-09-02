@@ -10,6 +10,7 @@
   justify-content: space-between;
   gap: var(--space-4);
   width: 100%;
+  min-width: 140px;
   font: inherit;
   font-size: var(--size-small);
   font-weight: 400;
@@ -41,6 +42,12 @@
   border-color: var(--color-primary);
 }
 
+.select-trigger__label {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
 .select-trigger__chevron {
   flex-shrink: 0;
   color: var(--color-muted-text);
@@ -56,7 +63,12 @@
   z-index: 30;
   top: calc(100% + var(--space-2));
   left: 0;
-  right: 0;
+  /* Sized to fit the longest option, not clamped to the trigger's (possibly narrower,
+     shrunk-to-fit-the-current-selection) width — so an option like "In progress" never
+     wraps just because the trigger currently reads something shorter, like "All". */
+  min-width: 100%;
+  width: max-content;
+  max-width: 280px;
   max-height: 240px;
   overflow-y: auto;
   margin: 0;
@@ -73,6 +85,7 @@
   font-size: var(--size-small);
   color: var(--color-text);
   cursor: pointer;
+  white-space: nowrap;
   transition: background-color var(--transition-fast), color var(--transition-fast);
 }
 

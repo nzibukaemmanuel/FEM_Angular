@@ -18,6 +18,7 @@
     <li>
       <a class="board-card" [routerLink]="['/boards', boardId]">
         <span class="board-card__name">{{ boardId }}</span>
+        <span class="task-count-badge">{{ taskCount$(boardId) | async }} tasks</span>
         <span class="board-card__arrow" aria-hidden="true">&rarr;</span>
       </a>
     </li>
