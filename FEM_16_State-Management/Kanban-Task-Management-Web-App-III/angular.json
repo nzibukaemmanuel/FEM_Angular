@@ -3,11 +3,11 @@
   "version": 1,
   "cli": {
     "packageManager": "npm",
-    "analytics": "3156ff2a-254c-42aa-b3c5-0186310e18ce"
+    "analytics": "a25d9385-3ccd-40a0-bea2-b7defed82122"
   },
   "newProjectRoot": "projects",
   "projects": {
-    "Kanban-Task-Management-Web-App-III": {
+    "Kanban-Task-Management-Web-App": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -27,7 +27,10 @@
             ],
             "styles": [
               "src/styles.css"
-            ]
+            ],
+            "security": {
+              "allowedHosts": []
+            }
           },
           "configurations": {
             "production": {
@@ -57,10 +60,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "Kanban-Task-Management-Web-App-III:build:production"
+              "buildTarget": "Kanban-Task-Management-Web-App:build:production"
             },
             "development": {
-              "buildTarget": "Kanban-Task-Management-Web-App-III:build:development"
+              "buildTarget": "Kanban-Task-Management-Web-App:build:development"
             }
           },
           "defaultConfiguration": "development"
