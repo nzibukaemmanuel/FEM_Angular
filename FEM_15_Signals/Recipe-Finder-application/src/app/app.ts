@@ -9,6 +9,7 @@ import { RECIPES } from './data/recipes';
 import { Recipe } from './models/recipe';
 
 type SortOrder = 'default' | 'cookTime';
+type ThemeMode = 'light' | 'dark';
 
 interface PersistedState {
   searchQuery: string;
@@ -17,6 +18,7 @@ interface PersistedState {
   sortOrder: SortOrder;
   favoriteIds: string[];
   username: string | null;
+  theme: ThemeMode;
 }
 
 const STORAGE_KEY = 'recipe-finder-state';
@@ -31,6 +33,10 @@ function loadPersistedState(): Partial<PersistedState> {
   } catch {
     return {};
   }
+}
+
+function getPreferredTheme(): ThemeMode {
+  return window.matchMedia?.('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 }
 
 @Component({
@@ -89,6 +95,8 @@ export class App {
   protected readonly username = signal<string | null>(this.persisted.username ?? null);
   protected readonly isLoggedIn = computed(() => this.username() !== null);
 
+  protected readonly theme = signal<ThemeMode>(this.persisted.theme ?? getPreferredTheme());
+
   protected readonly toast = signal<ToastMessage | null>(null);
   private toastTimeoutId?: ReturnType<typeof setTimeout>;
 
@@ -96,6 +104,10 @@ export class App {
   private filterChangeToastTimeoutId?: ReturnType<typeof setTimeout>;
 
   constructor() {
+    effect(() => {
+      document.documentElement.setAttribute('data-theme', this.theme());
+    });
+
     effect(() => {
       const filters = {
         searchQuery: this.searchQuery(),
@@ -124,6 +136,7 @@ export class App {
         sortOrder: this.sortOrder(),
         favoriteIds: [...this.favoriteIds()],
         username: this.username(),
+        theme: this.theme(),
       };
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
     });
@@ -143,6 +156,10 @@ export class App {
 
   protected toggleSortByCookTime(): void {
     this.sortOrder.update((order) => (order === 'cookTime' ? 'default' : 'cookTime'));
+  }
+
+  protected toggleTheme(): void {
+    this.theme.update((mode) => (mode === 'dark' ? 'light' : 'dark'));
   }
 
   protected isFavorite(id: string): boolean {

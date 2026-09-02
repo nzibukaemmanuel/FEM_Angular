@@ -53,6 +53,16 @@
           #searchInput
         />
       </label>
+
+      <button
+        type="button"
+        class="menu-button theme-toggle-button"
+        (click)="toggleTheme()"
+        [attr.aria-pressed]="theme() === 'dark'"
+        [attr.aria-label]="theme() === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'"
+      >
+        <app-icon [name]="theme() === 'dark' ? 'sun' : 'moon'" />
+      </button>
     </div>
   </header>
 
@@ -137,7 +147,7 @@
         <p class="promo-welcome-text">Welcome back, {{ name }}! Ready to cook something great?</p>
         <button type="button" class="promo-button promo-button--logout" (click)="logout()">Log out</button>
       } @else {
-        <p>Learn how to become a master chef right now!</p>
+        <p class="promo-welcome-text">Learn how to become a master chef right now!</p>
         <button type="button" class="promo-button" (click)="openAccount()">Login</button>
       }
     </div>
