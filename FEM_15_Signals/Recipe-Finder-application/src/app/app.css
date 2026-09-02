@@ -318,6 +318,10 @@
   color: #ffffff;
 }
 
+.chip-toggle:hover {
+  filter: brightness(0.95);
+}
+
 .chip-toggle input {
   position: absolute;
   width: 1px;
