@@ -92,14 +92,28 @@ export class App {
   protected readonly toast = signal<ToastMessage | null>(null);
   private toastTimeoutId?: ReturnType<typeof setTimeout>;
 
+  private isInitialFilterChange = true;
+  private filterChangeToastTimeoutId?: ReturnType<typeof setTimeout>;
+
   constructor() {
     effect(() => {
-      console.log('[Recipe Finder] filters changed', {
+      const filters = {
         searchQuery: this.searchQuery(),
         maxCookTime: this.maxCookTime(),
         favoritesOnly: this.favoritesOnly(),
         sortOrder: this.sortOrder(),
-      });
+      };
+      console.log('[Recipe Finder] filters changed', filters);
+
+      if (this.isInitialFilterChange) {
+        this.isInitialFilterChange = false;
+        return;
+      }
+
+      clearTimeout(this.filterChangeToastTimeoutId);
+      this.filterChangeToastTimeoutId = setTimeout(() => {
+        this.showToast(`Filters updated — ${this.resultCount()} recipe(s) found`, 'success');
+      }, 400);
     });
 
     effect(() => {
