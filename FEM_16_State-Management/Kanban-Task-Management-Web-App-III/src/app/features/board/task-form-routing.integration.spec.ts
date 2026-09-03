@@ -1,7 +1,12 @@
 import { Type } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { Router, provideRouter, withComponentInputBinding, withRouterConfig } from '@angular/router';
+import {
+  Router,
+  provideRouter,
+  withComponentInputBinding,
+  withRouterConfig,
+} from '@angular/router';
 import { RouterTestingHarness } from '@angular/router/testing';
 import { routes } from '../../app.routes';
 import { AuthService } from '../../core/auth.service';
@@ -9,6 +14,7 @@ import { AddTask } from './add-task/add-task';
 import { BoardDetails } from './board-details/board-details';
 import { EditTask } from './edit-task/edit-task';
 import { TaskDetail } from './task-detail/task-detail';
+import { provideTaskStoreForTests } from './store/testing';
 
 // Exercises Add/Edit Task through the *real* router config (the same one main.ts boots),
 // rather than the per-component/per-route-array unit specs elsewhere. Those confirm each piece
@@ -28,6 +34,7 @@ describe('Task form navigation (integration)', () => {
           withComponentInputBinding(),
           withRouterConfig({ paramsInheritanceStrategy: 'always' }),
         ),
+        provideTaskStoreForTests(),
       ],
     }).compileComponents();
 
@@ -47,7 +54,8 @@ describe('Task form navigation (integration)', () => {
   // SelectField) above the nested outlet, so an unscoped querySelector('.select-trigger') can
   // grab the wrong one. Scoping to the nested component's own element avoids that entirely.
   function findElement<T>(type: Type<T>): HTMLElement {
-    const el = harness.routeDebugElement?.query(By.directive(type))?.nativeElement as HTMLElement | undefined;
+    const el = harness.routeDebugElement?.query(By.directive(type))?.nativeElement as
+      HTMLElement | undefined;
     if (!el) {
       throw new Error(`Expected to find a rendered ${type.name} in the current route.`);
     }
@@ -137,7 +145,9 @@ describe('Task form navigation (integration)', () => {
     it('blocks navigating away from a dirty Add Task form when the user cancels the confirm dialog', async () => {
       await harness.navigateByUrl('/boards/roadmap/new-task', BoardDetails);
 
-      const titleInput = findElement(AddTask).querySelector('input[type="text"]') as HTMLInputElement;
+      const titleInput = findElement(AddTask).querySelector(
+        'input[type="text"]',
+      ) as HTMLInputElement;
       titleInput.value = 'Draft, not saved';
       titleInput.dispatchEvent(new Event('input'));
       harness.detectChanges();
@@ -153,7 +163,9 @@ describe('Task form navigation (integration)', () => {
     it('allows navigating away from a dirty Add Task form when the user confirms', async () => {
       await harness.navigateByUrl('/boards/roadmap/new-task', BoardDetails);
 
-      const titleInput = findElement(AddTask).querySelector('input[type="text"]') as HTMLInputElement;
+      const titleInput = findElement(AddTask).querySelector(
+        'input[type="text"]',
+      ) as HTMLInputElement;
       titleInput.value = 'Draft, not saved';
       titleInput.dispatchEvent(new Event('input'));
       harness.detectChanges();

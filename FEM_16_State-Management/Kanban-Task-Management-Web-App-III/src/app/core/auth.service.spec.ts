@@ -14,7 +14,7 @@ describe('AuthService', () => {
   });
 
   it('authenticates and returns true for the correct demo credentials', () => {
-    const result = service.login('MANANZ', 'NZIBUKA123');
+    const result = service.login('MANNAZ', 'NZIBUKA123');
 
     expect(result).toBe(true);
     expect(service.isAuthenticated()).toBe(true);

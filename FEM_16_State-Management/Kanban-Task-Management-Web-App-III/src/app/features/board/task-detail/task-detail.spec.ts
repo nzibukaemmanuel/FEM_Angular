@@ -1,8 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter, Router } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { PreferencesService } from '../../../core/preferences.service';
 import { TaskDetail } from './task-detail';
 import { TaskService } from '../task.service';
+import { TaskActions } from '../store/task.actions';
+import { provideTaskStoreForTests } from '../store/testing';
 
 describe('TaskDetail', () => {
   let component: TaskDetail;
@@ -11,7 +14,7 @@ describe('TaskDetail', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [TaskDetail],
-      providers: [provideRouter([])],
+      providers: [provideRouter([]), provideTaskStoreForTests()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(TaskDetail);
@@ -42,12 +45,18 @@ describe('TaskDetail', () => {
     expect(component.task()).toBeUndefined();
   });
 
-  it('reflects an edit made through TaskService without needing a reload', () => {
+  it('reflects an update dispatched through the store without needing a reload', () => {
     fixture.componentRef.setInput('boardId', 'roadmap');
     fixture.componentRef.setInput('taskId', 'q1-goals');
-    const taskService = TestBed.inject(TaskService);
+    const store = TestBed.inject(Store);
 
-    taskService.updateTask('roadmap', 'q1-goals', { status: 'done' });
+    store.dispatch(
+      TaskActions.updateTask({
+        boardId: 'roadmap',
+        taskId: 'q1-goals',
+        changes: { status: 'done' },
+      }),
+    );
 
     expect(component.task()?.status).toBe('done');
   });

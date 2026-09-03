@@ -3,6 +3,7 @@ import { provideRouter, Router } from '@angular/router';
 import { EditTask } from './edit-task';
 import { NotificationService } from '../../../core/notification.service';
 import { TaskService } from '../task.service';
+import { provideTaskStoreForTests } from '../store/testing';
 
 describe('EditTask', () => {
   let fixture: ComponentFixture<EditTask>;
@@ -11,7 +12,7 @@ describe('EditTask', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [EditTask],
-      providers: [provideRouter([])],
+      providers: [provideRouter([]), provideTaskStoreForTests()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(EditTask);
@@ -58,7 +59,10 @@ describe('EditTask', () => {
       subtasks: [],
     });
 
-    expect(notificationService.notice()).toEqual({ message: '"Set Q1 goals (revised)" was updated.', kind: 'success' });
+    expect(notificationService.notice()).toEqual({
+      message: '"Set Q1 goals (revised)" was updated.',
+      kind: 'success',
+    });
   });
 
   it('navigates back to the task detail page on cancel', () => {
@@ -77,7 +81,9 @@ describe('EditTask', () => {
     });
 
     it('shows a "not found" message with no task form', () => {
-      expect(fixture.nativeElement.querySelector('.empty-state')?.textContent).toContain('not found');
+      expect(fixture.nativeElement.querySelector('.empty-state')?.textContent).toContain(
+        'not found',
+      );
       expect(fixture.nativeElement.querySelector('app-task-form')).toBeNull();
     });
 

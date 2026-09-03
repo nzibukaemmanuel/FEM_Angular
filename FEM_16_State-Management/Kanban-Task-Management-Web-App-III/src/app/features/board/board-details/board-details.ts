@@ -1,9 +1,10 @@
 import { Component, computed, inject, input } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink, RouterOutlet } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { SelectField, SelectFieldOption } from '../../../shared/select-field/select-field';
 import { NotFound } from '../../../pages/not-found/not-found';
 import { BoardService } from '../board.service';
-import { TaskService } from '../task.service';
+import { selectAllTasks } from '../store/task.selectors';
 
 @Component({
   imports: [RouterLink, RouterOutlet, SelectField, NotFound],
@@ -14,7 +15,7 @@ import { TaskService } from '../task.service';
 export class BoardDetails {
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
-  private readonly taskService = inject(TaskService);
+  private readonly store = inject(Store);
   private readonly boardService = inject(BoardService);
 
   readonly boardId = input('');
@@ -44,11 +45,14 @@ export class BoardDetails {
   readonly effectiveStatus = computed(() => this.status() ?? 'all');
   readonly effectiveSort = computed(() => this.sort() ?? 'title');
 
+  private readonly allTasks = this.store.selectSignal(selectAllTasks);
+
   readonly tasks = computed(() => {
-    const boardTasks = this.taskService.getTasks(this.boardId());
+    const boardTasks = this.allTasks().filter((task) => task.boardId === this.boardId());
     const status = this.effectiveStatus();
     const sort = this.effectiveSort();
-    const filtered = status === 'all' ? boardTasks : boardTasks.filter((task) => task.status === status);
+    const filtered =
+      status === 'all' ? boardTasks : boardTasks.filter((task) => task.status === status);
     return [...filtered].sort((a, b) => a[sort].localeCompare(b[sort]));
   });
 

@@ -10,8 +10,10 @@ import {
   RouterLinkActive,
   RouterOutlet,
 } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { AuthService } from './core/auth.service';
 import { ThemeService } from './core/theme.service';
+import { TaskActions } from './features/board/store/task.actions';
 import { Notice } from './shared/notice/notice';
 
 @Component({
@@ -22,6 +24,7 @@ import { Notice } from './shared/notice/notice';
 })
 export class App {
   private readonly router = inject(Router);
+  private readonly store = inject(Store);
   protected readonly auth = inject(AuthService);
   // Injected eagerly here (rather than only where a component happens to need it) so the
   // theme is applied to <html> as early in bootstrap as possible, minimizing any flash of
@@ -33,6 +36,11 @@ export class App {
 
   constructor() {
     this.router.events.pipe(takeUntilDestroyed()).subscribe((event) => this.onRouterEvent(event));
+    // The store's task state is already seeded from the same fixture TaskService boots from
+    // (see task.reducer.ts), so this isn't needed for the app to have data — it exists so the
+    // load → effect → reducer round trip is a real, observable action in NgRx DevTools rather
+    // than something that only exists on paper.
+    this.store.dispatch(TaskActions.loadTasks());
   }
 
   protected onRouterEvent(event: unknown): void {

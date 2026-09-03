@@ -9,7 +9,7 @@ describe('authGuard', () => {
   });
 
   it('allows navigation when the user is authenticated', () => {
-    TestBed.inject(AuthService).login('admin', 'admin123');
+    TestBed.inject(AuthService).login('MANNAZ', 'NZIBUKA123');
 
     const result = TestBed.runInInjectionContext(() =>
       authGuard({} as any, { url: '/settings' } as any),

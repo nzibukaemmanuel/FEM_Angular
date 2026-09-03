@@ -32,8 +32,8 @@ describe('Login', () => {
     const router = TestBed.inject(Router);
     const navigateByUrlSpy = vi.spyOn(router, 'navigateByUrl').mockResolvedValue(true);
 
-    component.username.set('admin');
-    component.password.set('admin123');
+    component.username.set('MANNAZ');
+    component.password.set('NZIBUKA123');
     component.submit();
 
     expect(auth.isAuthenticated()).toBe(true);
@@ -71,7 +71,8 @@ describe('Login', () => {
     fixture.detectChanges();
     const passwordInput = (): HTMLInputElement =>
       fixture.nativeElement.querySelector('input[autocomplete="current-password"]');
-    const toggleButton = (): HTMLButtonElement => fixture.nativeElement.querySelector('.password-toggle');
+    const toggleButton = (): HTMLButtonElement =>
+      fixture.nativeElement.querySelector('.password-toggle');
 
     expect(passwordInput().type).toBe('password');
     expect(toggleButton().textContent?.trim()).toBe('Show');

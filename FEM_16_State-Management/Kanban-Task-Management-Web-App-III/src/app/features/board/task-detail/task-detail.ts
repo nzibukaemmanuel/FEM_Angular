@@ -1,8 +1,10 @@
 import { Component, computed, inject, input } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { NotificationService } from '../../../core/notification.service';
 import { PreferencesService } from '../../../core/preferences.service';
-import { TaskService } from '../task.service';
+import { TaskActions } from '../store/task.actions';
+import { selectAllTasks } from '../store/task.selectors';
 
 @Component({
   imports: [RouterLink],
@@ -12,14 +14,18 @@ import { TaskService } from '../task.service';
 })
 export class TaskDetail {
   private readonly router = inject(Router);
-  private readonly taskService = inject(TaskService);
+  private readonly store = inject(Store);
   private readonly preferencesService = inject(PreferencesService);
   private readonly notificationService = inject(NotificationService);
 
   readonly boardId = input('');
   readonly taskId = input('');
 
-  readonly task = computed(() => this.taskService.getTask(this.boardId(), this.taskId()));
+  private readonly allTasks = this.store.selectSignal(selectAllTasks);
+
+  readonly task = computed(() =>
+    this.allTasks().find((task) => task.boardId === this.boardId() && task.id === this.taskId()),
+  );
   readonly completedSubtaskCount = computed(
     () => this.task()?.subtasks.filter((subtask) => subtask.completed).length ?? 0,
   );
@@ -33,10 +39,13 @@ export class TaskDetail {
     if (!task) {
       return;
     }
-    if (this.preferencesService.confirmBeforeDelete() && !confirm(`Delete "${task.title}"? This can't be undone.`)) {
+    if (
+      this.preferencesService.confirmBeforeDelete() &&
+      !confirm(`Delete "${task.title}"? This can't be undone.`)
+    ) {
       return;
     }
-    this.taskService.deleteTask(this.boardId(), this.taskId());
+    this.store.dispatch(TaskActions.deleteTask({ boardId: this.boardId(), taskId: this.taskId() }));
     this.notificationService.success(`"${task.title}" was deleted.`);
     this.goToBoard();
   }

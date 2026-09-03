@@ -1,8 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter, Router } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { firstValueFrom } from 'rxjs';
 import { Boards } from './boards';
-import { TaskService } from '../task.service';
+import { TaskActions } from '../store/task.actions';
+import { provideTaskStoreForTests } from '../store/testing';
 
 describe('Boards', () => {
   let component: Boards;
@@ -11,7 +13,7 @@ describe('Boards', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [Boards],
-      providers: [provideRouter([])],
+      providers: [provideRouter([]), provideTaskStoreForTests()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(Boards);
@@ -45,11 +47,16 @@ describe('Boards', () => {
     expect(await firstValueFrom(component.taskCount$('roadmap')!)).toBe(2);
   });
 
-  it('reflects a task added through TaskService — via its shared BehaviorSubject — without a reload', async () => {
-    const taskService = TestBed.inject(TaskService);
+  it('reflects a task added via the store — through the Add Task effect — without a reload', async () => {
+    const store = TestBed.inject(Store);
     const before = await firstValueFrom(component.taskCount$('roadmap')!);
 
-    taskService.addTask('roadmap', { title: 'New task', description: '', status: 'todo', dueDate: '', subtasks: [] });
+    store.dispatch(
+      TaskActions.addTask({
+        boardId: 'roadmap',
+        task: { title: 'New task', description: '', status: 'todo', dueDate: '', subtasks: [] },
+      }),
+    );
 
     const after = await firstValueFrom(component.taskCount$('roadmap')!);
     expect(after).toBe(before + 1);

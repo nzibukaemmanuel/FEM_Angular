@@ -1,10 +1,11 @@
 import { Component, inject } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { Observable, map } from 'rxjs';
 import { SelectField, SelectFieldOption } from '../../../shared/select-field/select-field';
 import { BoardService } from '../board.service';
-import { TaskService } from '../task.service';
+import { selectTasksByBoard } from '../store/task.selectors';
 
 @Component({
   imports: [AsyncPipe, RouterLink, SelectField],
@@ -15,7 +16,7 @@ import { TaskService } from '../task.service';
 export class Boards {
   private readonly router = inject(Router);
   private readonly boardService = inject(BoardService);
-  private readonly taskService = inject(TaskService);
+  private readonly store = inject(Store);
 
   readonly boardIds = this.boardService.boardIds;
 
@@ -31,13 +32,16 @@ export class Boards {
     this.router.navigate(['/boards', boardId]);
   }
 
-  // Streamed straight from TaskService's shared BehaviorSubject via the async pipe, so a task
-  // added/removed on a board's detail page is reflected here the moment you navigate back —
-  // no local copy of the count, no manual refresh. Built once (rather than as a template method
-  // call) so each board keeps the same Observable instance across change-detection runs and the
-  // async pipe doesn't resubscribe on every cycle.
+  // Streamed from the NgRx task store via the async pipe, so a task added/removed on a board's
+  // detail page is reflected here the moment you navigate back — no local copy of the count, no
+  // manual refresh. Built once (rather than as a template method call) so each board keeps the
+  // same Observable instance across change-detection runs and the async pipe doesn't
+  // resubscribe on every cycle.
   private readonly taskCounts = new Map<string, Observable<number>>(
-    this.boardIds.map((boardId) => [boardId, this.taskService.getTasks$(boardId).pipe(map((tasks) => tasks.length))]),
+    this.boardIds.map((boardId) => [
+      boardId,
+      this.store.select(selectTasksByBoard(boardId)).pipe(map((tasks) => tasks.length)),
+    ]),
   );
 
   taskCount$(boardId: string): Observable<number> | undefined {

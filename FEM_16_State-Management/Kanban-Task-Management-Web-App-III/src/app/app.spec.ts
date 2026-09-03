@@ -7,14 +7,14 @@ import {
   provideRouter,
 } from '@angular/router';
 import { App } from './app';
+import { provideTaskStoreForTests } from './features/board/store/testing';
 
 describe('App', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [App],
-      providers: [provideRouter([])],
-    })
-      .compileComponents();
+      providers: [provideRouter([]), provideTaskStoreForTests()],
+    }).compileComponents();
   });
 
   it('should create the app', () => {

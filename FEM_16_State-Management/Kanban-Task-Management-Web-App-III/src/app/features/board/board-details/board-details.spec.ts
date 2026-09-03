@@ -1,7 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, provideRouter, Router } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { BoardDetails } from './board-details';
-import { TaskService } from '../task.service';
+import { TaskActions } from '../store/task.actions';
+import { provideTaskStoreForTests } from '../store/testing';
 
 describe('BoardDetails', () => {
   let component: BoardDetails;
@@ -10,7 +12,7 @@ describe('BoardDetails', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [BoardDetails],
-      providers: [provideRouter([])],
+      providers: [provideRouter([]), provideTaskStoreForTests()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(BoardDetails);
@@ -31,7 +33,7 @@ describe('BoardDetails', () => {
     expect(navigateSpy).toHaveBeenCalledWith(['/boards']);
   });
 
-  it('lists all of a board\'s tasks sorted by title by default', () => {
+  it("lists all of a board's tasks sorted by title by default", () => {
     fixture.componentRef.setInput('boardId', 'platform-launch');
 
     expect(component.tasks().map((t) => t.title)).toEqual([
@@ -85,21 +87,33 @@ describe('BoardDetails', () => {
     expect(component.boardExists()).toBe(true);
   });
 
-  it('reflects an edit made through TaskService without needing a reload', () => {
+  it('reflects an update dispatched through the store without needing a reload', () => {
     fixture.componentRef.setInput('boardId', 'platform-launch');
-    const taskService = TestBed.inject(TaskService);
+    const store = TestBed.inject(Store);
 
-    taskService.updateTask('platform-launch', 'write-docs', { title: 'Write launch docs (v2)' });
+    store.dispatch(
+      TaskActions.updateTask({
+        boardId: 'platform-launch',
+        taskId: 'write-docs',
+        changes: { title: 'Write launch docs (v2)' },
+      }),
+    );
 
     expect(component.tasks().map((t) => t.title)).toContain('Write launch docs (v2)');
   });
 
   it('is unaffected by an edit made to a task on a different board', () => {
     fixture.componentRef.setInput('boardId', 'platform-launch');
-    const taskService = TestBed.inject(TaskService);
+    const store = TestBed.inject(Store);
     const before = component.tasks();
 
-    taskService.updateTask('roadmap', 'q1-goals', { title: 'Renamed elsewhere' });
+    store.dispatch(
+      TaskActions.updateTask({
+        boardId: 'roadmap',
+        taskId: 'q1-goals',
+        changes: { title: 'Renamed elsewhere' },
+      }),
+    );
 
     expect(component.tasks()).toEqual(before);
   });
