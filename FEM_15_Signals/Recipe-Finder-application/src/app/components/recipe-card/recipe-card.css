@@ -57,7 +57,7 @@
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  color: var(--color-primary);
+  color: var(--color-primary-strong);
   font-weight: 600;
   font-size: 0.85rem;
 }
@@ -71,7 +71,7 @@
   height: 1.15rem;
   border-radius: 50%;
   background: var(--color-primary);
-  color: #ffffff;
+  color: var(--color-header-text);
   font-size: 0.65rem;
   line-height: 1;
 }
