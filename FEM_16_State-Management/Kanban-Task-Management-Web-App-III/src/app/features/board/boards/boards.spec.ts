@@ -44,7 +44,7 @@ describe('Boards', () => {
   });
 
   it('streams the current task count for a board', async () => {
-    expect(await firstValueFrom(component.taskCount$('roadmap')!)).toBe(2);
+    expect(await firstValueFrom(component.taskCount$('roadmap')!)).toBe(4);
   });
 
   it('reflects a task added via the store — through the Add Task effect — without a reload', async () => {

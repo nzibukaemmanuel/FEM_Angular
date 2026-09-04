@@ -11,7 +11,12 @@ describe('TaskService', () => {
   });
 
   it('returns the seeded tasks for a known board', () => {
-    expect(service.getTasks('roadmap').map((task) => task.id)).toEqual(['q1-goals', 'prioritize-features']);
+    expect(service.getTasks('roadmap').map((task) => task.id)).toEqual([
+      'q1-goals',
+      'prioritize-features',
+      'q2-goals',
+      'review-roadmap-risks',
+    ]);
   });
 
   it('returns an empty array for an unknown board', () => {
@@ -28,11 +33,20 @@ describe('TaskService', () => {
 
   describe('otherTitles', () => {
     it('lists every title on the board when nothing is excluded', () => {
-      expect(service.otherTitles('roadmap', null)).toEqual(['Set Q1 goals', 'Prioritize features']);
+      expect(service.otherTitles('roadmap', null)).toEqual([
+        'Set Q1 goals',
+        'Prioritize features',
+        'Set Q2 goals',
+        'Review roadmap risks',
+      ]);
     });
 
     it('excludes the given task id', () => {
-      expect(service.otherTitles('roadmap', 'q1-goals')).toEqual(['Prioritize features']);
+      expect(service.otherTitles('roadmap', 'q1-goals')).toEqual([
+        'Prioritize features',
+        'Set Q2 goals',
+        'Review roadmap risks',
+      ]);
     });
   });
 
@@ -63,7 +77,12 @@ describe('TaskService', () => {
   describe('the BehaviorSubject-backed Observable API', () => {
     it('getTasks$ emits the current tasks for a board to a new subscriber', async () => {
       const tasks = await firstValueFrom(service.getTasks$('roadmap'));
-      expect(tasks.map((task) => task.id)).toEqual(['q1-goals', 'prioritize-features']);
+      expect(tasks.map((task) => task.id)).toEqual([
+        'q1-goals',
+        'prioritize-features',
+        'q2-goals',
+        'review-roadmap-risks',
+      ]);
     });
 
     it('getTask$ emits a single task by board and id', async () => {
@@ -78,7 +97,7 @@ describe('TaskService', () => {
       service.addTask('roadmap', { title: 'New task', description: '', status: 'todo', dueDate: '', subtasks: [] });
       subscription.unsubscribe();
 
-      expect(emissions).toEqual([2, 3]);
+      expect(emissions).toEqual([4, 5]);
     });
 
     it('boardTasks$ and the synchronous getters stay consistent — same BehaviorSubject, two ways to read it', async () => {

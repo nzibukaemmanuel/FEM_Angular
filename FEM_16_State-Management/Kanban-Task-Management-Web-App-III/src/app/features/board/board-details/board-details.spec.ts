@@ -39,6 +39,9 @@ describe('BoardDetails', () => {
     expect(component.tasks().map((t) => t.title)).toEqual([
       'Define MVP scope',
       'Design review',
+      'Prepare press kit',
+      'QA sign-off',
+      'Run beta testing',
       'Write launch docs',
     ]);
   });
@@ -47,14 +50,21 @@ describe('BoardDetails', () => {
     fixture.componentRef.setInput('boardId', 'platform-launch');
     fixture.componentRef.setInput('status', 'todo');
 
-    expect(component.tasks().map((t) => t.id)).toEqual(['write-docs']);
+    expect(component.tasks().map((t) => t.id)).toEqual(['press-kit', 'qa-signoff', 'write-docs']);
   });
 
   it('sorts tasks by status when the sort query param is "status"', () => {
     fixture.componentRef.setInput('boardId', 'platform-launch');
     fixture.componentRef.setInput('sort', 'status');
 
-    expect(component.tasks().map((t) => t.status)).toEqual(['doing', 'done', 'todo']);
+    expect(component.tasks().map((t) => t.status)).toEqual([
+      'doing',
+      'doing',
+      'done',
+      'todo',
+      'todo',
+      'todo',
+    ]);
   });
 
   it('falls back to defaults when the router clears status/sort inputs to undefined (e.g. after a child-route nav that drops query params)', () => {
@@ -65,6 +75,9 @@ describe('BoardDetails', () => {
     expect(component.tasks().map((t) => t.title)).toEqual([
       'Define MVP scope',
       'Design review',
+      'Prepare press kit',
+      'QA sign-off',
+      'Run beta testing',
       'Write launch docs',
     ]);
   });

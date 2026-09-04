@@ -18,14 +18,19 @@ describe('task selectors', () => {
   it('selectAllTasks flattens every board into one list', () => {
     const tasks = selectAllTasks(appState());
 
-    expect(tasks.length).toBe(8);
+    expect(tasks.length).toBe(16);
     expect(tasks.map((t) => t.id)).toContain('q1-goals');
   });
 
   it('selectTasksByBoard filters to just that board', () => {
     const tasks = selectTasksByBoard('roadmap')(appState());
 
-    expect(tasks.map((t) => t.id)).toEqual(['q1-goals', 'prioritize-features']);
+    expect(tasks.map((t) => t.id)).toEqual([
+      'q1-goals',
+      'prioritize-features',
+      'q2-goals',
+      'review-roadmap-risks',
+    ]);
   });
 
   it('selectTaskByBoardAndId finds a single task scoped to its board', () => {
@@ -43,12 +48,17 @@ describe('task selectors', () => {
   it('selectOtherTitles lists sibling titles on the board, excluding the given task', () => {
     const titles = selectOtherTitles('roadmap', 'q1-goals')(appState());
 
-    expect(titles).toEqual(['Prioritize features']);
+    expect(titles).toEqual(['Prioritize features', 'Set Q2 goals', 'Review roadmap risks']);
   });
 
   it('selectOtherTitles excludes nothing when no task id is given', () => {
     const titles = selectOtherTitles('roadmap', null)(appState());
 
-    expect(titles).toEqual(['Set Q1 goals', 'Prioritize features']);
+    expect(titles).toEqual([
+      'Set Q1 goals',
+      'Prioritize features',
+      'Set Q2 goals',
+      'Review roadmap risks',
+    ]);
   });
 });
