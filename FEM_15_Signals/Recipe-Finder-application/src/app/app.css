@@ -426,6 +426,10 @@
   max-width: 23ch;
 }
 
+.promo-text p.promo-welcome-text {
+  color: #ffffff;
+}
+
 .promo-button {
   border: none;
   background: #ffffff;
